@@ -1,0 +1,16 @@
+.like-button {
+  display: inline-block;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #fff;
+}
+
+.like-button .heart {
+  color: gray;
+}
+
+.like-button .heart.clicked {
+  color: #ff57b2;
+}

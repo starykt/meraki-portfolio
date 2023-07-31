@@ -1,0 +1,22 @@
+{
+    "name": "ptacca/mvc",
+    "description": "Meraki",
+    "autoload": {
+        "psr-4": {
+            "App\\": "App"
+        }
+    },
+    "authors": [
+        {
+            "name": "Gabriela Fernada Ferrara Moreno",
+            "email": "gabi@gmail.com"
+        },
+        {
+            "name": "Nicole Alves Raimundo",
+            "email": "nicolealvesraimundo@gmail.com"
+        }
+    ],
+    "require": {
+        
+    }
+}

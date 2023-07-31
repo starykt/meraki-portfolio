@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+  php-environment:
+    container_name: php-apache
+    build:
+      context: ./
+    depends_on:
+      - db
+    volumes:
+      - ./:/var/www/html/
+    ports:
+      - 8000:80
+    dns:
+      - 1.1.1.1
+      - 1.0.0.1
+  db:
+    container_name: db
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret123
+      MYSQL_DATABASE: meraki
+      # MYSQL_USER: root
+      # MYSQL_PASSWORD: secret123
+    ports:
+      - "9906:3306"
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+    restart: always
+    ports:
+      - 8081:80

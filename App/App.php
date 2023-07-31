@@ -20,12 +20,12 @@ class App
         /*
          * Constantes do sistema
          */
-        define('APP_HOST'       , $_SERVER['HTTP_HOST'] . "/Meraki");
+        define('APP_HOST'       , $_SERVER['HTTP_HOST'] . "");
         define('PATH'           , realpath('./'));
-        define('TITLE'          , "Meraki");
+        define('TITLE'          , "meraki-portfolio");
         define('DB_HOST'        , "localhost");
         define('DB_USER'        , "root");
-        define('DB_PASSWORD'    , "");
+        define('DB_PASSWORD'    , "secret123");
         define('DB_NAME'        , "meraki");
         define('DB_DRIVER'      , "mysql");
 
@@ -70,6 +70,7 @@ class App
         }
 
         if (!file_exists(PATH . '/App/Controllers/' . $this->controllerFile)) {
+            echo "Parei aqui";
             throw new Exception("Página não encontrada.", 404);
         }
 
@@ -89,6 +90,7 @@ class App
         } else {
             throw new Exception("Nosso suporte já esta verificando desculpe!", 500);
         }
+        echo "Fui longe voamlk";
         throw new Exception("Página não encontrada.", 404);
     }
 

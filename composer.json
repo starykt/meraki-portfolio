@@ -1,6 +1,6 @@
 {
     "name": "ptacca/mvc",
-    "description": "Meraki",
+    "description": "meraki-portfolio",
     "autoload": {
         "psr-4": {
             "App\\": "App"

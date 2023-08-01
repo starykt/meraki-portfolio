@@ -9,21 +9,20 @@ use App\Models\Entidades\User;
 class LoginController extends Controller
 {
 
-    public function index()
-    {
-        $this->render('/login/index');
-    }
+  public function index()
+  {
+    $this->render('/login/index');
+  }
 
-    public function register()
-    {
+  public function register()
+  {
 
-        $this->render('/login/register');
-        
-    }
+    $this->render('/login/register');
+      
+  }
 
-
-public function save()
-{
+  public function save()
+  {
 
     if (empty($_POST['nickname']) || empty($_POST['email']) || empty($_POST['password'])) {
         Sessao::gravaErro("Por favor, preencha todos os campos obrigatórios.");
@@ -52,16 +51,16 @@ public function save()
     $user->setTag($_POST['nickname']);
     $user->setCreatedAt(new \DateTime());
 
-   
+
     $userDao = new UserDAO();
     $userDao->save($user);
     $this->redirect('/login/index'); 
-}
+  }
 
 
 
-public function logout() 
-{
+  public function logout() 
+  {
     Sessao::limpaFormulario();
     Sessao::limpaMensagem();
     Sessao::limpaErro();
@@ -70,10 +69,10 @@ public function logout()
     unset($_SESSION['idUser']);
 
     $this->redirect('/login');
-}
+  }
 
-public function validation()
-{
+  public function validation()
+  {
 
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -89,13 +88,12 @@ public function validation()
     
     $idUser = $userDAO->verify($email, $password);
 
-    var_dump($idUser);
     if ($idUser == 0) {
         $erro[] = "Usuário ou senha incorretos. Tente novamente!";
         Sessao::gravaErro($erro);
         $this->redirect('login/');
     }
-   
+
     Sessao::gravaLogin($idUser);
 
     Sessao::limpaFormulario();
@@ -104,5 +102,5 @@ public function validation()
     $this->redirect('/home/initial');
 
     Sessao::limpaMensagem();
-}
+  }
 }

@@ -20,12 +20,12 @@ class App
         /*
          * Constantes do sistema
          */
-        define('APP_HOST'       , $_SERVER['HTTP_HOST'] . "/Meraki");
+        define('APP_HOST'       , $_SERVER['HTTP_HOST'] . "");
         define('PATH'           , realpath('./'));
-        define('TITLE'          , "Meraki");
-        define('DB_HOST'        , "localhost");
+        define('TITLE'          , "meraki-portfolio");
+        define('DB_HOST'        , "db:3306");
         define('DB_USER'        , "root");
-        define('DB_PASSWORD'    , "");
+        define('DB_PASSWORD'    , "secret123");
         define('DB_NAME'        , "meraki");
         define('DB_DRIVER'      , "mysql");
 

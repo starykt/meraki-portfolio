@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controllers;
-use App\Models\DAO\ArticleDAO;
+
 use App\Models\DAO\UserDAO;
 use App\Models\DAO\CategoryDAO;
 use App\Lib\Sessao;

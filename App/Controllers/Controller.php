@@ -27,7 +27,7 @@ abstract class Controller
         $viewVar = $this->getViewVar();
           
             require_once PATH . '/App/Views/layouts/header.php';
-            require_once PATH . '/App/Views/layouts/menu.php';
+            // require_once PATH . '/App/Views/layouts/menu.php';
             require_once PATH . '/App/Views/' . $view . '.php';
         
        

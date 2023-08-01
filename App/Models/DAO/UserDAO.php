@@ -34,7 +34,7 @@ class UserDAO extends BaseDAO
             $level = 1;
             $xp = 0;
             $resume = $user->getResume();
-            $admin = false;
+            $admin = 1;
             $createdAt = $user->getCreatedAt()->format('Y-m-d H:i:s'); // Formatando o objeto DateTime
             $location = $user->getLocation();
     

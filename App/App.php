@@ -23,7 +23,7 @@ class App
         define('APP_HOST'       , $_SERVER['HTTP_HOST'] . "");
         define('PATH'           , realpath('./'));
         define('TITLE'          , "meraki-portfolio");
-        define('DB_HOST'        , "localhost");
+        define('DB_HOST'        , "db:3306");
         define('DB_USER'        , "root");
         define('DB_PASSWORD'    , "secret123");
         define('DB_NAME'        , "meraki");

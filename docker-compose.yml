@@ -1,6 +1,6 @@
 version: '3.9'
 services:
-  php-environment:
+  php-apache:
     container_name: php-apache
     build:
       context: ./
@@ -10,9 +10,6 @@ services:
       - ./:/var/www/html/
     ports:
       - 8000:80
-    dns:
-      - 1.1.1.1
-      - 1.0.0.1
   db:
     container_name: db
     image: mysql
@@ -20,8 +17,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: secret123
       MYSQL_DATABASE: meraki
-      # MYSQL_USER: root
-      # MYSQL_PASSWORD: secret123
     ports:
       - "9906:3306"
   phpmyadmin:

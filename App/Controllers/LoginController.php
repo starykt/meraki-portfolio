@@ -88,7 +88,6 @@ class LoginController extends Controller
     
     $idUser = $userDAO->verify($email, $password);
 
-    var_dump($idUser);
     if ($idUser == 0) {
         $erro[] = "Usuário ou senha incorretos. Tente novamente!";
         Sessao::gravaErro($erro);

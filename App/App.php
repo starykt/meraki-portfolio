@@ -70,7 +70,6 @@ class App
         }
 
         if (!file_exists(PATH . '/App/Controllers/' . $this->controllerFile)) {
-            echo "Parei aqui";
             throw new Exception("Página não encontrada.", 404);
         }
 
@@ -90,7 +89,6 @@ class App
         } else {
             throw new Exception("Nosso suporte já esta verificando desculpe!", 500);
         }
-        echo "Fui longe voamlk";
         throw new Exception("Página não encontrada.", 404);
     }
 

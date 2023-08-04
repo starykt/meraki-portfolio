@@ -25,10 +25,17 @@ abstract class Controller
     public function render($view)
     {
         $viewVar = $this->getViewVar();
-          
-            require_once PATH . '/App/Views/layouts/header.php';
-            // require_once PATH . '/App/Views/layouts/menu.php';
+        $Sessao  = Sessao::class;
+        if ($view != "/login/index"  && $view != "/login/register") {
+            $user = new UserDAO; 
+            
+            require_once PATH . '/App/Views/layouts/menu.php';
             require_once PATH . '/App/Views/' . $view . '.php';
+        }
+        else {
+            require_once PATH . '/App/Views/layouts/header.php';
+            require_once PATH . '/App/Views/' . $view . '.php';
+        }
         
        
     }

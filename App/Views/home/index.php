@@ -3,6 +3,7 @@
   <div class="container">
     <div class="big-circle">
       <div class="purple-play-button">
+        <img src="http://<?php echo APP_HOST; ?>/public/images/playButton.png">
       </div>
       <div class="right-blue-label">
       </div>

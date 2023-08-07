@@ -13,26 +13,33 @@
 }
 
 .big-circle .right-blue-label {
+  left: -95px;
   width: 280px;
   height: 60px;
+  position: relative;
   margin-right: 200px;
   border-radius: 100px;
   margin-bottom: -200px;
   background-color: #5D7DAF;
-  left: -95px;
-  position: relative;
 }
 
 .big-circle .purple-play-button {
+  top: 63px;
+  z-index: 50;
+  right: -50px;
   width: 280px;
   height: 60px;
-  position: relative;
   display: flex;
+  position: relative;
+  align-items: center;
   border-radius: 100px;
   background-color: #bb7af3d2;
-  top: 63px;
-  right: -50px;
-  z-index: 50;
+}
+
+.purple-play-button img {
+  width: 35px;
+  height: 35px;
+  margin-left: 150px;
 }
 
 .small-circle {
@@ -53,5 +60,5 @@
   border-radius: 100px;
   background-color: #5D7DAF;
   position: relative;
-  top: 169px;
+  top: 160px;
 }

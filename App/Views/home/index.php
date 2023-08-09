@@ -3,7 +3,9 @@
   <div class="container">
     <div class="big-circle">
       <div class="purple-play-button">
-        <img src="http://<?php echo APP_HOST; ?>/public/images/playButton.png">
+        <a href="http://<?= APP_HOST ?>/login/index">
+          <img src="http://<?php echo APP_HOST; ?>/public/images/playButton.png">
+        </a>
       </div>
       <div class="right-blue-label">
       </div>

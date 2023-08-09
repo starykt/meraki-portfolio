@@ -1,8 +1,7 @@
 .big-circle {
   top:0;
-  left:0;
   width: 605px;
-  height: 534px;
+  height: 535px;
   display: flex;
   position: absolute;
   margin-left: 20%;
@@ -15,7 +14,7 @@
 .big-circle .right-blue-label {
   left: -95px;
   width: 280px;
-  height: 60px;
+  height: 45px;
   position: relative;
   margin-right: 200px;
   border-radius: 100px;
@@ -24,11 +23,11 @@
 }
 
 .big-circle .purple-play-button {
-  top: 63px;
+  top: 65px;
   z-index: 50;
   right: -50px;
   width: 280px;
-  height: 60px;
+  height: 55px;
   display: flex;
   position: relative;
   align-items: center;
@@ -40,12 +39,13 @@
   width: 35px;
   height: 35px;
   margin-left: 150px;
+  margin-bottom: -4px;
 }
 
 .small-circle {
-  width: 286px;
+  width: 285px;
   left: -100px;
-  height: 288px;
+  height: 290px;
   bottom: -90px;
   position: absolute;
   border-radius: 100%;
@@ -56,7 +56,7 @@
 .small-circle .left-blue-label {
   bottom: 0;
   width: 260px;
-  height: 37px;
+  height: 35px;
   border-radius: 100px;
   background-color: #5D7DAF;
   position: relative;

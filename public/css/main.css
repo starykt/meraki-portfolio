@@ -9,8 +9,6 @@ body, html {
   position: fixed;
   align-items: center;
   justify-content: center;
-  background-size: contain;
-  background-repeat: no-repeat;
   background-image: url("../images/background.png");
 }
 

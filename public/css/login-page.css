@@ -1,0 +1,74 @@
+.top-bar {
+  height: 45px;
+  background-color: #4e0b88c7;
+}
+
+.login-form {
+  text-align: center;
+  color: white;
+}
+
+.login-form input {
+  width: 250px;
+  height: 42px;
+  border: none;
+  font-size: 16px;
+  margin-bottom: 16px;
+  border-radius: 100px;
+  background-color: #da89ff9a;
+  box-shadow: 10px 8px 5px #00000038;
+}
+
+form {
+  align-items: center;
+}
+
+::placeholder {
+  color: white;
+  padding-left: 10px;
+}
+
+.forgot-password {
+  right: -70px;
+  font-size: 12px;
+  margin-top: 5px;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.btn-login {
+  width: 140px;
+  height: 40px;
+  border: none;
+  color: white;
+  font-size: 20px;
+  margin-bottom: 15px;
+  border-radius: 100px;
+  background-color: #bb7af3e0;
+  box-shadow: 10px 8px 5px #00000038;
+}
+
+.not-a-player-button {
+  width: 150px;
+  height: 45px;
+  color: white;
+  font-size: 20px;
+  border-width: 2.5px;
+  border-style: solid;
+  margin-bottom: 15px;
+  border-radius: 100px;
+  border-color: #5D7DAF;
+  box-shadow: 10px 8px 5px #00000038;
+  background-color: transparent;
+}
+
+.bottom-wave {
+  bottom: -15px;
+  position: fixed;
+  margin-left: -280px;
+}
+
+.sign-in {
+  color: white;
+  font-size: 28px;
+}

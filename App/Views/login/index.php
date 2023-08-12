@@ -1,4 +1,4 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="script.js"></script>
 <link href="http://<?php echo APP_HOST; ?>/public/css/login-page.css" rel="stylesheet">
 <body>
 
@@ -35,7 +35,6 @@
 			<img src="/public/images/wave.svg">
 		</div>
 	</div>
-	
 </body>
 	<script>
 		function togglePasswordVisibility() {
@@ -52,8 +51,12 @@
 				togglePasswordIcon.classList.add("fa-eye");
 			}
 		}
-		
-		$(window).on("load",function(){
-			$(".loader-wrapper").fadeOut("slow");
+
+		window.addEventListener("load", function() {
+			var loader = document.querySelector(".loader-wrapper");
+			setTimeout(function() {
+					loader.style.display = "none";
+			}, 2000);
 		});
+		
 	</script>

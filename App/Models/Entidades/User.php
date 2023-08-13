@@ -4,7 +4,7 @@ namespace App\Models\Entidades;
 
 class User
 {
-    private ?int $idUser =null;
+    private int $idUser;
     private string $tag;
     private string $nickname;
     private string $email;

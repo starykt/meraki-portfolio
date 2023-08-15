@@ -54,9 +54,11 @@
 
 		window.addEventListener("load", function() {
 			var loader = document.querySelector(".loader-wrapper");
+
+			loader.classList.add("loader-fade-out");
 			setTimeout(function() {
 					loader.style.display = "none";
-			}, 2000);
+			}, 5000);
 		});
 		
 	</script>

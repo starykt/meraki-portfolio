@@ -8,8 +8,8 @@
 		</span>
 	</div>
 
+	<div class="top-bar"></div>
 	<div class="wrapper">
-		<div class="top-bar"></div>
 
 		<div class="login-form">
 			<h2 class="sign-in">Login</h2>
@@ -58,7 +58,7 @@
 			loader.classList.add("loader-fade-out");
 			setTimeout(function() {
 					loader.style.display = "none";
-			}, 5000);
+			}, 1000);
 		});
 		
 	</script>

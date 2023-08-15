@@ -9,7 +9,19 @@ body, html {
   position: fixed;
   align-items: center;
   justify-content: center;
+  background: center;
   background-image: url("../images/background.png");
+}
+
+.top-bar {
+  height: 45px;
+  background-color: #4e0b88c7;
+}
+
+.bottom-wave {
+  bottom: -15px;
+  position: fixed;
+  margin-left: -280px;
 }
 
 .loader-wrapper {

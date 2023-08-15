@@ -1,0 +1,76 @@
+.top-bar {
+  height: 45px;
+  background-color: #4e0b88c7;
+}
+
+form {
+  align-items: center;
+  text-align: center;
+  color: white;
+
+}
+
+input {
+  width: 250px;
+  height: 42px;
+  border: none;
+  font-size: 16px;
+  margin-bottom: 16px;
+  border-radius: 100px;
+  background-color: #da89ff9a;
+  box-shadow: 10px 8px 5px #00000038;
+}
+
+::placeholder {
+  color: white;
+  padding-left: 10px;
+}
+
+.continue-button {
+  width: 50%;
+  height: 8%;
+  right: 10px;
+  border: none;
+  padding: 10px;
+  color: white;
+  font-size: 20px;
+  margin-top: 20px;
+  font-weight: bold;
+  position: absolute;
+  align-items: center;
+  display: inline-flex;
+  border-radius: 100px;
+  place-content: space-between;
+  background-color: #bb7af3ea;
+}
+
+.continue-button img {
+  width: 25px;
+  align-self: center;
+  position: relative;
+  animation: tremor 0.5s infinite;
+}
+
+.gameControl img {
+  width: 120%;
+  z-index: 999;
+  position: relative;
+}
+
+@keyframes tremor {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(2px, 0px);
+  }
+  50% {
+    transform: translate(0, 0);
+  }
+  75% {
+    transform: translate(-2px, 0px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}

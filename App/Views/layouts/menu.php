@@ -12,15 +12,13 @@
 
 <body>
   <div class="menu-icon" onclick="toggleSidebar()">
-    <span></span>
-    <span></span>
-    <span></span>
+    <img src="/public/images/menuIcon.png" />
   </div>
   <nav class="sidebar" id="sidebar">
     <ul>
-      <li><a href="#">Opção 1</a></li>
-      <li><a href="#">Opção 2</a></li>
-      <li><a href="#">Opção 3</a></li>
+      <li><a href="#"><img src="/public/images/menu.svg" /> </a></li>
+      <li><a href="#"></a></li>
+      <li><a href="#"></a></li>
       <li><a href="http://<?= APP_HOST ?>/login/logout">Sair</a></li>
     </ul>
   </nav>

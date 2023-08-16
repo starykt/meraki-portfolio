@@ -30,6 +30,7 @@ abstract class Controller
             $user = new UserDAO; 
 
             require_once PATH . '/App/Views/layouts/header.php';
+            require_once PATH . '/App/Views/layouts/menu.php';
             require_once PATH . '/App/Views/' . $view . '.php';
         }
         else {

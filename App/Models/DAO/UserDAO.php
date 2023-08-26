@@ -10,7 +10,7 @@ class UserDAO extends BaseDAO
 
     public function getById(int $idUser)
     {
-        $resultado = $this->select("SELECT * FROM users WHERE idUser = $idUser");
+        $resultado = $this->select("SELECT * FROM Users WHERE idUser = $idUser");
 
         return $resultado->fetchObject(User::class);
     }
@@ -19,7 +19,7 @@ class UserDAO extends BaseDAO
 
     public function getByEmail(string $email)
     {
-        $resultado = $this->select("SELECT idUser, email, password FROM users WHERE email = '$email'");
+        $resultado = $this->select("SELECT idUser, email, password FROM Users WHERE email = '$email'");
 
         return $resultado->fetch();
     }
@@ -51,7 +51,7 @@ class UserDAO extends BaseDAO
                 ':location' => $location,
             ];
     
-            return $this->insert('users', " :tag, :nickname, :email, :password,:level, :xp, :resume, :admin, :createdAt, :location", $params);
+            return $this->insert('Users', " :tag, :nickname, :email, :password,:level, :xp, :resume, :admin, :createdAt, :location", $params);
         } catch (\Exception $e) {
             throw new \Exception("Erro na gravação dos dados. " . $e->getMessage(), 500);
         }
@@ -61,7 +61,7 @@ class UserDAO extends BaseDAO
     {
         try {
             $query = $this->select(
-                "SELECT * FROM users WHERE email = '$email'"
+                "SELECT * FROM Users WHERE email = '$email'"
             );
             return $query->fetch();
         } catch (\Exception $e) {
@@ -72,7 +72,7 @@ class UserDAO extends BaseDAO
     public function verify(string $email, string $password)
     {
         try {
-            $query = $this->select("SELECT * FROM users WHERE email = '$email'");
+            $query = $this->select("SELECT * FROM Users WHERE email = '$email'");
             $userData = $query->fetch(); 
     
             if (!$userData) {

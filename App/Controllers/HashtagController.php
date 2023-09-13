@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Lib\Sessao;
 use App\Models\DAO\HashtagDAO;
+use App\Models\DAO\UserDAO;
 use App\Models\Entidades\Hashtag;
 
 class HashtagController extends Controller
@@ -12,12 +13,15 @@ class HashtagController extends Controller
     {
         $this->render('/hashtag/index');
         $this->auth();
-        $hashtagDAO = new HashtagDAO();
-        self::setViewParam('listHashtag', $hashtagDAO->listar());
+        $user = new UserDAO; 
+        self::setViewParam('user', $user->getById($_SESSION['idUser']));
+        $hashtagDAO = new HashtagDAO(); 
+        $hashtag = $hashtagDAO->listar();
+        self::setViewParam('listHashtag', $hashtag);
         Sessao::limpaMensagem();
         Sessao::limpaErro();
     }
-
+    
     public function register()
     {
         $this->render('/hashtag/register');

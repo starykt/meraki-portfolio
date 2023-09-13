@@ -51,8 +51,7 @@ class HashtagDAO extends BaseDAO
     }
     public function listar ()
     {
-        $result = $this->select("SELECT * FROM Hashtags");
-
+        $result = $this->select("SELECT * FROM `Hashtags`");
         return $result->fetchAll(\PDO::FETCH_CLASS, Hashtag::class);
     }
 

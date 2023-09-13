@@ -1,8 +1,6 @@
 <a href="http://<?= APP_HOST ?>/hashtag/register">
     <button class="not-a-player-button">Cadastrar Hashtag</button>
   </a>
-<strong><?= $viewVar['user']->getName(); ?></strong>
-
             <?php if ($Sessao::retornaMensagem()) { ?>
                 <div class="alert alert-warning" role="alert">
                     <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>

@@ -11,15 +11,14 @@ class HashtagController extends Controller
 {
     public function index()
     {
-        $this->render('/hashtag/index');
         $this->auth();
-        $user = new UserDAO; 
-        self::setViewParam('user', $user->getById($_SESSION['idUser']));
         $hashtagDAO = new HashtagDAO(); 
         $hashtag = $hashtagDAO->list();
         self::setViewParam('listHashtag', $hashtag);
         Sessao::limpaMensagem();
         Sessao::limpaErro();
+        $this->render('/hashtag/index');
+        
     }
     
     public function register()

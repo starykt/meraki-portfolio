@@ -9,7 +9,6 @@
                 </div>
             <?php } ?>
 
-       
                 <?php foreach ($viewVar['listHashtag'] as $hashtag) { ?>
                     <div class="card-hashtag">
                         <strong><?= $hashtag->getHashtag() ?></strong>

@@ -3,7 +3,15 @@
   <div class="top-bar"></div>
   <div class="wrapper">
     <div class="signup-form">
-      
+    <?php
+   if ($Sessao::retornaErro()) { ?>
+     <div class="alert alert-warning" role="alert">
+       <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+       <?php foreach ($Sessao::retornaErro() as $key => $mensagem) {
+         echo $mensagem . "<br />";
+       } ?>
+     </div>
+   <?php } ?>
       <form action="http://<?php echo APP_HOST; ?>/login/save" method="post">
         <h2>Novo perfil</h2>
           <div>
@@ -22,12 +30,11 @@
             CONTINUE
             <img src="/public/images/playButton.png" />
           </button>
-          <div class="gameControl">
-            <img src="/public/images/videoGameControl.svg" />
-          </div>
         </form>
     </div>
-
+    <!-- <div class="gameControl">
+            <img src="/public/images/videoGameControl.svg" />
+          </div> -->
     <div class="bottom-wave">
       <img src="/public/images/wave.svg">
     </div>

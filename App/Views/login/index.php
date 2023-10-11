@@ -10,7 +10,15 @@
 
 	<div class="top-bar"></div>
 	<div class="wrapper">
-
+	<?php
+   if ($Sessao::retornaErro()) { ?>
+     <div class="alert alert-warning" role="alert">
+       <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+       <?php foreach ($Sessao::retornaErro() as $key => $mensagem) {
+         echo "<b>". $mensagem . "<br />";
+       } ?>
+     </div>
+   <?php } ?>
 		<div class="login-form">
 			<h2 class="sign-in">Login</h2>
 			<br>

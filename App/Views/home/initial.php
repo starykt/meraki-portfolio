@@ -4,6 +4,10 @@
     <button class="not-a-player-button">Cadastrar Hashtag</button>
   </a>
 
+  <a href="http://<?= APP_HOST ?>/project">
+    <button class="not-a-player-button">Cadastrar projeto</button>
+  </a>
+
   <input type="text" placeholder="Its me... Mario?" onclick="openModal()" class="short-input">
   <div class="modal-bg" id="modal">
     <div class="modal-content">

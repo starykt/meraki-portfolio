@@ -8,7 +8,7 @@ private int $idProject;
 private User $idUser;
 private string $title;
 private string $description;
-private \DateTime $createdAt;
+private \DateTime $created_At;
 
 	/**
 	 * @return int
@@ -77,16 +77,16 @@ private \DateTime $createdAt;
 	/**
 	 * @return \DateTime
 	 */
-	public function getCreatedAt(): \DateTime {
-		return $this->createdAt;
+	public function getCreated_At(): \DateTime {
+		return $this->created_At;
 	}
 	
 	/**
-	 * @param \DateTime $createdAt 
+	 * @param \DateTime $created_At 
 	 * @return self
 	 */
-	public function setCreatedAt(\DateTime $createdAt): self {
-		$this->createdAt = $createdAt;
+	public function setCreated_At(\DateTime $created_At): self {
+		$this->created_At = $created_At;
 		return $this;
 	}
 }

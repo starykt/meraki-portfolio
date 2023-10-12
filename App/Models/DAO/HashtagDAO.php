@@ -10,9 +10,17 @@ class HashtagDAO extends BaseDAO
 
     public function getById(int $idHashtag)
     {
-        $resultado = $this->select("SELECT * FROM Hashtag WHERE idHashtag = $idHashtag");
-
-        return $resultado->fetchObject(Hashtag::class);
+        $resultado = $this->select("SELECT * FROM Hashtags WHERE idHashtag = $idHashtag");
+        $hashtagData = $resultado->fetch();
+    
+        if ($hashtagData) {
+            $hashtag = new Hashtag();
+            $hashtag->setIdHashtag($hashtagData['idHashtag']);
+            $hashtag->setHashtag($hashtagData['hashtag']);
+            return $hashtag;
+        }
+    
+        return null;
     }
 
 
@@ -30,6 +38,7 @@ class HashtagDAO extends BaseDAO
             throw new \Exception("Erro na gravação dos dados. " . $e->getMessage(), 500);
         }
     }
+
 
     public function list()
     {

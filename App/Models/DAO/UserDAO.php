@@ -11,10 +11,18 @@ class UserDAO extends BaseDAO
     public function getById(int $idUser)
     {
         $resultado = $this->select("SELECT * FROM Users WHERE idUser = $idUser");
-
-        return $resultado->fetchObject(User::class);
+        $userData = $resultado->fetch();
+    
+        if ($userData) {
+            $user = new User();
+            $user->setIdUser($userData['idUser']);
+            $user->setCreatedAt(new \DateTime($userData['createdAt'])); 
+            return $user;
+        }
+    
+        return null;
     }
-
+    
 
 
     public function getByEmail(string $email)

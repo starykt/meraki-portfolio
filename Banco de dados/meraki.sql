@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Tempo de geração: 26-Ago-2023 às 12:08
+-- Tempo de geração: 12-Out-2023 às 19:14
 -- Versão do servidor: 8.1.0
--- versão do PHP: 8.2.8
+-- versão do PHP: 8.2.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -108,6 +108,15 @@ CREATE TABLE `Hashtags` (
   `hashtag` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Extraindo dados da tabela `Hashtags`
+--
+
+INSERT INTO `Hashtags` (`idHashtag`, `hashtag`) VALUES
+(1, 'teste'),
+(2, 'teste2'),
+(3, 'teste3');
+
 -- --------------------------------------------------------
 
 --
@@ -129,6 +138,14 @@ CREATE TABLE `Hashtags_Projects` (
   `idHashtag` int NOT NULL,
   `idProject` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Extraindo dados da tabela `Hashtags_Projects`
+--
+
+INSERT INTO `Hashtags_Projects` (`idHashtag`, `idProject`) VALUES
+(1, 1),
+(2, 1);
 
 -- --------------------------------------------------------
 
@@ -165,8 +182,15 @@ CREATE TABLE `Projects` (
   `idUser` int NOT NULL,
   `title` varchar(150) NOT NULL,
   `description` text NOT NULL,
-  `createdAt` datetime NOT NULL
+  `created_At` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Extraindo dados da tabela `Projects`
+--
+
+INSERT INTO `Projects` (`idProject`, `idUser`, `title`, `description`, `created_At`) VALUES
+(1, 1, 'teste', 'teste', '2023-10-12 19:13:31');
 
 -- --------------------------------------------------------
 
@@ -388,7 +412,7 @@ ALTER TABLE `Files`
 -- AUTO_INCREMENT de tabela `Hashtags`
 --
 ALTER TABLE `Hashtags`
-  MODIFY `idHashtag` int NOT NULL AUTO_INCREMENT;
+  MODIFY `idHashtag` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `Images`
@@ -406,7 +430,7 @@ ALTER TABLE `Likes`
 -- AUTO_INCREMENT de tabela `Projects`
 --
 ALTER TABLE `Projects`
-  MODIFY `idProject` int NOT NULL AUTO_INCREMENT;
+  MODIFY `idProject` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de tabela `Tools`

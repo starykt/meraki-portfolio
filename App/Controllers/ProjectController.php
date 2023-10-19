@@ -128,10 +128,10 @@ class ProjectController extends Controller
           $project = $projectDAO->getById($projectId); 
   
           $hashtagDAO = new HashtagDAO();
-          $hashtag = $hashtagDAO->getbyId($hashtagId); // Obtenha o objeto Hashtag correspondente ao ID
+          $hashtag = $hashtagDAO->getbyId($hashtagId); 
   
           $hashtagProject->setProject($project);
-          $hashtagProject->setHashtag($hashtag); // Agora você está passando um objeto Hashtag, não apenas o ID
+          $hashtagProject->setHashtag($hashtag); 
   
           $hashtagProjectDAO = new HashtagProjectDAO();
           $hashtagProjectDAO->save($hashtagProject);

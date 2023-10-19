@@ -5,25 +5,43 @@ namespace App\Models\DAO;
 use App\Models\Entidades\User;
 use Exception;
 
-class UserDAO extends BaseDAO 
+class UserDAO extends BaseDAO
 {
 
     public function getById(int $idUser)
     {
         $resultado = $this->select("SELECT * FROM Users WHERE idUser = $idUser");
         $userData = $resultado->fetch();
-    
+
         if ($userData) {
             $user = new User();
             $user->setIdUser($userData['idUser']);
-            $user->setCreatedAt(new \DateTime($userData['createdAt'])); 
+            $user->setCreatedAt(new \DateTime($userData['createdAt']));
             return $user;
         }
-    
+
         return null;
     }
-    
 
+    public function list()
+    {
+        $result = $this->select("SELECT * FROM Users");
+
+
+        $dataSet = $result->fetchAll();
+        $listUser = [];
+
+        if ($dataSet) {
+            foreach ($dataSet as $data) {
+                $user = new User();
+                $user->setIdUser($data['idUser']);
+                $user->setNickname($data['nickname']);
+                $user->setAvatar($data['avatar']);
+                $listUser[] = $user;
+            }
+        }
+        return $listUser;
+    }
 
     public function getByEmail(string $email)
     {
@@ -45,7 +63,7 @@ class UserDAO extends BaseDAO
             $admin = 1;
             $createdAt = $user->getCreatedAt()->format('Y-m-d H:i:s'); // Formatando o objeto DateTime
             $location = $user->getLocation();
-    
+
             $params = [
                 ':tag' => $tag,
                 ':nickname' => $nickname,
@@ -58,7 +76,7 @@ class UserDAO extends BaseDAO
                 ':createdAt' => $createdAt,
                 ':location' => $location,
             ];
-    
+
             return $this->insert('Users', " :tag, :nickname, :email, :password,:level, :xp, :resume, :admin, :createdAt, :location", $params);
         } catch (\Exception $e) {
             throw new \Exception("Erro na gravação dos dados. " . $e->getMessage(), 500);
@@ -81,12 +99,12 @@ class UserDAO extends BaseDAO
     {
         try {
             $query = $this->select("SELECT * FROM Users WHERE email = '$email'");
-            $userData = $query->fetch(); 
-    
+            $userData = $query->fetch();
+
             if (!$userData) {
                 return 0;
             }
-    
+
             $user = new User();
             $user->setIdUser($userData['idUser']);
             $user->setTag($userData['nickname']);
@@ -101,17 +119,14 @@ class UserDAO extends BaseDAO
             $createdAt = \DateTime::createFromFormat('Y-m-d H:i:s', $userData['createdAt']);
             $user->setCreatedAt($createdAt);
             $user->setLocation($userData['location']);
-    
+
             if (!password_verify($password, $user->getPassword())) {
                 return 0;
             }
-    
+
             return $user->getIdUser();
         } catch (\Exception $e) {
             throw new \Exception("Erro no acesso aos dados.", 500);
         }
     }
-    
-    
-
 }

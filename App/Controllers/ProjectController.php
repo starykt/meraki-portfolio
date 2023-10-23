@@ -21,11 +21,32 @@ class ProjectController extends Controller
 {
   public function index()
   {
-    $this->auth();
-    $this->render('/project/index');
-    Sessao::limpaMensagem();
-    Sessao::limpaErro();
+      $this->auth();
+      $projectDAO = new ProjectDAO();
+      $projects = $projectDAO->list();
+  
+      $imageDAO = new ImageDAO();
+      $fileDAO = new FileDAO();
+      $hashtagDAO = new HashtagProjectDAO();
+  
+      foreach ($projects as $project) {
+          $images = $imageDAO->getImagesByProjectId($project->getIdProject());
+          $project->setImages($images);
+  
+          $files = $fileDAO->getFilesByProjectId($project->getIdProject());
+          $project->setFiles($files);
+  
+          $hashtags = $hashtagDAO->getByProjectId($project->getIdProject());
+          $project->setHashtags($hashtags);
+      }
+  
+      self::setViewParam('listProject', $projects);
+      $this->render('/project/index');
+      Sessao::limpaMensagem();
+      Sessao::limpaErro();
   }
+  
+  
 
   public function register()
   {
@@ -138,6 +159,7 @@ class ProjectController extends Controller
       }
   }
   
+ 
   
   private function handleFileUploads($projectId)
   {

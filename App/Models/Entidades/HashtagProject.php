@@ -6,7 +6,7 @@ class HashtagProject
 {
     private Hashtag $hashtag;
     private Project $project;
-
+ 
     public function getHashtag(): Hashtag
     {
         return $this->hashtag;

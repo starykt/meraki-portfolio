@@ -46,9 +46,26 @@ class ProjectDAO extends BaseDAO
 
   public function list()
   {
-      // Implement logic to list projects from the database
-      // ...
+      try {
+          $projects = [];
+          $result = $this->select("SELECT * FROM Projects");
+          
+          while ($projectData = $result->fetch()) {
+              $project = new Project();
+              $project->setIdProject($projectData['idProject']);
+              $project->setTitle($projectData['title']);
+              $project->setDescription($projectData['description']);
+              $project->setCreated_At(new \DateTime($projectData['created_At']));
+  
+              $projects[] = $project;
+          }
+  
+          return $projects;
+      } catch (\Exception $e) {
+          throw new \Exception("Error fetching projects. " . $e->getMessage(), 500);
+      }
   }
+  
 
   public function alter(Project $project)
   {

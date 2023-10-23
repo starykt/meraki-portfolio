@@ -51,4 +51,24 @@ class ImageDAO extends BaseDAO
         }
     }
     
+    public function countImagesByProjectId($idProject)
+    {
+        $result = $this->select("SELECT COUNT(*) FROM Images WHERE idProject = $idProject");
+        return $result->fetchColumn();
+    }
+
+    public function getImagesByProjectId($idProject)
+{
+    $result = $this->select("SELECT * FROM Images WHERE idProject = $idProject");
+    $images = [];
+
+    while ($imageData = $result->fetch()) {
+        $image = new Image();
+        $image->setImage($imageData['image']);
+        $images[] = $image;
+    }
+
+    return $images;
+}
+
 }

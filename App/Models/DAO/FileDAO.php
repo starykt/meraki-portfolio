@@ -51,6 +51,24 @@ class FileDAO extends BaseDAO
         }
     }
     
-    
+    public function countFilesByidProject($idProject)
+    {
+        $result = $this->select("SELECT COUNT(*) FROM Files WHERE idProject = $idProject");
+        return $result->fetchColumn();
+    }
+
+    public function getFilesByProjectId($idProject)
+    {
+        $result = $this->select("SELECT * FROM Files WHERE idProject = $idProject");
+        $files = [];
+
+        while ($fileData = $result->fetch()) {
+            $file = new File();
+            $file->setFile($fileData['file']);
+            $files[] = $file;
+        }
+
+        return $files;
+    }
 
 }

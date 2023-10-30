@@ -19,7 +19,6 @@ class HashtagProjectDAO extends BaseDAO
             ];
 
             return $this->insert('Hashtags_Projects', ':idHashtag, :idProject', $params);
-
         } catch (\Exception $e) {
             throw new \Exception("Error saving hashtag-project association. " . $e->getMessage(), 500);
         }
@@ -82,6 +81,4 @@ class HashtagProjectDAO extends BaseDAO
             throw new \Exception("Error deleting hashtag-project association. " . $e->getMessage(), 500);
         }
     }
-    
-    
 }

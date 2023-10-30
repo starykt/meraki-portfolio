@@ -87,39 +87,6 @@
     <p>Project not found.</p>
   <?php } ?>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var deleteButtons = document.querySelectorAll('.delete-btn');
-
-      deleteButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
-          var targetType = button.getAttribute('data-type');
-          var targetId = button.getAttribute('data-id');
-          var targetElement;
-
-          if (targetType === 'image') {
-            targetElement = document.querySelector('.image-container [data-id="' + targetId + '"]');
-          } else if (targetType === 'file') {
-            targetElement = document.querySelector('.file-container [data-id="' + targetId + '"]');
-          } else if (targetType === 'hashtag') {
-            targetElement = document.querySelector('.hashtag-item [data-id="' + targetId + '"]');
-          }
-
-          if (targetElement) {
-            targetElement.parentElement.classList.add('deleted-item');
-
-            var deletedItemIdInput = document.createElement('input');
-            deletedItemIdInput.type = 'hidden';
-            deletedItemIdInput.name = 'deleted' + targetType.charAt(0).toUpperCase() + targetType.slice(1) + 'Ids[]';
-            deletedItemIdInput.value = targetId;
-            document.querySelector('form').appendChild(deletedItemIdInput);
-
-            targetElement.parentElement.remove();
-          }
-        });
-      });
-    });
-  </script>
 </body>
 
 </html>

@@ -350,5 +350,26 @@ public function deleteImage()
     $this->redirect('/project/alter/' . $projectId);
 }
 
+public function delete()
+{
+    $this->auth();
+    if (isset($_GET['idProject'])) {
+        $projectId = (int)$_GET['idProject'];
+
+        $projectDAO = new ProjectDAO();
+        try {
+            $projectDAO->drop($projectId);
+            Sessao::gravaMensagem("Projeto removido com sucesso.");
+        } catch (\Exception $e) {
+            Sessao::gravaMensagem("Erro ao remover o projeto: " . $e->getMessage());
+        }
+    } else {
+        Sessao::gravaMensagem("ID do projeto não definido.");
+    }
+
+    $this->redirect('/project');
+}
+
+
 
 }

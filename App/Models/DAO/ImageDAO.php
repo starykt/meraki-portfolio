@@ -6,7 +6,7 @@ use App\Models\Entidades\Image;
 use App\Models\Entidades\Project;
 use Exception;
 
-class ImageDAO extends BaseDAO 
+class ImageDAO extends BaseDAO
 {
     public function getById(int $idImage)
     {
@@ -19,15 +19,14 @@ class ImageDAO extends BaseDAO
     {
         try {
             $idProject = $image->getIdProject()->getIdProject();
-            $imageName = $image->getImage(); 
-            
+            $imageName = $image->getImage();
+
             $params = [
                 ':idProject' => $idProject,
                 ':image' => $imageName,
             ];
 
             return $this->insert('Images', ':idProject, :image', $params);
-
         } catch (\Exception $e) {
             throw new \Exception("Error saving image data. " . $e->getMessage(), 500);
         }
@@ -37,20 +36,20 @@ class ImageDAO extends BaseDAO
         try {
             $projectDAO = new ProjectDAO();
             $project = $projectDAO->getById($idProject);
-    
+
             foreach ($imageNames as $imageName) {
                 $image = new Image();
                 $image->setIdProject($project);
                 $image->setImage($imageName);
                 $this->save($image);
             }
-    
+
             return true;
         } catch (\Exception $e) {
             throw new \Exception("Error associating images with the project. " . $e->getMessage(), 500);
         }
     }
-    
+
     public function countImagesByProjectId($idProject)
     {
         $result = $this->select("SELECT COUNT(*) FROM Images WHERE idProject = $idProject");
@@ -58,29 +57,26 @@ class ImageDAO extends BaseDAO
     }
 
     public function getImagesByProjectId($idProject)
-{
-    $result = $this->select("SELECT * FROM Images WHERE idProject = $idProject");
-    $images = [];
+    {
+        $result = $this->select("SELECT * FROM Images WHERE idProject = $idProject");
+        $images = [];
 
-    while ($imageData = $result->fetch()) {
-        $image = new Image();
-        $image->setIdImage($imageData['idImage']);
-        $image->setImage($imageData['image']);
-        $images[] = $image;
+        while ($imageData = $result->fetch()) {
+            $image = new Image();
+            $image->setIdImage($imageData['idImage']);
+            $image->setImage($imageData['image']);
+            $images[] = $image;
+        }
+
+        return $images;
     }
 
-    return $images;
-}
-
-public function dropImages(int $idImage)
-{
-    try {
-        return $this->delete('Images', "idImage = $idImage");
-    } catch (\Exception $e) {
-        throw new \Exception("Error deleting image. " . $e->getMessage(), 500);
+    public function dropImages(int $idImage)
+    {
+        try {
+            return $this->delete('Images', "idImage = $idImage");
+        } catch (\Exception $e) {
+            throw new \Exception("Error deleting image. " . $e->getMessage(), 500);
+        }
     }
-}
-
-
-
 }

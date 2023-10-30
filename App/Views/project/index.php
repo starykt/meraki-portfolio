@@ -39,7 +39,8 @@
             </div>
         <?php } ?>
 
-        <a href="http://<?= APP_HOST ?>/project/alter/<?= $project->getIdProject() ?>"> editar </a>
-    </div> <!-- Feche a div card-project aqui -->
+        <a href="http://<?= APP_HOST ?>/project/alter/<?= $project->getIdProject() ?>"> editar </a><br>
+        <a href="http://<?= APP_HOST ?>/project/delete?idProject=<?= $project->getIdProject() ?>"> excluir </a>
+    </div>
     <br>
 <?php } ?>

@@ -5,7 +5,7 @@ namespace App\Models\DAO;
 use App\Models\Entidades\File;
 use Exception;
 
-class FileDAO extends BaseDAO 
+class FileDAO extends BaseDAO
 {
     public function getById(int $idFile)
     {
@@ -19,14 +19,13 @@ class FileDAO extends BaseDAO
         try {
             $idProject = $file->getIdProject()->getIdProject();
             $fileName = $file->getFile();
-            
+
             $params = [
                 ':idProject' => $idProject,
                 ':file' => $fileName,
             ];
 
             return $this->insert('Files', ':idProject, :file', $params);
-
         } catch (\Exception $e) {
             throw new \Exception("Error saving file data. " . $e->getMessage(), 500);
         }
@@ -37,20 +36,20 @@ class FileDAO extends BaseDAO
         try {
             $projectDAO = new ProjectDAO();
             $project = $projectDAO->getById($idProject);
-    
+
             foreach ($fileNames as $fileName) {
                 $file = new File();
                 $file->setIdProject($project);
                 $file->setFile($fileName);
                 $this->save($file);
             }
-    
+
             return true;
         } catch (\Exception $e) {
             throw new \Exception("Error associating files with the project. " . $e->getMessage(), 500);
         }
     }
-    
+
     public function countFilesByidProject($idProject)
     {
         $result = $this->select("SELECT COUNT(*) FROM Files WHERE idProject = $idProject");
@@ -73,13 +72,12 @@ class FileDAO extends BaseDAO
     }
 
     public function dropFiles(int $fileId)
-{
-    try {
-        return $this->delete('Files', "idFiles = $fileId");
-    } catch (\Exception $e) {
-        throw new \Exception("Error deleting project files. " . $e->getMessage(), 500);
+    {
+        try {
+            return $this->delete('Files', "idFiles = $fileId");
+        } catch (\Exception $e) {
+            throw new \Exception("Error deleting project files. " . $e->getMessage(), 500);
+        }
     }
-}
-
 
 }

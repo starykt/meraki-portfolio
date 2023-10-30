@@ -9,17 +9,18 @@
         <br>
     </div>
 <?php } ?>
+
 <?php foreach ($viewVar['listProject'] as $project) { ?>
+    <br>
     <div class="card-project">
         <strong><?= $project->getTitle() ?></strong> <br>
         <strong><?= $project->getDescription() ?></strong> <br>
         <strong><?= $project->getCreated_At()->format('Y-m-d H:i:s') ?></strong> <br>
 
         <?php if ($project->hasImages()) { ?>
-                <?php foreach ($project->getImages() as $image) { ?>
-                    <img src="http://<?php echo APP_HOST; ?>/public/images/projects/<?= $image->getImage() ?>" width="200px" heigth="200px" alt="Imagem do projeto">
-                <?php } ?>
-            </div>
+            <?php foreach ($project->getImages() as $image) { ?>
+                <img src="http://<?php echo APP_HOST; ?>/public/images/projects/<?= $image->getImage() ?>" width="200px" height="200px" alt="Imagem do projeto">
+            <?php } ?>
         <?php } ?>
 
         <?php if ($project->hasFiles()) { ?>
@@ -31,14 +32,14 @@
         <?php } ?>
 
         <?php if ($project->hasHashtags()) { ?>
-    <div class="project-hashtags">
-        <?php foreach ($project->getHashtags() as $hashtagProject) { ?>
-            <span>#<?= $hashtagProject->getHashtag()->getHashtag() ?></span>
+            <div class="project-hashtags">
+                <?php foreach ($project->getHashtags() as $hashtagProject) { ?>
+                    <span>#<?= $hashtagProject->getHashtag()->getHashtag() ?></span>
+                <?php } ?>
+            </div>
         <?php } ?>
-    </div>
+
+        <a href="http://<?= APP_HOST ?>/project/alter/<?= $project->getIdProject() ?>"> editar </a>
+    </div> <!-- Feche a div card-project aqui -->
+    <br>
 <?php } ?>
-
-
-     <br>
-<?php } ?>
-

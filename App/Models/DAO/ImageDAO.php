@@ -64,11 +64,23 @@ class ImageDAO extends BaseDAO
 
     while ($imageData = $result->fetch()) {
         $image = new Image();
+        $image->setIdImage($imageData['idImage']);
         $image->setImage($imageData['image']);
         $images[] = $image;
     }
 
     return $images;
 }
+
+public function dropImages(int $idImage)
+{
+    try {
+        return $this->delete('Images', "idImage = $idImage");
+    } catch (\Exception $e) {
+        throw new \Exception("Error deleting image. " . $e->getMessage(), 500);
+    }
+}
+
+
 
 }

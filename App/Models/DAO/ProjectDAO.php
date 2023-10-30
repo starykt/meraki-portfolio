@@ -13,10 +13,13 @@ class ProjectDAO extends BaseDAO
       $projectData = $resultado->fetch();
   
       if ($projectData) {
-          $project = new Project();
-          $project->setIdProject($projectData['idProject']);
-          $project->setCreated_At(new \DateTime($projectData['created_At'])); 
-          return $project;
+        $project = new Project();
+        $project->setIdProject($projectData['idProject']);
+        $project->setTitle($projectData['title']);
+        $project->setDescription($projectData['description']);
+        $project->setCreated_At(new \DateTime($projectData['created_At']));
+
+        return $project;
       }
   
       return null;
@@ -67,29 +70,23 @@ class ProjectDAO extends BaseDAO
   }
   
 
-  public function alter(Project $project)
+  public function alter(int $projectId, string $title, string $description)
   {
       try {
-          $idProject = $project->getIdProject();
-          $idUser = $project->getIdUser();
-          $title = $project->getTitle();
-          $description = $project->getDescription();
-          $createdAt = $project->getCreated_At();
-
           $params = [
-              ':idUser' => $idUser,
               ':title' => $title,
               ':description' => $description,
-              ':createdAt' => $createdAt,
-              ':idProject' => $idProject,
+              ':idProject' => $projectId,
           ];
-
-          return $this->update('Projects', 'idUser = :idUser, title = :title, description = :description, createdAt = :createdAt', $params, 'idProject = :idProject');
-
+  
+          $where = 'idProject = :idProject';
+  
+          return $this->update('Projects', 'title = :title, description = :description, created_At = NOW()', $params, $where);
       } catch (\Exception $e) {
-          throw new \Exception("Error updating project data. " . $e->getMessage(), 500);
+          throw new \Exception("Erro na atualização dos dados. " . $e->getMessage(), 500);
       }
   }
+  
 
   public function drop(int $idProject)
   {
@@ -99,4 +96,6 @@ class ProjectDAO extends BaseDAO
           throw new \Exception("Error deleting the project. " . $e->getMessage(), 500);
       }
   }
+
+  
 }

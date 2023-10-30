@@ -21,32 +21,115 @@ class ProjectController extends Controller
 {
   public function index()
   {
+    $this->auth();
+    $projectDAO = new ProjectDAO();
+    $projects = $projectDAO->list();
+
+    $imageDAO = new ImageDAO();
+    $fileDAO = new FileDAO();
+    $hashtagDAO = new HashtagProjectDAO();
+
+    foreach ($projects as $project) {
+      $images = $imageDAO->getImagesByProjectId($project->getIdProject());
+      $project->setImages($images);
+
+      $files = $fileDAO->getFilesByProjectId($project->getIdProject());
+      $project->setFiles($files);
+
+      $hashtags = $hashtagDAO->getByProjectId($project->getIdProject());
+      $project->setHashtags($hashtags);
+    }
+
+    self::setViewParam('listProject', $projects);
+    $this->render('/project/index');
+    Sessao::limpaMensagem();
+    Sessao::limpaErro();
+  }
+    
+  public function alter()
+  {
       $this->auth();
+      $urlParts = explode('/', $_GET['url']);
+      $projectId = (int) end($urlParts);
+  
       $projectDAO = new ProjectDAO();
-      $projects = $projectDAO->list();
+      $project = $projectDAO->getById($projectId);
   
       $imageDAO = new ImageDAO();
       $fileDAO = new FileDAO();
       $hashtagDAO = new HashtagProjectDAO();
+      $hashtagDAO2 = new HashtagDAO();
   
-      foreach ($projects as $project) {
-          $images = $imageDAO->getImagesByProjectId($project->getIdProject());
-          $project->setImages($images);
+      $images = $imageDAO->getImagesByProjectId($project->getIdProject());
+      $project->setImages($images);
   
-          $files = $fileDAO->getFilesByProjectId($project->getIdProject());
-          $project->setFiles($files);
+      $files = $fileDAO->getFilesByProjectId($project->getIdProject());
+      $project->setFiles($files);
   
-          $hashtags = $hashtagDAO->getByProjectId($project->getIdProject());
-          $project->setHashtags($hashtags);
+      $hashtags = $hashtagDAO->getByProjectId($project->getIdProject());
+      $project->setHashtags($hashtags);
+  
+      $allHashtags = $hashtagDAO2->list();
+
+    self::setViewParam('project', $project);
+    self::setViewParam('listHashtag', $allHashtags);
+    $this->render('/project/alter');
+
+    Sessao::limpaMensagem();
+    Sessao::limpaErro();
+  }
+
+
+  public function update()
+  {
+      $this->auth();
+  
+      try {
+          Sessao::gravaFormulario($_POST);
+  
+          $projectId = $_POST['id'];
+          $title = $_POST['title'];
+          $description = nl2br($_POST['description']);
+  
+          $project = new Project();
+          $project->setIdProject($projectId);
+          $project->setTitle($title);
+          $project->setDescription($description);
+  
+          $projectDAO = new ProjectDAO();
+          $projectDAO->alter($projectId, $title, $description);
+  
+          $this->handleImageUploads($projectId);
+          $this->handleFileUploads($projectId);
+          $this->saveHashtagProjectAssociations($projectId);
+
+          Sessao::gravaMensagem("Projeto atualizado com sucesso.");
+      } catch (\Exception $e) {
+          Sessao::gravaMensagem("Erro ao atualizar o projeto: " . $e->getMessage());
       }
-  
-      self::setViewParam('listProject', $projects);
-      $this->render('/project/index');
-      Sessao::limpaMensagem();
-      Sessao::limpaErro();
+       $this->redirect('/project');
   }
   
   
+
+private function deleteInvisibleItems($projectId, $deletedImageIds, $deletedFileIds, $deletedHashtagIds)
+{
+    $imageDAO = new ImageDAO();
+    foreach ($deletedImageIds as $imageId) {
+        $imageDAO->delete($imageId);
+    }
+
+    $fileDAO = new FileDAO();
+    foreach ($deletedFileIds as $fileId) {
+        $fileDAO->delete($fileId);
+    }
+
+    $hashtagProjectDAO = new HashtagProjectDAO();
+    foreach ($deletedHashtagIds as $hashtagId) {
+        $hashtagProjectDAO->deleteByProjectAndHashtagId($projectId, $hashtagId);
+    }
+}
+
 
   public function register()
   {
@@ -73,8 +156,6 @@ class ProjectController extends Controller
       $this->handleImageUploads($lastProjectId);
       $this->handleFileUploads($lastProjectId);
       $this->saveHashtagProjectAssociations($lastProjectId);
-
-
     } catch (\Exception $e) {
       Sessao::gravaMensagem($e->getMessage());
     }
@@ -110,85 +191,164 @@ class ProjectController extends Controller
 
   private function handleImageUploads($projectId)
   {
-    if (!empty($_FILES['images']['name'][0])) {
-      $dir = 'public/images/projects';
-      $uploadedImages = [];
-
-      foreach ($_FILES['images']['name'] as $key => $value) {
-        $file = [
-          'name' => $_FILES['images']['name'][$key],
-          'type' => $_FILES['images']['type'][$key],
-          'tmp_name' => $_FILES['images']['tmp_name'][$key],
-          'error' => $_FILES['images']['error'][$key],
-          'size' => $_FILES['images']['size'][$key]
-        ];
-
-        $objUpload = new Upload($file);
-        $objUpload->setName('img-id' . $projectId . '-' . $key);
-        $success = $objUpload->upload($dir);
-
-        if ($success) {
-          $uploadedImages[] = $objUpload->getBasename();
-        } else {
-          throw new \Exception("Error uploading images.");
-        }
+      if (!empty($_FILES['images']['name'][0])) {
+          $dir = 'public/images/projects';
+          $existingImages = [];
+          $imageDAO = new ImageDAO();
+          $existingImages = $imageDAO->getImagesByProjectId($projectId);
+          
+          $uploadedImages = [];
+  
+          foreach ($_FILES['images']['name'] as $key => $value) {
+              $file = [
+                  'name' => $_FILES['images']['name'][$key],
+                  'type' => $_FILES['images']['type'][$key],
+                  'tmp_name' => $_FILES['images']['tmp_name'][$key],
+                  'error' => $_FILES['images']['error'][$key],
+                  'size' => $_FILES['images']['size'][$key]
+              ];
+  
+              $objUpload = new Upload($file);
+              $timestamp = time();
+              $imageName = 'img-id' . $projectId . '-' . $timestamp . '-' . $key;
+  
+              while (in_array($imageName, $existingImages)) {
+                  $timestamp++;
+                  $imageName = 'img-id' . $projectId . '-' . $timestamp . '-' . $key;
+              }
+  
+              $objUpload->setName($imageName);
+  
+              $success = $objUpload->upload($dir);
+  
+              if ($success) {
+                  $uploadedImages[] = $objUpload->getBasename();
+              } else {
+                  throw new \Exception("Error uploading images.");
+              }
+          }
+  
+          $imageDAO->associateImagesWithProject($projectId, $uploadedImages);
       }
-
-      $imageDAO = new ImageDAO();
-      $imageDAO->associateImagesWithProject($projectId, $uploadedImages);
-    }
   }
+  
+
   public function saveHashtagProjectAssociations($projectId)
   {
       $hashtags = isset($_POST['idHashtags']) && is_array($_POST['idHashtags']) ? $_POST['idHashtags'] : [];
   
+      $projectDAO = new ProjectDAO();
+      $project = $projectDAO->getById($projectId);
+  
       foreach ($hashtags as $hashtagId) {
           $hashtagProject = new HashtagProject();
   
-          $projectDAO = new ProjectDAO();
-          $project = $projectDAO->getById($projectId); 
-  
           $hashtagDAO = new HashtagDAO();
-          $hashtag = $hashtagDAO->getbyId($hashtagId); 
+          $hashtag = $hashtagDAO->getById($hashtagId);
   
           $hashtagProject->setProject($project);
-          $hashtagProject->setHashtag($hashtag); 
+          $hashtagProject->setHashtag($hashtag);
   
           $hashtagProjectDAO = new HashtagProjectDAO();
           $hashtagProjectDAO->save($hashtagProject);
       }
   }
   
- 
-  
+
+
   private function handleFileUploads($projectId)
-  {
+{
     if (!empty($_FILES['files']['name'][0])) {
-      $dir = 'public/files/projects';
-      $uploadedFiles = [];
+        $dir = 'public/files/projects';
+        $existingFiles = [];
+        $fileDAO = new FileDAO();
+        $existingFiles = $fileDAO->getFilesByProjectId($projectId);
+        
+        $uploadedFiles = [];
 
-      foreach ($_FILES['files']['name'] as $key => $value) {
-        $file = [
-          'name' => $_FILES['files']['name'][$key],
-          'type' => $_FILES['files']['type'][$key],
-          'tmp_name' => $_FILES['files']['tmp_name'][$key],
-          'error' => $_FILES['files']['error'][$key],
-          'size' => $_FILES['files']['size'][$key]
-        ];
+        foreach ($_FILES['files']['name'] as $key => $value) {
+            $file = [
+                'name' => $_FILES['files']['name'][$key],
+                'type' => $_FILES['files']['type'][$key],
+                'tmp_name' => $_FILES['files']['tmp_name'][$key],
+                'error' => $_FILES['files']['error'][$key],
+                'size' => $_FILES['files']['size'][$key]
+            ];
 
-        $objUpload = new FileUpload($file);
-        $objUpload->setName('file-id' . $projectId . '-' . $key);
-        $success = $objUpload->upload($dir);
+            $objUpload = new FileUpload($file);
+            $timestamp = time();
+            $fileName = 'file-id' . $projectId . '-' . $timestamp . '-' . $key;
 
-        if ($success) {
-          $uploadedFiles[] = $objUpload->getBasename();
-        } else {
-          throw new \Exception("Error uploading files.");
+            while (in_array($fileName, $existingFiles)) {
+                $timestamp++;
+                $fileName = 'file-id' . $projectId . '-' . $timestamp . '-' . $key;
+            }
+
+            $objUpload->setName($fileName);
+
+            $success = $objUpload->upload($dir);
+
+            if ($success) {
+                $uploadedFiles[] = $objUpload->getBasename();
+            } else {
+                throw new \Exception("Error uploading files.");
+            }
         }
-      }
 
-      $fileDAO = new FileDAO();
-      $fileDAO->associateFilesWithProject($projectId, $uploadedFiles);
+        $fileDAO->associateFilesWithProject($projectId, $uploadedFiles);
     }
-  }
+}
+
+public function deleteFile()
+{
+    $this->auth();
+    if (isset($_GET['idFile'], $_GET['idProject'])) {
+        $fileId = (int)$_GET['idFile'];
+        $projectId = (int)$_GET['idProject'];
+
+        $fileDAO = new FileDAO();
+        $fileDAO->dropFiles($fileId);
+        Sessao::gravaMensagem("Arquivo removido com sucesso.");
+    } else {
+        Sessao::gravaMensagem("ID do arquivo ou do projeto não definidos.");
+    }
+
+    $this->redirect('/project/alter/' . $projectId);
+}
+
+public function deleteHashtag()
+{
+    $this->auth();
+    if (isset($_GET['idHashtag'], $_GET['idProject'])) {
+        $hashtagId = (int)$_GET['idHashtag'];
+        $projectId = (int)$_GET['idProject'];
+
+        $hashtagProjectDAO = new HashtagProjectDAO();
+        $hashtagProjectDAO->deleteByProjectAndHashtagId($projectId, $hashtagId);
+        Sessao::gravaMensagem("Hashtag removida com sucesso.");
+    } else {
+        Sessao::gravaMensagem("ID da hashtag ou do projeto não definidos.");
+    }
+    $this->redirect('/project/alter/' . $projectId);
+}
+
+public function deleteImage()
+{
+    $this->auth();
+
+    if (isset($_GET['idImage'], $_GET['idProject'])) {
+        $imageId = (int)$_GET['idImage'];
+        $projectId = (int)$_GET['idProject'];
+
+        $imageDAO = new ImageDAO();
+        $imageDAO->dropImages($imageId);
+        Sessao::gravaMensagem("Imagem removida com sucesso.");
+    } else {
+        Sessao::gravaMensagem("ID da imagem ou do projeto não definidos.");
+    }
+
+    $this->redirect('/project/alter/' . $projectId);
+}
+
+
 }

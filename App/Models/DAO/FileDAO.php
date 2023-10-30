@@ -64,11 +64,22 @@ class FileDAO extends BaseDAO
 
         while ($fileData = $result->fetch()) {
             $file = new File();
+            $file->setIdFile($fileData['idFiles']);
             $file->setFile($fileData['file']);
             $files[] = $file;
         }
 
         return $files;
     }
+
+    public function dropFiles(int $fileId)
+{
+    try {
+        return $this->delete('Files', "idFiles = $fileId");
+    } catch (\Exception $e) {
+        throw new \Exception("Error deleting project files. " . $e->getMessage(), 500);
+    }
+}
+
 
 }

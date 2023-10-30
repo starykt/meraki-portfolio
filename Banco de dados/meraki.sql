@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Tempo de geração: 12-Out-2023 às 19:14
--- Versão do servidor: 8.1.0
--- versão do PHP: 8.2.10
+-- Tempo de geração: 30-Out-2023 às 22:52
+-- Versão do servidor: 8.2.0
+-- versão do PHP: 8.2.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -144,8 +144,12 @@ CREATE TABLE `Hashtags_Projects` (
 --
 
 INSERT INTO `Hashtags_Projects` (`idHashtag`, `idProject`) VALUES
-(1, 1),
-(2, 1);
+(3, 3),
+(2, 4),
+(3, 4),
+(2, 5),
+(2, 6),
+(3, 8);
 
 -- --------------------------------------------------------
 
@@ -158,6 +162,17 @@ CREATE TABLE `Images` (
   `idProject` int NOT NULL,
   `image` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Extraindo dados da tabela `Images`
+--
+
+INSERT INTO `Images` (`idImage`, `idProject`, `image`) VALUES
+(6, 6, 'img-id6-0.jpg'),
+(9, 8, 'img-id8-1.jpg'),
+(10, 8, 'img-id8-2.png'),
+(11, 8, 'img-id8-3.png'),
+(18, 3, 'img-id3-1698595005-0.jpg');
 
 -- --------------------------------------------------------
 
@@ -190,7 +205,11 @@ CREATE TABLE `Projects` (
 --
 
 INSERT INTO `Projects` (`idProject`, `idUser`, `title`, `description`, `created_At`) VALUES
-(1, 1, 'teste', 'teste', '2023-10-12 19:13:31');
+(3, 1, 'hm', 'hmmmmmmmmmmmmmmmmmm', '2023-10-29 15:58:12'),
+(4, 1, 'a', 'a', '2023-10-29 15:24:55'),
+(5, 1, 'teste', 'a', '2023-10-29 15:25:47'),
+(6, 1, 'aaaaaaaa', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', '2023-10-30 22:15:03'),
+(8, 1, 'aaaaaaaaaa', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', '2023-10-29 15:34:51');
 
 -- --------------------------------------------------------
 
@@ -406,7 +425,7 @@ ALTER TABLE `Favorites`
 -- AUTO_INCREMENT de tabela `Files`
 --
 ALTER TABLE `Files`
-  MODIFY `idFiles` int NOT NULL AUTO_INCREMENT;
+  MODIFY `idFiles` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de tabela `Hashtags`
@@ -418,7 +437,7 @@ ALTER TABLE `Hashtags`
 -- AUTO_INCREMENT de tabela `Images`
 --
 ALTER TABLE `Images`
-  MODIFY `idImage` int NOT NULL AUTO_INCREMENT;
+  MODIFY `idImage` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de tabela `Likes`
@@ -430,7 +449,7 @@ ALTER TABLE `Likes`
 -- AUTO_INCREMENT de tabela `Projects`
 --
 ALTER TABLE `Projects`
-  MODIFY `idProject` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idProject` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `Tools`
@@ -479,7 +498,7 @@ ALTER TABLE `Favorites`
 -- Limitadores para a tabela `Files`
 --
 ALTER TABLE `Files`
-  ADD CONSTRAINT `idProject0` FOREIGN KEY (`idProject`) REFERENCES `Projects` (`idProject`);
+  ADD CONSTRAINT `idProject0` FOREIGN KEY (`idProject`) REFERENCES `Projects` (`idProject`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `Hashtags_Challenges`
@@ -492,14 +511,14 @@ ALTER TABLE `Hashtags_Challenges`
 -- Limitadores para a tabela `Hashtags_Projects`
 --
 ALTER TABLE `Hashtags_Projects`
-  ADD CONSTRAINT `fk_Hashtags_has_Projects_Hashtags1` FOREIGN KEY (`idHashtag`) REFERENCES `Hashtags` (`idHashtag`),
-  ADD CONSTRAINT `fk_Hashtags_has_Projects_Projects1` FOREIGN KEY (`idProject`) REFERENCES `Projects` (`idProject`);
+  ADD CONSTRAINT `fk_Hashtags_has_Projects_Hashtags1` FOREIGN KEY (`idHashtag`) REFERENCES `Hashtags` (`idHashtag`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_Hashtags_has_Projects_Projects1` FOREIGN KEY (`idProject`) REFERENCES `Projects` (`idProject`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `Images`
 --
 ALTER TABLE `Images`
-  ADD CONSTRAINT `idProject` FOREIGN KEY (`idProject`) REFERENCES `Projects` (`idProject`);
+  ADD CONSTRAINT `idProject` FOREIGN KEY (`idProject`) REFERENCES `Projects` (`idProject`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `Likes`

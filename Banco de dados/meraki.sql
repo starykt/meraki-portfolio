@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Tempo de geração: 30-Out-2023 às 22:52
+-- Tempo de geração: 31-Out-2023 às 00:37
 -- Versão do servidor: 8.2.0
 -- versão do PHP: 8.2.11
 
@@ -149,7 +149,9 @@ INSERT INTO `Hashtags_Projects` (`idHashtag`, `idProject`) VALUES
 (3, 4),
 (2, 5),
 (2, 6),
-(3, 8);
+(3, 8),
+(2, 11),
+(2, 13);
 
 -- --------------------------------------------------------
 
@@ -209,7 +211,30 @@ INSERT INTO `Projects` (`idProject`, `idUser`, `title`, `description`, `created_
 (4, 1, 'a', 'a', '2023-10-29 15:24:55'),
 (5, 1, 'teste', 'a', '2023-10-29 15:25:47'),
 (6, 1, 'aaaaaaaa', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', '2023-10-30 22:15:03'),
-(8, 1, 'aaaaaaaaaa', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', '2023-10-29 15:34:51');
+(8, 1, 'aaaaaaaaaa', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', '2023-10-29 15:34:51'),
+(11, 2, 'aaaaa', 'aaaaa', '2023-10-31 00:33:44'),
+(13, 2, 'aaaaa', 'aaaaa', '2023-10-31 00:35:11');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `Report`
+--
+
+CREATE TABLE `Report` (
+  `idReport` int NOT NULL,
+  `idUser` int NOT NULL,
+  `idProject` int NOT NULL,
+  `report` text NOT NULL,
+  `action` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Extraindo dados da tabela `Report`
+--
+
+INSERT INTO `Report` (`idReport`, `idUser`, `idProject`, `report`, `action`) VALUES
+(1, 2, 3, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 0);
 
 -- --------------------------------------------------------
 
@@ -249,7 +274,8 @@ CREATE TABLE `Users` (
 --
 
 INSERT INTO `Users` (`idUser`, `tag`, `nickname`, `email`, `password`, `avatar`, `level`, `xp`, `resume`, `admin`, `createdAt`, `location`) VALUES
-(1, 3182, 'nick', 'nicolealvesraimundo@gmail.com', '$2y$10$olQTF4mSKWX6.sEx8hOWy.BgAq.DTZLlJiIZ8T/f5rZfwetcx1Ij.', NULL, 1, 0, NULL, 1, '2023-08-26 11:48:25', NULL);
+(1, 3182, 'nick', 'nicolealvesraimundo@gmail.com', '$2y$10$olQTF4mSKWX6.sEx8hOWy.BgAq.DTZLlJiIZ8T/f5rZfwetcx1Ij.', NULL, 1, 0, NULL, 1, '2023-08-26 11:48:25', NULL),
+(2, 6149, 'nick', 'amor@gmail.com', '$2y$10$ptSxKR8Ld8SQiWUahYOE/OCWWhAUFtS94wRsh5iaQPmiciA/vHg4u', NULL, 1, 0, NULL, 1, '2023-10-30 23:02:58', NULL);
 
 -- --------------------------------------------------------
 
@@ -366,6 +392,14 @@ ALTER TABLE `Projects`
   ADD KEY `idUser_idx` (`idUser`);
 
 --
+-- Índices para tabela `Report`
+--
+ALTER TABLE `Report`
+  ADD PRIMARY KEY (`idReport`),
+  ADD KEY `idProject` (`idProject`),
+  ADD KEY `idUser` (`idUser`);
+
+--
 -- Índices para tabela `Tools`
 --
 ALTER TABLE `Tools`
@@ -425,7 +459,7 @@ ALTER TABLE `Favorites`
 -- AUTO_INCREMENT de tabela `Files`
 --
 ALTER TABLE `Files`
-  MODIFY `idFiles` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `idFiles` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de tabela `Hashtags`
@@ -437,7 +471,7 @@ ALTER TABLE `Hashtags`
 -- AUTO_INCREMENT de tabela `Images`
 --
 ALTER TABLE `Images`
-  MODIFY `idImage` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `idImage` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de tabela `Likes`
@@ -449,7 +483,13 @@ ALTER TABLE `Likes`
 -- AUTO_INCREMENT de tabela `Projects`
 --
 ALTER TABLE `Projects`
-  MODIFY `idProject` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `idProject` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT de tabela `Report`
+--
+ALTER TABLE `Report`
+  MODIFY `idReport` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de tabela `Tools`
@@ -461,7 +501,7 @@ ALTER TABLE `Tools`
 -- AUTO_INCREMENT de tabela `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `idUser` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idUser` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restrições para despejos de tabelas
@@ -532,6 +572,13 @@ ALTER TABLE `Likes`
 --
 ALTER TABLE `Projects`
   ADD CONSTRAINT `fk_Projects_Users` FOREIGN KEY (`idUser`) REFERENCES `Users` (`idUser`);
+
+--
+-- Limitadores para a tabela `Report`
+--
+ALTER TABLE `Report`
+  ADD CONSTRAINT `Report_ibfk_1` FOREIGN KEY (`idProject`) REFERENCES `Projects` (`idProject`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `Report_ibfk_2` FOREIGN KEY (`idUser`) REFERENCES `Users` (`idUser`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Limitadores para a tabela `Users_Tools`

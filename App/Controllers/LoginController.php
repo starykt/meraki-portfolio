@@ -12,54 +12,62 @@ class LoginController extends Controller
   public function index()
   {
     $this->render('/login/index');
+    Sessao::limpaFormulario();
+    Sessao::limpaMensagem();
+    Sessao::limpaErro();
   }
 
   public function register()
   {
 
     $this->render('/login/register');
-      
+    Sessao::limpaFormulario();
+    Sessao::limpaMensagem();
+    Sessao::limpaErro();
+
   }
 
   public function save()
   {
 
     if (empty($_POST['nickname']) || empty($_POST['email']) || empty($_POST['password'])) {
-        Sessao::gravaErro("Por favor, preencha todos os campos obrigatórios.");
-        $this->redirect('/login/register');
-        return;
+      Sessao::gravaErro("Por favor, preencha todos os campos obrigatórios.");
+      $this->redirect('/login/register');
+      return;
     }
 
     $userDao = new UserDAO();
     $existingUser = $userDao->getByEmail($_POST['email']);
 
     if ($existingUser) {
-        Sessao::gravaErro("O email informado já está em uso.");
-        $this->redirect('/login/register');
-        return;
+      Sessao::gravaErro("O email informado já está em uso.");
+      $this->redirect('/login/register');
+      return;
     }
     if ($_POST['password'] !== $_POST['password_confirm']) {
-        Sessao::gravaErro("As senhas informadas não coincidem.");
-        $this->redirect('/login/register');
-        return;
+      Sessao::gravaErro("As senhas informadas não coincidem.");
+      $this->redirect('/login/register');
+      return;
     }
 
     $user = new User();
     $user->setNickname($_POST['nickname']);
     $user->setEmail($_POST['email']);
     $user->setPassword($_POST['password']);
-    $user->setTag($_POST['nickname']);
     $user->setCreatedAt(new \DateTime());
-
-
     $userDao = new UserDAO();
     $userDao->save($user);
-    $this->redirect('/login/index'); 
+
+    Sessao::limpaFormulario();
+    Sessao::limpaMensagem();
+    Sessao::limpaErro();
+
+    $this->redirect('/login/index');
   }
 
 
 
-  public function logout() 
+  public function logout()
   {
     Sessao::limpaFormulario();
     Sessao::limpaMensagem();
@@ -78,29 +86,28 @@ class LoginController extends Controller
     $password = $_POST['password'];
     Sessao::gravaFormulario($_POST);
 
-    if(empty(trim($email)) && empty(trim($password))){
-        $erro[] = "Faltou digitar usuário e/ou senha!";
-        Sessao::gravaErro($erro);
-        $this->redirect('login/');
+    if (empty(trim($email)) && empty(trim($password))) {
+      Sessao::gravaErro("Faltou digitar usuário e/ou senha!");
+      $this->redirect('/login');
+      return;
     }
 
     $userDAO = new UserDAO();
-    
+
     $idUser = $userDAO->verify($email, $password);
 
     if ($idUser == 0) {
-        $erro[] = "Usuário ou senha incorretos. Tente novamente!";
-        Sessao::gravaErro($erro);
-        $this->redirect('login/');
+      Sessao::gravaErro("Usuário ou senha incorretos. Tente novamente!");
+      $this->redirect('/login');
+      return;
+
     }
 
     Sessao::gravaLogin($idUser);
 
     Sessao::limpaFormulario();
     Sessao::limpaErro();
-
-    $this->redirect('/home/initial');
-
     Sessao::limpaMensagem();
+    $this->redirect('/home/initial');
   }
 }

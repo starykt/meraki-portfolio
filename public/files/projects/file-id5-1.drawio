@@ -1,0 +1,37 @@
+<mxfile host="app.diagrams.net" modified="2023-10-22T16:16:05.644Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36" etag="y2FntIrFQ8PU12pG6Yyw" version="22.0.6" type="device">
+  <diagram name="Página-1" id="J64fChIc1W2cKbYLkw0t">
+    <mxGraphModel dx="1050" dy="566" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="vTrCp4j0YOVM_Q1QHNgN-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="vTrCp4j0YOVM_Q1QHNgN-1" target="vTrCp4j0YOVM_Q1QHNgN-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vTrCp4j0YOVM_Q1QHNgN-1" value="Postos de coleta" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="230" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="vTrCp4j0YOVM_Q1QHNgN-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="vTrCp4j0YOVM_Q1QHNgN-2" target="vTrCp4j0YOVM_Q1QHNgN-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vTrCp4j0YOVM_Q1QHNgN-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="vTrCp4j0YOVM_Q1QHNgN-2" target="vTrCp4j0YOVM_Q1QHNgN-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vTrCp4j0YOVM_Q1QHNgN-2" value="Sistema receptor de coleta" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="230" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="vTrCp4j0YOVM_Q1QHNgN-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="vTrCp4j0YOVM_Q1QHNgN-4" target="vTrCp4j0YOVM_Q1QHNgN-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vTrCp4j0YOVM_Q1QHNgN-4" value="Setores financeiros e de transporte" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="230" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="vTrCp4j0YOVM_Q1QHNgN-6" value="Processamento de envio para destino final" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="650" y="230" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="vTrCp4j0YOVM_Q1QHNgN-8" value="Novo sistema central de coleta" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="370" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

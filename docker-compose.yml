@@ -6,10 +6,25 @@ services:
       context: ./
     depends_on:
       - db
+      - socket
     volumes:
       - ./:/var/www/html/
     ports:
       - 8000:80
+  socket:
+    depends_on:
+      - redis
+    container_name: socket
+    build:
+      context: ./socket
+    volumes:
+      - ./socket:/usr/src/app
+    ports:
+      - 3000:3000
+  redis:
+    image: redis:5
+    ports:
+      - "6379:6379"
   db:
     container_name: db
     image: mysql

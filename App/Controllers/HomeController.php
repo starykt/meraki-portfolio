@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Models\DAO\UserDAO;
-use App\Models\DAO\CategoryDAO;
 use App\Lib\Sessao;
 
 class HomeController extends Controller

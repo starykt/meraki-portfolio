@@ -9,6 +9,7 @@ use App\Models\DAO\FileDAO;
 use App\Models\DAO\HashtagDAO;
 use App\Models\DAO\HashtagProjectDAO;
 use App\Models\DAO\ImageDAO;
+use App\Models\DAO\LikeDAO;
 use App\Models\DAO\ProjectDAO;
 use App\Models\DAO\ReportDAO;
 use App\Models\DAO\UserDAO;
@@ -22,31 +23,42 @@ use App\Models\Entidades\User;
 class ProjectController extends Controller
 {
   public function index()
-  {
+{
     $this->auth();
     $projectDAO = new ProjectDAO();
     $projects = $projectDAO->list();
-
-    $imageDAO = new ImageDAO();
-    $fileDAO = new FileDAO();
-    $hashtagDAO = new HashtagProjectDAO();
+    $likeDAO = new LikeDAO();
+    $userDAO = new UserDAO();
 
     foreach ($projects as $project) {
-      $images = $imageDAO->getImagesByProjectId($project->getIdProject());
-      $project->setImages($images);
+        $imageDAO = new ImageDAO();
+        $images = $imageDAO->getImagesByProjectId($project->getIdProject());
+        $project->setImages($images);
 
-      $files = $fileDAO->getFilesByProjectId($project->getIdProject());
-      $project->setFiles($files);
+        $fileDAO = new FileDAO();
+        $files = $fileDAO->getFilesByProjectId($project->getIdProject());
+        $project->setFiles($files);
 
-      $hashtags = $hashtagDAO->getByProjectId($project->getIdProject());
-      $project->setHashtags($hashtags);
+        $hashtagDAO = new HashtagProjectDAO();
+        $hashtags = $hashtagDAO->getByProjectId($project->getIdProject());
+        $project->setHashtags($hashtags);
+
+        $likeCount = $likeDAO->getLikeCountByArticleId($project->getIdProject());
+        $project->setLikeCount($likeCount);
+
+        $likeStatus = $likeDAO->getLikeStatus($project->getIdProject(), $_SESSION['idUser']);
+        $project->setLikeStatus($likeStatus);
     }
 
     self::setViewParam('listProject', $projects);
+    self::setViewParam('user', $userDAO->getById($_SESSION['idUser']));
+
     $this->render('/project/index');
+
     Sessao::limpaMensagem();
     Sessao::limpaErro();
-  }
+}
+
 
   public function alter()
   {
@@ -369,40 +381,58 @@ class ProjectController extends Controller
 
   public function saveReport()
   {
+    $this->auth();
+
+    $idUser = $_SESSION['idUser'];
+    $urlParts = explode('/', $_GET['url']);
+    $idProject = (int) end($urlParts);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      try {
+        $reportText = $_POST['report'];
+        $action = 0;
+
+        $userDAO = new UserDAO();
+        $user = $userDAO->getById($idUser);
+
+        $projectDAO = new ProjectDAO();
+        $project = $projectDAO->getById($idProject);
+
+        $report = new Report();
+        $report->setIdUser($user);
+        $report->setIdProject($project);
+        $report->setReport($reportText);
+        $report->setAction($action);
+
+        $reportDAO = new ReportDAO();
+        $reportDAO->saveReport($report);
+
+        Sessao::gravaMensagem("Denúncia enviado com sucesso.");
+      } catch (\Exception $e) {
+        Sessao::gravaMensagem("Erro ao enviar o denúncia: " . $e->getMessage());
+      }
+    }
+
+    $this->redirect('/project');
+  }
+
+  public function like($params)
+  {
       $this->auth();
+      $userDAO = new UserDAO();
+      $user = $userDAO->getById($_SESSION['idUser']);
   
-      $idUser = $_SESSION['idUser'];
-      $urlParts = explode('/', $_GET['url']);
-      $idProject = (int) end($urlParts);
+      $idProject = $params[0];
+      $likeDAO = new LikeDAO();
+      $likeStatus = $likeDAO->getLikeStatus($idProject, $user->getIdUser());
   
-      if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-          try {
-              $reportText = $_POST['report'];
-              $action = 0;
-
-              $userDAO = new UserDAO();
-              $user = $userDAO->getById($idUser);
-  
-              $projectDAO = new ProjectDAO();
-              $project = $projectDAO->getById($idProject);
-  
-              $report = new Report();
-              $report->setIdUser($user);
-              $report->setIdProject($project); 
-              $report->setReport($reportText);
-              $report->setAction($action);
-              
-              $reportDAO = new ReportDAO();
-              $reportDAO->saveReport($report);
-
-              Sessao::gravaMensagem("Denúncia enviado com sucesso.");
-          } catch (\Exception $e) {
-              Sessao::gravaMensagem("Erro ao enviar o denúncia: " . $e->getMessage());
-          }
+      if ($likeStatus) {
+          $likeDAO->deleteLike($idProject, $user->getIdUser());
+      } else {
+          $likeDAO->createLike($idProject, $user->getIdUser());
       }
   
       $this->redirect('/project');
   }
   
-
 }

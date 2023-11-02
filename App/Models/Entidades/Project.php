@@ -12,6 +12,41 @@ private \DateTime $created_At;
 private array $files;
 private array $images;
 private array $hashtags;
+private $likeCount;
+
+private $likeStatus;
+    private $creatorUser;
+
+
+    public function setLikeStatus($likeStatus)
+    {
+        $this->likeStatus = $likeStatus;
+    }
+
+    public function getLikeStatus()
+    {
+        return $this->likeStatus;
+    }
+
+    public function setCreatorUser(User $creatorUser)
+    {
+        $this->creatorUser = $creatorUser;
+    }
+
+    public function getCreatorUser()
+    {
+        return $this->creatorUser;
+    }
+
+public function setLikeCount($likeCount)
+{
+		$this->likeCount = $likeCount;
+}
+
+public function getLikeCount()
+{
+		return $this->likeCount;
+}
 
 public function setHashtags(array $hashtags): self
 {
@@ -137,5 +172,3 @@ public function getImages(): array
 		return $this;
 	}
 }
-
-?>

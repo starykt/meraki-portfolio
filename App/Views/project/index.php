@@ -63,7 +63,7 @@
     <div class="comment">
         <strong><?= $comment->getText() ?></strong> <br>
         Comentado por: <?= $comment->getUser()->getNickname() ?> #<?= $user->getTag() ?> <br>
-        Comentado em: <?= $comment->getDateCreate()->format('Y-m-d H:i:s') ?>
+         <?= $comment->getDateCreate()->format('Y-m-d H:i:s') ?>
     </div> <br>
 <?php } ?>
 

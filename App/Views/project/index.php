@@ -46,8 +46,15 @@
             <button id="likeButton" type="submit" name="likeButton" class="like-button" onclick="likeButtonClick(this);">
                 <span class="heart" <?php if (isset($viewVar['likeStatus']) && $viewVar['likeStatus']) { ?>style="color:#FF57B2;" <?php } else { ?>style="background-color:none;" <?php } ?>>&#10084;</span>
                 <span class="like-count"><?= $project->getLikeCount(); ?></span>
-            </button>
-
+            </button> <br>
+        </form>
+              <form class="newCommentsForm" action="http://<?php echo APP_HOST; ?>/project/comment/<?= $project->getIdProject() ?>" method="post" id="form_cadastro">
+                <textarea cols="70" rows="5" name="text" id="text" value="<?php echo $Sessao::retornaValorFormulario('text'); ?>" required></textarea>
+                <div class="newCommentsFormFooter">
+                  <button type="submit" class="buttonSubmit">Comentar</button>
+                </div>
+              </form>
+          </div>
 
         </form>
     </div>

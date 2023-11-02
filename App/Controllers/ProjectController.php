@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Lib\FileUpload;
 use App\Lib\Sessao;
 use App\Lib\Upload;
+use App\Models\DAO\CommentDAO;
 use App\Models\DAO\FileDAO;
 use App\Models\DAO\HashtagDAO;
 use App\Models\DAO\HashtagProjectDAO;
@@ -13,6 +14,7 @@ use App\Models\DAO\LikeDAO;
 use App\Models\DAO\ProjectDAO;
 use App\Models\DAO\ReportDAO;
 use App\Models\DAO\UserDAO;
+use App\Models\Entidades\Comment;
 use App\Models\Entidades\File;
 use App\Models\Entidades\HashtagProject;
 use App\Models\Entidades\Image;
@@ -434,5 +436,32 @@ class ProjectController extends Controller
   
       $this->redirect('/project');
   }
+
+  public function comment()
+  {
+      $this->auth();
+      $user = new UserDAO; 
+      self::setViewParam('user', $user->getById($_SESSION['idUser']));
+  
+      $user = new UserDAO();
+      $projectDAO = new ProjectDAO();
+      $commentDAO = new CommentDAO();
+
+      $user = $user->getById($_SESSION['idUser']);
+      
+      $idProject = basename($_SERVER['REQUEST_URI']);
+      $idProject = intval($idProject);
+
+      $article = $projectDAO->getById($idProject);
+      $comment = new Comment();
+      $comment->setText(nl2br($_POST['text']));
+      $comment->setUser($user);
+      $comment->setProject($article);
+      $comment->setDateCreate(new \DateTime());
+      $commentDAO->save($comment);
+
+      $this->redirect('/project');
+
+      }
   
 }

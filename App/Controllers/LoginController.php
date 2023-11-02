@@ -54,10 +54,7 @@ class LoginController extends Controller
     $user->setNickname($_POST['nickname']);
     $user->setEmail($_POST['email']);
     $user->setPassword($_POST['password']);
-    $user->setTag($_POST['nickname']);
     $user->setCreatedAt(new \DateTime());
-
-
     $userDao = new UserDAO();
     $userDao->save($user);
 

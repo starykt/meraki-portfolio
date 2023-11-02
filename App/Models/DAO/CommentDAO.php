@@ -3,6 +3,7 @@
 namespace App\Models\DAO;
 
 use App\Models\Entidades\Comment;
+use App\Models\Entidades\User;
 use Exception;
 
 class CommentDAO extends BaseDAO 
@@ -43,7 +44,6 @@ class CommentDAO extends BaseDAO
     }
     
 
-
     public function getById($id)
     {
         $resultado = $this->select(
@@ -67,31 +67,27 @@ class CommentDAO extends BaseDAO
         return false;
     }
     
-    public function getByProjectId($idProject)
+    public function getCommentsByProjectId($idProject)
     {
-        $resultado = $this->select(
-            "SELECT c.idComment, c.text, c.createdAt,u.idUser, u.nickname, u.avatar as user
-            FROM Comments as c
-            INNER JOIN Users as u ON c.idUser = u.idUser
-            WHERE c.idProject = $idProject"
-        );
-    
+        $result = $this->select("SELECT * FROM Comments WHERE idProject = $idProject");
         $comments = [];
-    
-        while ($dataSetComment = $resultado->fetch()) {
-            $Comment = new Comment();
-            $Comment->setIdComment($dataSetComment['idComment']);
-            $Comment->setText($dataSetComment['text']);
-            $Comment->getUser()->setIdUser($dataSetComment['idUser']);
-            $Comment->getUser()->setNickname($dataSetComment['nickname']);
-            $Comment->getUser()->setAvatar($dataSetComment['user']);
         
-            $comments[] = $Comment;
+        while ($commentData = $result->fetch()) {
+            $comment = new Comment();
+            $comment->setIdComment($commentData['idComment']);
+            $comment->setText($commentData['text']);
+            $comment->setDateCreate(new \DateTime($commentData['dateCreate']));
+        
+            $userDAO = new UserDAO();
+            $user = $userDAO->getById($commentData['idUser']); 
+            $comment->setUser($user);
+        
+            $comments[] = $comment;
         }
         
-   
         return $comments;
     }
+    
     
 
     public function edit(Comment $Comment)

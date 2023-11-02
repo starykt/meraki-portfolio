@@ -44,19 +44,30 @@
         <a href="http://<?= APP_HOST ?>/project/report/<?= $project->getIdProject() ?>"> report </a>
         <form method="POST" action="http://<?php echo APP_HOST; ?>/project/like/<?= $project->getIdProject(); ?>">
             <button id="likeButton" type="submit" name="likeButton" class="like-button" onclick="likeButtonClick(this);">
-                <span class="heart" <?php if (isset($viewVar['likeStatus']) && $viewVar['likeStatus']) { ?>style="color:#FF57B2;" <?php } else { ?>style="background-color:none;" <?php } ?>>&#10084;</span>
+                <span class="heart" <?php if (isset($project) && $project->getLikeStatus()) { ?> style="color:#FF57B2;" <?php } else { ?> style="background-color:none;" <?php } ?>>
+                    &#10084;
+                </span>
                 <span class="like-count"><?= $project->getLikeCount(); ?></span>
-            </button> <br>
+            </button>
+            <br>
         </form>
-              <form class="newCommentsForm" action="http://<?php echo APP_HOST; ?>/project/comment/<?= $project->getIdProject() ?>" method="post" id="form_cadastro">
-                <textarea cols="70" rows="5" name="text" id="text" value="<?php echo $Sessao::retornaValorFormulario('text'); ?>" required></textarea>
-                <div class="newCommentsFormFooter">
-                  <button type="submit" class="buttonSubmit">Comentar</button>
-                </div>
-              </form>
-          </div>
+        <form class="newCommentsForm" action="http://<?php echo APP_HOST; ?>/project/comment/<?= $project->getIdProject() ?>" method="post" id="form_cadastro">
+            <textarea cols="70" rows="5" name="text" id="text" value="<?php echo $Sessao::retornaValorFormulario('text'); ?>" required></textarea>
+            <div class="newCommentsFormFooter">
+                <button type="submit" class="buttonSubmit">Comentar</button>
+            </div>
+        </form>
+    </div>
+    <?php foreach ($project->getComments() as $comment) {
+        $user = $comment->getUser(); ?>
+    <div class="comment">
+        <strong><?= $comment->getText() ?></strong> <br>
+        Comentado por: <?= $comment->getUser()->getNickname() ?> #<?= $user->getTag() ?> <br>
+        Comentado em: <?= $comment->getDateCreate()->format('Y-m-d H:i:s') ?>
+    </div> <br>
+<?php } ?>
 
-        </form>
+    </form>
     </div>
     <br>
 <?php } ?>

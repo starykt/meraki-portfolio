@@ -16,6 +16,8 @@ class UserDAO extends BaseDAO
         if ($userData) {
             $user = new User();
             $user->setIdUser($userData['idUser']);
+            $user->setNickname($userData['nickname']);
+            $user->setTag($userData['tag']);
             $user->setCreatedAt(new \DateTime($userData['createdAt']));
             return $user;
         }
@@ -53,7 +55,7 @@ class UserDAO extends BaseDAO
     public function save(User $user)
     {
         try {
-            $tag = $user->getTag();
+            $tag = $user->generateRandomTag();
             $nickname = $user->getNickname();
             $email = $user->getEmail();
             $password = password_hash($user->getPassword(), PASSWORD_DEFAULT);
@@ -61,7 +63,7 @@ class UserDAO extends BaseDAO
             $xp = 0;
             $resume = $user->getResume();
             $admin = 1;
-            $createdAt = $user->getCreatedAt()->format('Y-m-d H:i:s'); // Formatando o objeto DateTime
+            $createdAt = $user->getCreatedAt()->format('Y-m-d H:i:s'); 
             $location = $user->getLocation();
 
             $params = [

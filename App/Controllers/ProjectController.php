@@ -31,6 +31,7 @@ class ProjectController extends Controller
     $projects = $projectDAO->list();
     $likeDAO = new LikeDAO();
     $userDAO = new UserDAO();
+    $commentDAO = new CommentDAO();
 
     foreach ($projects as $project) {
         $imageDAO = new ImageDAO();
@@ -50,6 +51,9 @@ class ProjectController extends Controller
 
         $likeStatus = $likeDAO->getLikeStatus($project->getIdProject(), $_SESSION['idUser']);
         $project->setLikeStatus($likeStatus);
+
+        $comments = $commentDAO->getCommentsByProjectId($project->getIdProject());
+        $project->setComments($comments);
     }
 
     self::setViewParam('listProject', $projects);

@@ -63,7 +63,11 @@
     <div class="comment">
         <strong><?= $comment->getText() ?></strong> <br>
         Comentado por: <?= $comment->getUser()->getNickname() ?> #<?= $user->getTag() ?> <br>
-         <?= $comment->getDateCreate()->format('Y-m-d H:i:s') ?>
+         <?= $comment->getDateCreate()->format('Y-m-d H:i:s') ?> <br>
+         <form action="http://<?php echo APP_HOST; ?>/project/deleteComment/<?= $comment->getIdComment() ?>" method="post" id="form_cadastro">
+                <button type="submit" class="buttonSubmit">Excluir</button>
+            </div>
+        </form>
     </div> <br>
 <?php } ?>
 

@@ -467,5 +467,18 @@ class ProjectController extends Controller
       $this->redirect('/project');
 
       }
+
+      public function deleteComment($params)
+      {
+              $this->auth();
+              
+              $idComentario = $params[0];
+              $commentDAO = new CommentDAO();
+          
+              $commentDAO->drop($idComentario);
+           
+              $this->redirect('/project');
+      
+      }
   
 }

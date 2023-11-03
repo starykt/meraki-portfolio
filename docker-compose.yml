@@ -24,7 +24,7 @@ services:
   redis:
     image: redis:5
     ports:
-      - "6379:6379"
+      - "6382:6382"
   db:
     container_name: db
     image: mysql

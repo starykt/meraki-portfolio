@@ -1,3 +1,9 @@
+
+
+<p>sdfsdfsd</p>
+<p>sdfsdfsd</p>
+<p>sdfsdfsd</p>
+
 <a href="http://<?= APP_HOST ?>/project/register">
     <button class="not-a-player-button">Cadastrar projeto</button>
 </a>

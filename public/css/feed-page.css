@@ -1,0 +1,104 @@
+.feed-page {
+  font-family: 'Inter', sans-serif;
+  display: grid;
+  margin-top: 40px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+.new-project {
+  width: 75vw;
+  height: 9vh;
+  display: flex;
+  border-radius: 200px;
+  background-color: #D9D9D9;
+  padding: 10px;
+  align-items: center;
+}
+
+.button-new {
+  top: 10px;
+  left: 161px;
+  width: 25vw;
+  height: 2vh;
+  padding: 5px;
+  display: flex;
+  color: #FFFFFF;
+  font-weight: 700;
+  margin-left: 12px;
+  text-align: center;
+  position: relative;
+  align-items: center;
+  border-radius: 130px;
+  background-color: #894DBC;
+  box-shadow: 2px 2px 5px #00000049;
+}
+
+.div-icon {
+  background-color: #D9D9D9;
+  padding: 2px;
+  border-radius: 200px;
+}
+.user-icon {
+  width: 55px;
+  height: 55px;
+  display: flex;
+  border-radius: 200px;
+  box-shadow: 4px 4px 6px #00000049;
+}
+
+.text-project {
+  font-size: 16px;
+  margin-left: 8px;
+  font-weight: 800;
+}
+
+.list-project {
+  margin-top: 40px;
+  .icon-profile {
+    width: 55px;
+    right: 25px;
+    padding: 2px;
+    display: flex;
+    position: relative;
+    border-radius: 200px;
+    background-color: #D9D9D9;
+    .user {
+      width: 55px;
+      height: 55px;
+      border-radius: 200px;
+    }
+    .circle1 {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 200px;
+      background-color: #D9D9D9;
+      left: 52px;
+      top: 55px
+    }
+    .circle2 {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      border-radius: 200px;
+      background-color: #D9D9D9;
+      left: 65px;
+      top: 61px
+    }
+  }
+  .project-post {
+    width: 80vw;
+    display: flex;
+    bottom: -25px;
+    position: relative;
+    height: fit-content;
+    border-radius: 200px;
+    background-color: #D9D9D9;
+    .user-nametag {
+      font-size: 12px;
+      font-weight: 700;
+      align-self: flex-end;
+    }
+  }
+}

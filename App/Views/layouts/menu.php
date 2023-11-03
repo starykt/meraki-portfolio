@@ -8,6 +8,7 @@
   <link href="http://<?php echo APP_HOST; ?>/public/css/style.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
 </head>
 
 <body>
@@ -16,10 +17,12 @@
   </div>
   <nav class="sidebar" id="sidebar">
     <ul>
-      <li><a href="#"><img src="/public/images/menu.svg" /> </a></li>
-      <li><a href="#"></a></li>
-      <li><a href="#"></a></li>
-      <li><a href="http://<?= APP_HOST ?>/login/logout">Sair</a></li>
+      <li><a href="#"><img src="/public/images/" /></a></li>
+      <li><a href="#"><img src="/public/images/" /></a></li>
+      <li><a href="#"><img src="/public/images/" /></a></li>
+      <li><a href="#"><img src="/public/images/" /></a></li>
+      <li><a href="#"><img src="/public/images/" /></a></li>
+      <li><a href="http://<?= APP_HOST ?>/login/logout"><img src="/public/images/" /></a></li>
     </ul>
   </nav>
 

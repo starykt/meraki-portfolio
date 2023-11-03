@@ -66,7 +66,7 @@
 			loader.classList.add("loader-fade-out");
 			setTimeout(function() {
 					loader.style.display = "none";
-			}, 1000);
+			}, 500);
 		});
 		
 	</script>

@@ -1,4 +1,4 @@
-/* .menu-icon {
+.menu-icon {
   position: fixed;
   top: 20px;
   left: 30px;
@@ -6,16 +6,11 @@
   z-index: 999;
 }
 
-.menu-icon span {
-  display: block;
-  width: 20px;
-  height: 3px;
-  margin: 5px 0;
-  background-color: #333;
-}
-
-.menu-icon span:last-child {
-  margin-right: 10px;
+.menu-icon img {
+  width: 32px;
+  position: relative;
+  top: -7px;
+  right: 14px;
 }
 
 .sidebar {
@@ -34,7 +29,7 @@
   padding: 0;
   margin-top: 50px;
   /* Espaçamento adicionado na parte superior das opções de menu */
-/* }
+}
 
 .sidebar li {
   padding: 10px 20px;
@@ -83,6 +78,8 @@
   font-size: 20px;
   cursor: pointer;
 }
+
+/*
 
 h2 {
   margin-top: 10px;

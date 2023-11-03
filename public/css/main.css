@@ -1,6 +1,30 @@
 body, html {
   margin: 0;
   padding: 0;
+  background-color: #1E1E1E;
+}
+
+.header-bar {
+  position: fixed;
+  display: flex;
+}
+
+header .wave {
+  top: -15px;
+  left: -38px;
+  width: 110vw;
+  position: relative;
+}
+
+header .homeOption {
+  top: 7px;
+  left: -95px;
+  z-index: 9999;
+  position: relative;
+}
+
+header .homeOption img {
+  width: 45px
 }
 
 .wrapper {

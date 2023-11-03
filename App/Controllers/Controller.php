@@ -26,18 +26,17 @@ abstract class Controller
     {
         $viewVar = $this->getViewVar();
         $Sessao  = Sessao::class;
-        if ($view != "/login/index"  && $view != "/login/register") {
+        if ($view != "/login/index" && $view != "/login/register" && $view != "/") {
             $user = new UserDAO; 
 
             require_once PATH . '/App/Views/layouts/header.php';
+            require_once PATH . '/App/Views/layouts/menu.php';
             require_once PATH . '/App/Views/' . $view . '.php';
         }
         else {
-            require_once PATH . '/App/Views/layouts/header.php';
+            require_once PATH . '/App/Views/layouts/imports.php';
             require_once PATH . '/App/Views/' . $view . '.php';
         }
-        
-       
     }
 
     public function redirect($view)

@@ -11,6 +11,7 @@
     <strong><?= $tool->getCaption() ?></strong> <br>
     <img src="http://<?php echo APP_HOST; ?>/public/images/tools/<?= $tool->getIcon() ?>" width="200px" height="200px"><br>
      <a href="http://<?= APP_HOST ?>/tool/alter/<?= $tool->getIdTool() ?>"> editar </a><br>
+     <a href="http://<?= APP_HOST ?>/tool/drop/<?= $tool->getIdTool() ?>"> excluir </a><br>
   <?php } ?>
   </div>
 

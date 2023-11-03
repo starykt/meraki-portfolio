@@ -116,7 +116,7 @@ class ToolController extends Controller
   
 
 
-  public function excluir($params)
+  public function drop($params)
   {
     $idTool = $params[0];
 

@@ -18,6 +18,12 @@ class UserDAO extends BaseDAO
             $user->setIdUser($userData['idUser']);
             $user->setNickname($userData['nickname']);
             $user->setTag($userData['tag']);
+            $user->setEmail($userData['email']);
+            $user->setLevel($userData['level']);
+            $user->setXp($userData['xp']);
+            $user->setAdmin($userData['admin']);
+            $user->setResume($userData['resume']);
+            $user->setLocation($userData['location']);
             $user->setCreatedAt(new \DateTime($userData['createdAt']));
             return $user;
         }

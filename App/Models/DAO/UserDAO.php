@@ -19,6 +19,7 @@ class UserDAO extends BaseDAO
             $user->setNickname($userData['nickname']);
             $user->setTag($userData['tag']);
             $user->setEmail($userData['email']);
+            $user->setPassword($userData['password']);
             $user->setLevel($userData['level']);
             $user->setXp($userData['xp']);
             $user->setAdmin($userData['admin']);
@@ -135,6 +136,15 @@ class UserDAO extends BaseDAO
             return $user->getIdUser();
         } catch (\Exception $e) {
             throw new \Exception("Erro no acesso aos dados.", 500);
+        }
+    }
+
+    public function drop(int $idUser)
+    {
+        try {
+            return $this->delete('Users', "idUser = $idUser");
+        } catch (\Exception $e) {
+            throw new \Exception("Erro ao excluir o usuario. " . $e->getMessage(), 500);
         }
     }
 }

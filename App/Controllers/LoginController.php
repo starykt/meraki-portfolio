@@ -24,7 +24,6 @@ class LoginController extends Controller
     Sessao::limpaFormulario();
     Sessao::limpaMensagem();
     Sessao::limpaErro();
-
   }
 
   public function save()
@@ -56,7 +55,17 @@ class LoginController extends Controller
     $user->setPassword($_POST['password']);
     $user->setCreatedAt(new \DateTime());
     $userDao = new UserDAO();
-    $userDao->save($user);
+    $userId = $userDao->save($user);
+
+    $randomImage = $this->setRandomAvatar($userDao, $userId);
+
+    if ($randomImage) {
+      $user->setAvatar($randomImage);
+    } else {
+      Sessao::gravaErro("Nenhuma imagem encontrada para o avatar.");
+      $this->redirect('/login/register');
+      return;
+    }
 
     Sessao::limpaFormulario();
     Sessao::limpaMensagem();
@@ -65,7 +74,28 @@ class LoginController extends Controller
     $this->redirect('/login/index');
   }
 
-
+  public function setRandomAvatar(UserDAO $userDao, $userId)
+  {
+      $dir = 'public/images/users';
+      $allowedImages = [
+          'cat.jpg', 'cogumelomario.jpg', 'cuphead.jpg', 'cupeahed2.jpg',
+          'enderman.jpg', 'mortalkombat.jpg', 'pacman.jpg', 'pikachu.jpg',
+          'psyducj.jpg', 'sonic2.jpg', 'thewitcher.jpg', 'undertale.jpg',
+          'zelda.jpg', 'amongus.jpg'
+      ];
+  
+      $randomImage = $allowedImages[array_rand($allowedImages)];
+  
+      $filePath = $dir . '/' . $randomImage;
+  
+      if (file_exists($filePath)) {
+          $userDao->updateAvatar($userId, $randomImage);
+          return $randomImage;
+      } else {
+          return false;
+      }
+  }
+  
 
   public function logout()
   {
@@ -100,7 +130,6 @@ class LoginController extends Controller
       Sessao::gravaErro("Usuário ou senha incorretos. Tente novamente!");
       $this->redirect('/login');
       return;
-
     }
 
     Sessao::gravaLogin($idUser);

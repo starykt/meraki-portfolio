@@ -25,6 +25,7 @@ class UserDAO extends BaseDAO
             $user->setAdmin($userData['admin']);
             $user->setResume($userData['resume']);
             $user->setLocation($userData['location']);
+            $user->setAvatar($userData['avatar']);
             $user->setCreatedAt(new \DateTime($userData['createdAt']));
             return $user;
         }
@@ -70,7 +71,7 @@ class UserDAO extends BaseDAO
             $xp = 0;
             $resume = $user->getResume();
             $admin = 1;
-            $createdAt = $user->getCreatedAt()->format('Y-m-d H:i:s'); 
+            $createdAt = $user->getCreatedAt()->format('Y-m-d H:i:s');
             $location = $user->getLocation();
 
             $params = [
@@ -139,6 +140,46 @@ class UserDAO extends BaseDAO
         }
     }
 
+    public function edit(User $user)
+    {
+        try {
+            $idUser = $user->getIdUser();
+            $nickname = $user->getNickname();
+            $email = $user->getEmail();
+            $resume = $user->getResume();
+            $location = $user->getLocation();
+            $avatar = $user->getAvatar(); 
+    
+            $params = [
+                ':idUser' => $idUser,
+                ':nickname' => $nickname,
+                ':email' => $email,
+                ':resume' => $resume,
+                ':location' => $location,
+            ];
+    
+            return $this->update('Users', "nickname = :nickname, email = :email, resume = :resume, location = :location", $params, "idUser = :idUser");
+        } catch (\Exception $e) {
+            throw new \Exception("Erro na atualização dos dados do usuário. " . $e->getMessage(), 500);
+        }
+    }
+
+    public function updateAvatar($idUserName, $avatarName)
+{
+  try {
+    $idUser = $idUserName;
+    $avatar = $avatarName;
+
+    $params = [
+        ':idUser' => $idUser,
+        ':avatar' => $avatar,
+    ];
+    return $this->update('Users', "avatar = :avatar", $params, "idUser = :idUser");
+} catch (\Exception $e) {
+    throw new \Exception("Erro na atualização dos dados. " . $e->getMessage(), 500);
+}
+}
+    
     public function drop(int $idUser)
     {
         try {

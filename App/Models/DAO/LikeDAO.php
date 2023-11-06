@@ -3,6 +3,7 @@
 namespace App\Models\DAO;
 
 use App\Models\Entidades\Like;
+use App\Models\Entidades\Project;
 use Exception;
 
 class LikeDAO extends BaseDAO
@@ -63,7 +64,33 @@ class LikeDAO extends BaseDAO
     
         return false; 
     }
+    public function getUserMostLikedProjects($idUser)
+{
+    $resultado = $this->select("SELECT p.idProject, p.title, p.description, p.created_At, COUNT(l.idProject) AS likeCount 
+            FROM Projects p
+            LEFT JOIN Likes l ON p.idProject = l.idProject
+            WHERE p.idUser = $idUser
+            GROUP BY p.idProject
+            ORDER BY likeCount DESC LIMIT 0, 25");
+
+    $projects = [];
+    while ($row = $resultado->fetch()) {
+        $project = new Project();
+        $project->setIdProject($row['idProject']);
+        $project->setTitle($row['title']);
+        $project->setDescription($row['description']);
+        $project->setCreated_At(new \DateTime($row['created_At']));
+        $project->setLikesCount($row['likeCount']);
+        $projects[] = $project;
+    }
+
+    return $projects;
+}
+
     
-        
+    
+    
+    
+    
     
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models\Entidades;
 
+use App\Models\DAO\ProjectDAO;
+
 class Project
 {
 	private int $idProject;
@@ -19,6 +21,42 @@ class Project
 	private array $comments;
 
 	private $creatorUser;
+	private int $likesCount;
+	private $mostLikedProjects;
+	private $details;
+
+	public function setDetails($details)
+	{
+			$this->details = $details;
+	}
+
+	public function getDetails()
+	{
+			return $this->details;
+	}
+
+	public function setMostLikedProjects(array $mostLikedProjects)
+	{
+			$this->mostLikedProjects = $mostLikedProjects;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getLikesCount(): int
+	{
+			return $this->likesCount;
+	}
+
+	/**
+	 * @param int $likesCount
+	 * @return self
+	 */
+	public function setLikesCount(int $likesCount): self
+	{
+			$this->likesCount = $likesCount;
+			return $this;
+	}
 
 	public function getComments(): array
 	{

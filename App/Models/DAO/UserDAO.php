@@ -2,6 +2,7 @@
 
 namespace App\Models\DAO;
 
+use App\Models\Entidades\Project;
 use App\Models\Entidades\User;
 use Exception;
 
@@ -179,7 +180,6 @@ class UserDAO extends BaseDAO
     throw new \Exception("Erro na atualização dos dados. " . $e->getMessage(), 500);
 }
 }
-    
     public function drop(int $idUser)
     {
         try {

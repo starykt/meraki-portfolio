@@ -27,6 +27,30 @@ class ProjectDAO extends BaseDAO
         return null;
     }
 
+    public function getByLiked(int $idProject)
+    {
+        $resultado = $this->select("SELECT * FROM Projects WHERE idProject = $idProject");
+        $projectData = $resultado->fetch();
+
+        if ($projectData) {
+            $project = new Project();
+            $project->setIdProject($projectData['idProject']);
+            $project->setTitle($projectData['title']);
+            $project->setDescription($projectData['description']);
+            $project->setCreated_At(new \DateTime($projectData['created_At']));
+            $userDAO = new UserDAO();
+            $idUser = $userDAO->getById($projectData['idUser']);
+            $project->setIdUser($idUser);
+            $likeDAO = new LikeDAO();
+            $mostLikedProjects = $likeDAO->getUserMostLikedProjects($project->getIdUser()->getIdUser());
+            $project->setMostLikedProjects($mostLikedProjects);
+
+            return $project;
+        }
+
+        return null;
+    }
+
     public function save(Project $project)
     {
         try {
@@ -53,9 +77,9 @@ class ProjectDAO extends BaseDAO
         try {
             $projects = [];
             $result = $this->select("SELECT * FROM Projects");
-    
-            $userDAO = new UserDAO(); 
-              
+
+            $userDAO = new UserDAO();
+
             while ($projectData = $result->fetch()) {
                 $project = new Project();
                 $project->setIdProject($projectData['idProject']);
@@ -63,10 +87,10 @@ class ProjectDAO extends BaseDAO
                 $project->setDescription($projectData['description']);
                 $project->setCreated_At(new \DateTime($projectData['created_At']));
 
-    
+
                 $projects[] = $project;
             }
-    
+
             return $projects;
         } catch (\Exception $e) {
             throw new \Exception("Error fetching projects. " . $e->getMessage(), 500);

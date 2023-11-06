@@ -80,7 +80,7 @@ class LoginController extends Controller
       $allowedImages = [
           'cat.jpg', 'cogumelomario.jpg', 'cuphead.jpg', 'cupeahed2.jpg',
           'enderman.jpg', 'mortalkombat.jpg', 'pacman.jpg', 'pikachu.jpg',
-          'psyducj.jpg', 'sonic2.jpg', 'thewitcher.jpg', 'undertale.jpg',
+          'psyduck.jpg', 'sonic2.jpg', 'thewitcher.jpg', 'undertale.jpg',
           'zelda.jpg', 'amongus.jpg'
       ];
   

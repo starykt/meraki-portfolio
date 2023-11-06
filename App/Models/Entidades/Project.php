@@ -24,6 +24,17 @@ class Project
 	private int $likesCount;
 	private $mostLikedProjects;
 	private $details;
+	private $saveStatus;
+
+	public function setSaveStatus($saveStatus)
+	{
+		$this->saveStatus = $saveStatus;
+	}
+
+	public function getSaveStatus()
+	{
+		return $this->saveStatus;
+	}
 
 	public function setDetails($details)
 	{

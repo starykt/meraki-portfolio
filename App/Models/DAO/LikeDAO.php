@@ -64,6 +64,7 @@ class LikeDAO extends BaseDAO
     
         return false; 
     }
+    
     public function getUserMostLikedProjects($idUser)
 {
     $resultado = $this->select("SELECT p.idProject, p.title, p.description, p.created_At, COUNT(l.idProject) AS likeCount 

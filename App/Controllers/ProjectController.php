@@ -13,6 +13,7 @@ use App\Models\DAO\ImageDAO;
 use App\Models\DAO\LikeDAO;
 use App\Models\DAO\ProjectDAO;
 use App\Models\DAO\ReportDAO;
+use App\Models\DAO\SaveProjectDAO;
 use App\Models\DAO\UserDAO;
 use App\Models\Entidades\Comment;
 use App\Models\Entidades\File;
@@ -60,6 +61,51 @@ class ProjectController extends Controller
     self::setViewParam('user', $userDAO->getById($_SESSION['idUser']));
 
     $this->render('/project/feed');
+
+    Sessao::limpaMensagem();
+    Sessao::limpaErro();
+}
+
+public function list()
+{
+    $this->auth();
+    $projectDAO = new ProjectDAO();
+    $projects = $projectDAO->list();
+    $likeDAO = new LikeDAO();
+    $userDAO = new UserDAO();
+    $commentDAO = new CommentDAO();
+    $saveDAO = new SaveProjectDAO();
+
+    foreach ($projects as $project) {
+        $imageDAO = new ImageDAO();
+        $images = $imageDAO->getImagesByProjectId($project->getIdProject());
+        $project->setImages($images);
+
+        $fileDAO = new FileDAO();
+        $files = $fileDAO->getFilesByProjectId($project->getIdProject());
+        $project->setFiles($files);
+
+        $hashtagDAO = new HashtagProjectDAO();
+        $hashtags = $hashtagDAO->getByProjectId($project->getIdProject());
+        $project->setHashtags($hashtags);
+
+        $likeCount = $likeDAO->getLikeCountByArticleId($project->getIdProject());
+        $project->setLikeCount($likeCount);
+
+        $likeStatus = $likeDAO->getLikeStatus($project->getIdProject(), $_SESSION['idUser']);
+        $project->setLikeStatus($likeStatus);
+
+        $saveStatus = $saveDAO->getSaveStatus($project->getIdProject(), $_SESSION['idUser']);
+        $project->setSaveStatus($saveStatus);
+
+        $comments = $commentDAO->getCommentsByProjectId($project->getIdProject());
+        $project->setComments($comments);
+    }
+
+    self::setViewParam('listProject', $projects);
+    self::setViewParam('user', $userDAO->getById($_SESSION['idUser']));
+
+    $this->render('/project/list');
 
     Sessao::limpaMensagem();
     Sessao::limpaErro();
@@ -439,6 +485,25 @@ class ProjectController extends Controller
       }
   
       $this->redirect('/project');
+  }
+
+  public function saveProjectFavorite($params)
+  {
+      $this->auth();
+      $userDAO = new UserDAO();
+      $user = $userDAO->getById($_SESSION['idUser']);
+  
+      $idProject = $params[0];
+      $saveProjectDAO = new SaveProjectDAO();
+      $saveStatus = $saveProjectDAO->getSaveStatus($idProject, $user->getIdUser());
+  
+      if ($saveStatus) {
+          $saveProjectDAO->deleteSave($idProject, $user->getIdUser());
+      } else {
+          $saveProjectDAO->createSave($idProject, $user->getIdUser());
+      }
+  
+      $this->redirect('/project/list');
   }
 
   public function comment()

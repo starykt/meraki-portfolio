@@ -116,6 +116,7 @@ class UserController extends Controller
   }
 
 
+  
   public function deleteConfirm()
   {
     $this->auth();

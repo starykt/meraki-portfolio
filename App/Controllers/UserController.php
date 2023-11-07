@@ -55,6 +55,46 @@ class UserController extends Controller
     Sessao::limpaErro();
   }
 
+  public function profileUsers($params)
+  {
+    $this->auth();
+    $idUser = $params[0];
+    $userDao = new UserDAO();
+    $user = $userDao->getById($idUser);
+    $this->setViewParam('user', $user);
+    $likeDAO = new LikeDAO();
+    $projectDao = new ProjectDAO();
+
+
+    $mostLikedProjects = $likeDAO->getUserMostLikedProjects($idUser);
+    foreach ($mostLikedProjects as $project) {
+      $project->setDetails($projectDao->getById($project->getIdProject()));
+      
+        $imageDAO = new ImageDAO();
+        $images = $imageDAO->getImagesByProjectId($project->getIdProject());
+        $project->setImages($images);
+
+        $fileDAO = new FileDAO();
+        $files = $fileDAO->getFilesByProjectId($project->getIdProject());
+        $project->setFiles($files);
+
+        $hashtagDAO = new HashtagProjectDAO();
+        $hashtags = $hashtagDAO->getByProjectId($project->getIdProject());
+        $project->setHashtags($hashtags);
+
+        $likeCount = $likeDAO->getLikeCountByArticleId($project->getIdProject());
+        $project->setLikeCount($likeCount);
+
+        $likeStatus = $likeDAO->getLikeStatus($project->getIdProject(), $_SESSION['idUser']);
+        $project->setLikeStatus($likeStatus);
+
+    }
+
+    $this->setViewParam('projects', $mostLikedProjects);
+    $this->render('/user/profileUsers');
+    Sessao::limpaMensagem();
+    Sessao::limpaErro();
+  }
 
   public function delete()
   {
@@ -63,6 +103,18 @@ class UserController extends Controller
     Sessao::limpaMensagem();
     Sessao::limpaErro();
   }
+
+  public function listUsers()
+  {
+    $this->auth();
+    $userDao = new UserDAO();
+    $user = $userDao->list();
+    $this->setViewParam('users', $user);
+    $this->render('/user/listUsers');
+    Sessao::limpaMensagem();
+    Sessao::limpaErro();
+  }
+
 
   public function deleteConfirm()
   {

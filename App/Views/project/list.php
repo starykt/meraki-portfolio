@@ -1,8 +1,11 @@
-
-
-<p>sdfsdfsd</p>
-<p>sdfsdfsd</p>
-<p>sdfsdfsd</p>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 <a href="http://<?= APP_HOST ?>/project/register">
     <button class="not-a-player-button">Cadastrar projeto</button>
@@ -18,6 +21,9 @@
 
 <?php foreach ($viewVar['listProject'] as $project) { ?>
     <br>
+    Criado por: 
+    <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $project->getUser()->getAvatar(); ?>" width="50px" height="50px" alt="Foto de Perfil">
+    <?= $project->getUser()->getNickname() ?> #<?= $project->getUser()->getTag() ?> <br>
     <div class="card-project">
         <strong><?= $project->getTitle() ?></strong> <br>
         <strong><?= $project->getDescription() ?></strong> <br>
@@ -43,10 +49,11 @@
                     <span>#<?= $hashtagProject->getHashtag()->getHashtag() ?></span>
                 <?php } ?>
             </div>
-        <?php } ?>
-
+        <?php } if($project->getUser()->getIdUser() == $_SESSION["idUser"]){?>
+        
         <a href="http://<?= APP_HOST ?>/project/alter/<?= $project->getIdProject() ?>"> editar </a><br>
         <a href="http://<?= APP_HOST ?>/project/delete?idProject=<?= $project->getIdProject() ?>"> excluir </a></br>
+        <?php }?>
         <a href="http://<?= APP_HOST ?>/project/report/<?= $project->getIdProject() ?>"> report </a>
         <form method="POST" action="http://<?php echo APP_HOST; ?>/project/like/<?= $project->getIdProject(); ?>">
             <button id="likeButton" type="submit" name="likeButton" class="like-button" onclick="likeButtonClick(this);">

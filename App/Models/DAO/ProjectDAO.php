@@ -3,6 +3,7 @@
 namespace App\Models\DAO;
 
 use App\Models\Entidades\Project;
+use App\Models\Entidades\User;
 use Exception;
 
 class ProjectDAO extends BaseDAO
@@ -11,21 +12,27 @@ class ProjectDAO extends BaseDAO
     {
         $resultado = $this->select("SELECT * FROM Projects WHERE idProject = $idProject");
         $projectData = $resultado->fetch();
-
+    
         if ($projectData) {
             $project = new Project();
             $project->setIdProject($projectData['idProject']);
             $project->setTitle($projectData['title']);
             $project->setDescription($projectData['description']);
             $project->setCreated_At(new \DateTime($projectData['created_At']));
+    
+            // Obtém informações adicionais do usuário associado ao projeto
             $userDAO = new UserDAO();
-            $idUser = $userDAO->getById($projectData['idUser']);
-            $project->setIdUser($idUser);
+            $user = $userDAO->getById($projectData['idUser']);
+    
+            // Define o usuário no objeto do projeto
+            $project->setUser($user);
+    
             return $project;
         }
-
+    
         return null;
     }
+    
 
     public function getByLiked(int $idProject)
     {

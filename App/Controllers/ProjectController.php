@@ -26,7 +26,7 @@ use App\Models\Entidades\User;
 class ProjectController extends Controller
 {
   public function index()
-{
+  {
     $this->auth();
     $projectDAO = new ProjectDAO();
     $projects = $projectDAO->list();
@@ -35,26 +35,26 @@ class ProjectController extends Controller
     $commentDAO = new CommentDAO();
 
     foreach ($projects as $project) {
-        $imageDAO = new ImageDAO();
-        $images = $imageDAO->getImagesByProjectId($project->getIdProject());
-        $project->setImages($images);
+      $imageDAO = new ImageDAO();
+      $images = $imageDAO->getImagesByProjectId($project->getIdProject());
+      $project->setImages($images);
 
-        $fileDAO = new FileDAO();
-        $files = $fileDAO->getFilesByProjectId($project->getIdProject());
-        $project->setFiles($files);
+      $fileDAO = new FileDAO();
+      $files = $fileDAO->getFilesByProjectId($project->getIdProject());
+      $project->setFiles($files);
 
-        $hashtagDAO = new HashtagProjectDAO();
-        $hashtags = $hashtagDAO->getByProjectId($project->getIdProject());
-        $project->setHashtags($hashtags);
+      $hashtagDAO = new HashtagProjectDAO();
+      $hashtags = $hashtagDAO->getByProjectId($project->getIdProject());
+      $project->setHashtags($hashtags);
 
-        $likeCount = $likeDAO->getLikeCountByArticleId($project->getIdProject());
-        $project->setLikeCount($likeCount);
+      $likeCount = $likeDAO->getLikeCountByArticleId($project->getIdProject());
+      $project->setLikeCount($likeCount);
 
-        $likeStatus = $likeDAO->getLikeStatus($project->getIdProject(), $_SESSION['idUser']);
-        $project->setLikeStatus($likeStatus);
+      $likeStatus = $likeDAO->getLikeStatus($project->getIdProject(), $_SESSION['idUser']);
+      $project->setLikeStatus($likeStatus);
 
-        $comments = $commentDAO->getCommentsByProjectId($project->getIdProject());
-        $project->setComments($comments);
+      $comments = $commentDAO->getCommentsByProjectId($project->getIdProject());
+      $project->setComments($comments);
     }
 
     self::setViewParam('listProject', $projects);
@@ -64,53 +64,69 @@ class ProjectController extends Controller
 
     Sessao::limpaMensagem();
     Sessao::limpaErro();
-}
+  }
 
-public function list()
-{
+
+  public function list()
+  {
     $this->auth();
-    $projectDAO = new ProjectDAO();
-    $projects = $projectDAO->list();
-    $likeDAO = new LikeDAO();
+    $saveProjectDAO = new ProjectDAO();
+    $savedProjects = $saveProjectDAO->list();
     $userDAO = new UserDAO();
-    $commentDAO = new CommentDAO();
-    $saveDAO = new SaveProjectDAO();
+    $projectDAO = new ProjectDAO();
+    $projectsToDisplay = []; // Nova lista para armazenar projetos a serem exibidos
 
-    foreach ($projects as $project) {
-        $imageDAO = new ImageDAO();
-        $images = $imageDAO->getImagesByProjectId($project->getIdProject());
-        $project->setImages($images);
+    foreach ($savedProjects as $savedProject) {
+      $idProject = $savedProject->getIdProject();
+      $project = $projectDAO->getById($idProject);
 
-        $fileDAO = new FileDAO();
-        $files = $fileDAO->getFilesByProjectId($project->getIdProject());
-        $project->setFiles($files);
+      // Obter e definir imagens para o projeto
+      $imageDAO = new ImageDAO();
+      $images = $imageDAO->getImagesByProjectId($idProject);
+      $project->setImages($images);
 
-        $hashtagDAO = new HashtagProjectDAO();
-        $hashtags = $hashtagDAO->getByProjectId($project->getIdProject());
-        $project->setHashtags($hashtags);
+      // Obter e definir arquivos para o projeto
+      $fileDAO = new FileDAO();
+      $files = $fileDAO->getFilesByProjectId($idProject);
+      $project->setFiles($files);
 
-        $likeCount = $likeDAO->getLikeCountByArticleId($project->getIdProject());
-        $project->setLikeCount($likeCount);
+      // Obter e definir hashtags para o projeto
+      $hashtagDAO = new HashtagProjectDAO();
+      $hashtags = $hashtagDAO->getByProjectId($idProject);
+      $project->setHashtags($hashtags);
 
-        $likeStatus = $likeDAO->getLikeStatus($project->getIdProject(), $_SESSION['idUser']);
-        $project->setLikeStatus($likeStatus);
+      // Obter e definir contagem de curtidas para o projeto
+      $likeDAO = new LikeDAO();
+      $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
+      $project->setLikeCount($likeCount);
 
-        $saveStatus = $saveDAO->getSaveStatus($project->getIdProject(), $_SESSION['idUser']);
-        $project->setSaveStatus($saveStatus);
+      // Obter e definir status de curtida para o projeto pelo usuário atual
+      $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
+      $project->setLikeStatus($likeStatus);
 
-        $comments = $commentDAO->getCommentsByProjectId($project->getIdProject());
-        $project->setComments($comments);
+      // Obter e definir status de salvamento para o projeto pelo usuário atual
+      $saveDAO = new SaveProjectDAO();
+      $saveStatus = $saveDAO->getSaveStatus($idProject, $_SESSION['idUser']);
+      $project->setSaveStatus($saveStatus);
+
+      // Obter e definir comentários para o projeto
+      $commentDAO = new CommentDAO();
+      $comments = $commentDAO->getCommentsByProjectId($idProject);
+      $project->setComments($comments);
+
+      // Adicionando o projeto com informações adicionais ao array
+      $projectsToDisplay[] = $project;
     }
 
-    self::setViewParam('listProject', $projects);
+    self::setViewParam('listProject', $projectsToDisplay);
     self::setViewParam('user', $userDAO->getById($_SESSION['idUser']));
 
     $this->render('/project/list');
 
     Sessao::limpaMensagem();
     Sessao::limpaErro();
-}
-
+  }
+ 
 
   public function alter()
   {
@@ -470,80 +486,132 @@ public function list()
 
   public function like($params)
   {
-      $this->auth();
-      $userDAO = new UserDAO();
-      $user = $userDAO->getById($_SESSION['idUser']);
-  
-      $idProject = $params[0];
-      $likeDAO = new LikeDAO();
-      $likeStatus = $likeDAO->getLikeStatus($idProject, $user->getIdUser());
-  
-      if ($likeStatus) {
-          $likeDAO->deleteLike($idProject, $user->getIdUser());
-      } else {
-          $likeDAO->createLike($idProject, $user->getIdUser());
-      }
-  
-      $this->redirect('/project');
+    $this->auth();
+    $userDAO = new UserDAO();
+    $user = $userDAO->getById($_SESSION['idUser']);
+
+    $idProject = $params[0];
+    $likeDAO = new LikeDAO();
+    $likeStatus = $likeDAO->getLikeStatus($idProject, $user->getIdUser());
+
+    if ($likeStatus) {
+      $likeDAO->deleteLike($idProject, $user->getIdUser());
+    } else {
+      $likeDAO->createLike($idProject, $user->getIdUser());
+    }
+
+    $this->redirect('/project');
   }
 
   public function saveProjectFavorite($params)
   {
-      $this->auth();
-      $userDAO = new UserDAO();
-      $user = $userDAO->getById($_SESSION['idUser']);
-  
-      $idProject = $params[0];
-      $saveProjectDAO = new SaveProjectDAO();
-      $saveStatus = $saveProjectDAO->getSaveStatus($idProject, $user->getIdUser());
-  
-      if ($saveStatus) {
-          $saveProjectDAO->deleteSave($idProject, $user->getIdUser());
-      } else {
-          $saveProjectDAO->createSave($idProject, $user->getIdUser());
-      }
-  
-      $this->redirect('/project/list');
+    $this->auth();
+    $userDAO = new UserDAO();
+    $user = $userDAO->getById($_SESSION['idUser']);
+
+    $idProject = $params[0];
+    $saveProjectDAO = new SaveProjectDAO();
+    $saveStatus = $saveProjectDAO->getSaveStatus($idProject, $user->getIdUser());
+
+    if ($saveStatus) {
+      $saveProjectDAO->deleteSave($idProject, $user->getIdUser());
+    } else {
+      $saveProjectDAO->createSave($idProject, $user->getIdUser());
+    }
+
+    $this->redirect('/project/list');
   }
 
   public function comment()
   {
-      $this->auth();
-      $user = new UserDAO; 
-      self::setViewParam('user', $user->getById($_SESSION['idUser']));
-  
-      $user = new UserDAO();
-      $projectDAO = new ProjectDAO();
+    $this->auth();
+    $user = new UserDAO;
+    self::setViewParam('user', $user->getById($_SESSION['idUser']));
+
+    $user = new UserDAO();
+    $projectDAO = new ProjectDAO();
+    $commentDAO = new CommentDAO();
+
+    $user = $user->getById($_SESSION['idUser']);
+
+    $idProject = basename($_SERVER['REQUEST_URI']);
+    $idProject = intval($idProject);
+
+    $article = $projectDAO->getById($idProject);
+    $comment = new Comment();
+    $comment->setText(nl2br($_POST['text']));
+    $comment->setUser($user);
+    $comment->setProject($article);
+    $comment->setDateCreate(new \DateTime());
+    $commentDAO->save($comment);
+
+    $this->redirect('/project');
+  }
+
+  public function deleteComment($params)
+  {
+    $this->auth();
+
+    $idComentario = $params[0];
+    $commentDAO = new CommentDAO();
+
+    $commentDAO->drop($idComentario);
+
+    $this->redirect('/project');
+  }
+  public function listSaves()
+  {
+    $saveProjectDAO = new SaveProjectDAO();
+    $idUser = $_SESSION["idUser"];
+    $savedProjects = $saveProjectDAO->getSavedProjectsByUserId($idUser);
+
+    $projectDAO = new ProjectDAO();
+    $projectsToDisplay = []; // Nova lista para armazenar projetos a serem exibidos
+
+    foreach ($savedProjects as $savedProject) {
+      $idProject = $savedProject->getIdProject();
+      $project = $projectDAO->getById($idProject);
+
+      // Obter e definir imagens para o projeto
+      $imageDAO = new ImageDAO();
+      $images = $imageDAO->getImagesByProjectId($idProject);
+      $project->setImages($images);
+
+      // Obter e definir arquivos para o projeto
+      $fileDAO = new FileDAO();
+      $files = $fileDAO->getFilesByProjectId($idProject);
+      $project->setFiles($files);
+
+      // Obter e definir hashtags para o projeto
+      $hashtagDAO = new HashtagProjectDAO();
+      $hashtags = $hashtagDAO->getByProjectId($idProject);
+      $project->setHashtags($hashtags);
+
+      // Obter e definir contagem de curtidas para o projeto
+      $likeDAO = new LikeDAO();
+      $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
+      $project->setLikeCount($likeCount);
+
+      // Obter e definir status de curtida para o projeto pelo usuário atual
+      $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
+      $project->setLikeStatus($likeStatus);
+
+      // Obter e definir status de salvamento para o projeto pelo usuário atual
+      $saveDAO = new SaveProjectDAO();
+      $saveStatus = $saveDAO->getSaveStatus($idProject, $_SESSION['idUser']);
+      $project->setSaveStatus($saveStatus);
+
+      // Obter e definir comentários para o projeto
       $commentDAO = new CommentDAO();
+      $comments = $commentDAO->getCommentsByProjectId($idProject);
+      $project->setComments($comments);
 
-      $user = $user->getById($_SESSION['idUser']);
-      
-      $idProject = basename($_SERVER['REQUEST_URI']);
-      $idProject = intval($idProject);
+      // Adicionando o projeto com informações adicionais ao array
+      $projectsToDisplay[] = $project;
+    }
 
-      $article = $projectDAO->getById($idProject);
-      $comment = new Comment();
-      $comment->setText(nl2br($_POST['text']));
-      $comment->setUser($user);
-      $comment->setProject($article);
-      $comment->setDateCreate(new \DateTime());
-      $commentDAO->save($comment);
-
-      $this->redirect('/project');
-
-      }
-
-      public function deleteComment($params)
-      {
-              $this->auth();
-              
-              $idComentario = $params[0];
-              $commentDAO = new CommentDAO();
-          
-              $commentDAO->drop($idComentario);
-           
-              $this->redirect('/project');
-      
-      }
-  
+    // Defina a variável de visualização para os projetos a serem exibidos
+    self::setViewParam('savedProjects', $projectsToDisplay);
+    $this->render('/project/listSaves');
+  }
 }

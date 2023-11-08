@@ -26,6 +26,18 @@ class Project
 	private $details;
 	private $saveStatus;
 
+	private $user; // Propriedade para armazenar o objeto User associado ao projeto
+
+	// ... Outras propriedades e métodos ...
+
+	public function getUser() {
+			return $this->user;
+	}
+
+	public function setUser(User $user) {
+			$this->user = $user;
+	}
+
 	public function setSaveStatus($saveStatus)
 	{
 		$this->saveStatus = $saveStatus;

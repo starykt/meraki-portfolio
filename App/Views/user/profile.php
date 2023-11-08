@@ -17,9 +17,7 @@ XP: <?= $viewVar['user']->getXp() ?><br>
 Resumo: <?= $viewVar['user']->getResume() ?><br>
 Local: <?= $viewVar['user']->getLocation() ?><br>
 Admin? <?php if ($viewVar['user']->getAdmin() == true) { ?>
-  Sim, adm
-<?php } else { ?>
-  não, pobre
+  ADMINISTRADOR
 <?php } ?> <br>
 Perfil criado em: <?= $viewVar['user']->getCreatedAt()->format('Y-m-d H:i:s') ?><br>
 <br>

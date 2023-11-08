@@ -56,6 +56,7 @@ class ProjectController extends Controller
       $comments = $commentDAO->getCommentsByProjectId($project->getIdProject());
       $project->setComments($comments);
     }
+    
 
     self::setViewParam('listProject', $projects);
     self::setViewParam('user', $userDAO->getById($_SESSION['idUser']));
@@ -74,47 +75,39 @@ class ProjectController extends Controller
     $savedProjects = $saveProjectDAO->list();
     $userDAO = new UserDAO();
     $projectDAO = new ProjectDAO();
-    $projectsToDisplay = []; // Nova lista para armazenar projetos a serem exibidos
+    $projectsToDisplay = []; 
 
     foreach ($savedProjects as $savedProject) {
       $idProject = $savedProject->getIdProject();
       $project = $projectDAO->getById($idProject);
 
-      // Obter e definir imagens para o projeto
       $imageDAO = new ImageDAO();
       $images = $imageDAO->getImagesByProjectId($idProject);
       $project->setImages($images);
 
-      // Obter e definir arquivos para o projeto
       $fileDAO = new FileDAO();
       $files = $fileDAO->getFilesByProjectId($idProject);
       $project->setFiles($files);
 
-      // Obter e definir hashtags para o projeto
       $hashtagDAO = new HashtagProjectDAO();
       $hashtags = $hashtagDAO->getByProjectId($idProject);
       $project->setHashtags($hashtags);
 
-      // Obter e definir contagem de curtidas para o projeto
       $likeDAO = new LikeDAO();
       $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
       $project->setLikeCount($likeCount);
 
-      // Obter e definir status de curtida para o projeto pelo usuário atual
       $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
       $project->setLikeStatus($likeStatus);
 
-      // Obter e definir status de salvamento para o projeto pelo usuário atual
       $saveDAO = new SaveProjectDAO();
       $saveStatus = $saveDAO->getSaveStatus($idProject, $_SESSION['idUser']);
       $project->setSaveStatus($saveStatus);
 
-      // Obter e definir comentários para o projeto
       $commentDAO = new CommentDAO();
       $comments = $commentDAO->getCommentsByProjectId($idProject);
       $project->setComments($comments);
 
-      // Adicionando o projeto com informações adicionais ao array
       $projectsToDisplay[] = $project;
     }
 
@@ -566,52 +559,99 @@ class ProjectController extends Controller
     $savedProjects = $saveProjectDAO->getSavedProjectsByUserId($idUser);
 
     $projectDAO = new ProjectDAO();
-    $projectsToDisplay = []; // Nova lista para armazenar projetos a serem exibidos
+    $projectsToDisplay = []; 
 
     foreach ($savedProjects as $savedProject) {
       $idProject = $savedProject->getIdProject();
       $project = $projectDAO->getById($idProject);
 
-      // Obter e definir imagens para o projeto
       $imageDAO = new ImageDAO();
       $images = $imageDAO->getImagesByProjectId($idProject);
       $project->setImages($images);
 
-      // Obter e definir arquivos para o projeto
       $fileDAO = new FileDAO();
       $files = $fileDAO->getFilesByProjectId($idProject);
       $project->setFiles($files);
 
-      // Obter e definir hashtags para o projeto
       $hashtagDAO = new HashtagProjectDAO();
       $hashtags = $hashtagDAO->getByProjectId($idProject);
       $project->setHashtags($hashtags);
 
-      // Obter e definir contagem de curtidas para o projeto
       $likeDAO = new LikeDAO();
       $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
       $project->setLikeCount($likeCount);
 
-      // Obter e definir status de curtida para o projeto pelo usuário atual
       $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
       $project->setLikeStatus($likeStatus);
 
-      // Obter e definir status de salvamento para o projeto pelo usuário atual
       $saveDAO = new SaveProjectDAO();
       $saveStatus = $saveDAO->getSaveStatus($idProject, $_SESSION['idUser']);
       $project->setSaveStatus($saveStatus);
 
-      // Obter e definir comentários para o projeto
       $commentDAO = new CommentDAO();
       $comments = $commentDAO->getCommentsByProjectId($idProject);
       $project->setComments($comments);
 
-      // Adicionando o projeto com informações adicionais ao array
       $projectsToDisplay[] = $project;
     }
-
-    // Defina a variável de visualização para os projetos a serem exibidos
     self::setViewParam('savedProjects', $projectsToDisplay);
     $this->render('/project/listSaves');
   }
+  public function mostRecentSavedProjects()
+  {
+      $this->auth();
+  
+      $saveProjectDAO = new SaveProjectDAO();
+      $likeDAO = new LikeDAO();
+      $idUser = $_SESSION['idUser'];
+      $savedProjects = $saveProjectDAO->getSavedProjectsByUserId($idUser);
+  
+      $projectDAO = new ProjectDAO();
+      $imageDAO = new ImageDAO();
+      $fileDAO = new FileDAO();
+      $hashtagDAO = new HashtagProjectDAO();
+      $commentDAO = new CommentDAO();
+  
+      $projectsToDisplay = [];
+  
+      foreach ($savedProjects as $savedProject) {
+          $idProject = $savedProject->getIdProject();
+          $project = $projectDAO->getById($idProject);
+  
+          $imageDAO = new ImageDAO();
+          $images = $imageDAO->getImagesByProjectId($idProject);
+          $project->setImages($images);
+  
+          $fileDAO = new FileDAO();
+          $files = $fileDAO->getFilesByProjectId($idProject);
+          $project->setFiles($files);
+  
+          $hashtagDAO = new HashtagProjectDAO();
+          $hashtags = $hashtagDAO->getByProjectId($idProject);
+          $project->setHashtags($hashtags);
+  
+          $likeDAO = new LikeDAO();
+          $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
+          $project->setLikeCount($likeCount);
+  
+          $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
+          $project->setLikeStatus($likeStatus);
+  
+          $commentDAO = new CommentDAO();
+          $comments = $commentDAO->getCommentsByProjectId($idProject);
+          $project->setComments($comments);
+  
+          $projectsToDisplay[] = $project;
+      }
+
+      usort($projectsToDisplay, function($a, $b) {
+          return $b->getCreated_At() <=> $a->getCreated_At();
+      });
+  
+      self::setViewParam('savedProjects', $projectsToDisplay);
+      $this->render('/project/mostRecentSavedProjects');
+  }
+  
+
+
 }

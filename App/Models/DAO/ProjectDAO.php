@@ -19,12 +19,9 @@ class ProjectDAO extends BaseDAO
             $project->setTitle($projectData['title']);
             $project->setDescription($projectData['description']);
             $project->setCreated_At(new \DateTime($projectData['created_At']));
-    
-            // Obtém informações adicionais do usuário associado ao projeto
             $userDAO = new UserDAO();
             $user = $userDAO->getById($projectData['idUser']);
     
-            // Define o usuário no objeto do projeto
             $project->setUser($user);
     
             return $project;
@@ -36,7 +33,7 @@ class ProjectDAO extends BaseDAO
 
     public function getByLiked(int $idProject)
     {
-        $resultado = $this->select("SELECT * FROM Projects WHERE idProject = $idProject");
+        $resultado = $this->select("SELECT * FROM Projects WHERE idProject = $idProject ORDER BY created_At DESC");
         $projectData = $resultado->fetch();
 
         if ($projectData) {
@@ -83,7 +80,7 @@ class ProjectDAO extends BaseDAO
     {
         try {
             $projects = [];
-            $result = $this->select("SELECT * FROM Projects");
+            $result = $this->select("SELECT * FROM Projects ORDER BY created_At DESC");
 
             $userDAO = new UserDAO();
 

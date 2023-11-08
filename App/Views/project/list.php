@@ -27,7 +27,7 @@
     <div class="card-project">
         <strong><?= $project->getTitle() ?></strong> <br>
         <strong><?= $project->getDescription() ?></strong> <br>
-        <strong><?= $project->getCreated_At()->format('Y-m-d H:i:s') ?></strong> <br>
+        <strong><?= $project->getCreated_At()->format('d/m/Y H:i:s') ?></strong> <br>
 
         <?php if ($project->hasImages()) { ?>
             <?php foreach ($project->getImages() as $image) { ?>
@@ -84,11 +84,12 @@
     <?php foreach ($project->getComments() as $comment) {
         $user = $comment->getUser(); ?>
     <div class="comment">
-        <strong><?= $comment->getText() ?></strong> <br>
-        Comentado por: <?= $comment->getUser()->getNickname() ?> #<?= $user->getTag() ?> <br>
-         <?= $comment->getDateCreate()->format('Y-m-d H:i:s') ?> <br>
-         <form action="http://<?php echo APP_HOST; ?>/project/deleteComment/<?= $comment->getIdComment() ?>" method="post" id="form_cadastro">
-                <button type="submit" class="buttonSubmit">Excluir</button>
+    Comentado por:  <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $user->getAvatar(); ?>" width="50px" height="50px" alt="Foto de Perfil">
+      <?= $comment->getUser()->getNickname() ?> #<?= $user->getTag() ?> <br>
+      <strong><?= $comment->getText() ?></strong> <br>
+      <?= $comment->getDateCreate()->format('d-m-Y H:i:s') ?> <br>
+      <form action="http://<?php echo APP_HOST; ?>/project/deleteComment/<?= $comment->getIdComment() ?>" method="post" id="form_cadastro">
+        <button type="submit" class="buttonSubmit">Excluir</button>
             </div>
         </form>
     </div> <br>

@@ -21,7 +21,7 @@
         </tr>
     <?php
       } else {
-        if ($viewVar['userPosition'] > 5) { // Verifica se o usuário logado está abaixo do top 5
+        if ($viewVar['userPosition'] > 5) { 
     ?>
           <tr>
             <td>.....</td>

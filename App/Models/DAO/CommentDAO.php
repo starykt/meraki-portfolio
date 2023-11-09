@@ -109,7 +109,23 @@ class CommentDAO extends BaseDAO
 
     }
     
-
+    public function getCommentCountByUserId($idUser)
+    {
+        $resultado = $this->select(
+            "SELECT COUNT(*) as commentCount FROM Comments 
+            INNER JOIN Projects ON Comments.idProject = Projects.idProject 
+            WHERE Projects.idUser = $idUser"
+        );
+    
+        $dataSet = $resultado->fetch();
+    
+        if ($dataSet) {
+            return $dataSet['commentCount'];
+        }
+    
+        return 0; 
+    }
+    
     public function drop(int $idComment)
     {
         try {

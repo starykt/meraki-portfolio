@@ -24,6 +24,25 @@ class LikeDAO extends BaseDAO
         return 0;
     }
     
+    public function getLikeCountByUserId($idUser)
+    {
+        $resultado = $this->select(
+            "SELECT COUNT(*) as likeCount FROM Likes 
+            INNER JOIN Projects ON Likes.idProject = Projects.idProject 
+            WHERE Projects.idUser = $idUser"
+        );
+    
+        $dataSet = $resultado->fetch();
+    
+        if ($dataSet) {
+            return $dataSet['likeCount'];
+        }
+    
+        return 0; 
+    }
+    
+    
+    
     public function createLike($idProject, $idUser)
     {
         try {

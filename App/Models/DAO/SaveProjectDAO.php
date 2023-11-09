@@ -40,7 +40,23 @@ class SaveProjectDAO extends BaseDAO
         
         return $savedProjects;
     }
+
+    public function getSavedProjectsCountByUserId($idUser)
+    {
+        $resultado = $this->select(
+            "SELECT COUNT(*) as savedProjectsCount FROM Save_Projects 
+            INNER JOIN Projects ON Save_Projects.idProject = Projects.idProject 
+            WHERE Projects.idUser = $idUser"
+        );
     
+        $dataSet = $resultado->fetch();
+    
+        if ($dataSet) {
+            return $dataSet['savedProjectsCount'];
+        }
+    
+        return 0; 
+    }
 
     public function deleteSave($idProject, $idUser)
     {

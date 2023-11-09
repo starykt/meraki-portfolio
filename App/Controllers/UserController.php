@@ -4,11 +4,13 @@ namespace App\Controllers;
 
 use App\Lib\Sessao;
 use App\Lib\Upload;
+use App\Models\DAO\CommentDAO;
 use App\Models\DAO\FileDAO;
 use App\Models\DAO\HashtagProjectDAO;
 use App\Models\DAO\ImageDAO;
 use App\Models\DAO\LikeDAO;
 use App\Models\DAO\ProjectDAO;
+use App\Models\DAO\SaveProjectDAO;
 use App\Models\DAO\UserDAO;
 use App\Models\Entidades\User;
 use Exception;
@@ -24,31 +26,46 @@ class UserController extends Controller
     $likeDAO = new LikeDAO();
     $projectDao = new ProjectDAO();
     $idUser = $_SESSION['idUser'];
+    $projectDao = new ProjectDAO();
+    $commentDAO = new CommentDAO();
+    $saveProjectDAO = new SaveProjectDAO();
+    $commentCount = $commentDAO->getCommentCountByUserId($idUser);
+    $like = $likeDAO->getLikeCountByUserId($idUser);
+    $saveCount = $saveProjectDAO->getSavedProjectsCountByUserId($idUser);
 
     $mostLikedProjects = $likeDAO->getUserMostLikedProjects($idUser);
     foreach ($mostLikedProjects as $project) {
       $project->setDetails($projectDao->getById($project->getIdProject()));
-      
-        $imageDAO = new ImageDAO();
-        $images = $imageDAO->getImagesByProjectId($project->getIdProject());
-        $project->setImages($images);
 
-        $fileDAO = new FileDAO();
-        $files = $fileDAO->getFilesByProjectId($project->getIdProject());
-        $project->setFiles($files);
+      $imageDAO = new ImageDAO();
+      $images = $imageDAO->getImagesByProjectId($project->getIdProject());
+      $project->setImages($images);
 
-        $hashtagDAO = new HashtagProjectDAO();
-        $hashtags = $hashtagDAO->getByProjectId($project->getIdProject());
-        $project->setHashtags($hashtags);
+      $fileDAO = new FileDAO();
+      $files = $fileDAO->getFilesByProjectId($project->getIdProject());
+      $project->setFiles($files);
 
-        $likeCount = $likeDAO->getLikeCountByArticleId($project->getIdProject());
-        $project->setLikeCount($likeCount);
+      $hashtagDAO = new HashtagProjectDAO();
+      $hashtags = $hashtagDAO->getByProjectId($project->getIdProject());
+      $project->setHashtags($hashtags);
 
-        $likeStatus = $likeDAO->getLikeStatus($project->getIdProject(), $_SESSION['idUser']);
-        $project->setLikeStatus($likeStatus);
+      $likeCount = $likeDAO->getLikeCountByArticleId($project->getIdProject());
+      $project->setLikeCount($likeCount);
 
+      $likeStatus = $likeDAO->getLikeStatus($project->getIdProject(), $_SESSION['idUser']);
+      $project->setLikeStatus($likeStatus);
+
+      $saveDAO = new SaveProjectDAO();
+      $saveStatus = $saveDAO->getSaveStatus($project->getIdProject(), $_SESSION['idUser']);
+      $project->setSaveStatus($saveStatus);
+
+      $commentDAO = new CommentDAO();
+      $comments = $commentDAO->getCommentsByProjectId($project->getIdProject());
+      $project->setComments($comments);
     }
-
+    $this->setViewParam('commentCount', $commentCount);
+    $this->setViewParam('like', $like);
+    $this->setViewParam('saveCount', $saveCount);
     $this->setViewParam('projects', $mostLikedProjects);
     $this->render('/user/profile');
     Sessao::limpaMensagem();
@@ -64,32 +81,46 @@ class UserController extends Controller
     $this->setViewParam('user', $user);
     $likeDAO = new LikeDAO();
     $projectDao = new ProjectDAO();
-
+    $commentDAO = new CommentDAO();
+    $saveProjectDAO = new SaveProjectDAO();
+    $commentCount = $commentDAO->getCommentCountByUserId($idUser);
+    $like = $likeDAO->getLikeCountByUserId($idUser);
+    $saveCount = $saveProjectDAO->getSavedProjectsCountByUserId($idUser);
 
     $mostLikedProjects = $likeDAO->getUserMostLikedProjects($idUser);
     foreach ($mostLikedProjects as $project) {
       $project->setDetails($projectDao->getById($project->getIdProject()));
-      
-        $imageDAO = new ImageDAO();
-        $images = $imageDAO->getImagesByProjectId($project->getIdProject());
-        $project->setImages($images);
 
-        $fileDAO = new FileDAO();
-        $files = $fileDAO->getFilesByProjectId($project->getIdProject());
-        $project->setFiles($files);
+      $imageDAO = new ImageDAO();
+      $images = $imageDAO->getImagesByProjectId($project->getIdProject());
+      $project->setImages($images);
 
-        $hashtagDAO = new HashtagProjectDAO();
-        $hashtags = $hashtagDAO->getByProjectId($project->getIdProject());
-        $project->setHashtags($hashtags);
+      $fileDAO = new FileDAO();
+      $files = $fileDAO->getFilesByProjectId($project->getIdProject());
+      $project->setFiles($files);
 
-        $likeCount = $likeDAO->getLikeCountByArticleId($project->getIdProject());
-        $project->setLikeCount($likeCount);
+      $hashtagDAO = new HashtagProjectDAO();
+      $hashtags = $hashtagDAO->getByProjectId($project->getIdProject());
+      $project->setHashtags($hashtags);
 
-        $likeStatus = $likeDAO->getLikeStatus($project->getIdProject(), $_SESSION['idUser']);
-        $project->setLikeStatus($likeStatus);
+      $likeCount = $likeDAO->getLikeCountByArticleId($project->getIdProject());
+      $project->setLikeCount($likeCount);
 
+      $likeStatus = $likeDAO->getLikeStatus($project->getIdProject(), $_SESSION['idUser']);
+      $project->setLikeStatus($likeStatus);
+
+      $saveDAO = new SaveProjectDAO();
+      $saveStatus = $saveDAO->getSaveStatus($project->getIdProject(), $_SESSION['idUser']);
+      $project->setSaveStatus($saveStatus);
+
+      $commentDAO = new CommentDAO();
+      $comments = $commentDAO->getCommentsByProjectId($project->getIdProject());
+      $project->setComments($comments);
     }
 
+    $this->setViewParam('commentCount', $commentCount);
+    $this->setViewParam('like', $like);
+    $this->setViewParam('saveCount', $saveCount);
     $this->setViewParam('projects', $mostLikedProjects);
     $this->render('/user/profileUsers');
     Sessao::limpaMensagem();
@@ -116,7 +147,7 @@ class UserController extends Controller
   }
 
 
-  
+
   public function deleteConfirm()
   {
     $this->auth();

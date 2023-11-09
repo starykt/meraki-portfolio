@@ -7,6 +7,13 @@
 -- Versão do servidor: 8.2.0
 -- versão do PHP: 8.2.11
 
+-- -----------------------------------------------------
+-- Schema meraki
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `meraki` DEFAULT CHARACTER SET utf8 ;
+USE `meraki` ;
+
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";

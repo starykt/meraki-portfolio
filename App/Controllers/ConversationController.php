@@ -5,13 +5,21 @@ namespace App\Controllers;
 use App\Lib\Sessao;
 use App\Models\DAO\ConversationDAO;
 use App\Models\DAO\MessageDAO;
+use App\Models\DAO\UserDAO;
 
 class ConversationController extends Controller
 {
-  public function index()
+  public function index($params)
   {
+    $idUser_Recipient = $params[0];
     $this->auth();
+    $userDao = new UserDAO();
 
+    $userLogged = $userDao->getById($_SESSION['idUser']);
+    $userRecipient = $userDao->getById($idUser_Recipient);
+    self::setViewParam('userLogged', $userLogged);
+    self::setViewParam('userRecipient', $userRecipient);
+    
     // $conversationDAO = new ConversationDAO();
     // $conversations = $conversationDAO->listConversations($_SESSION['idUser']);
     // self::setViewParam('conversations', $conversations);
@@ -38,19 +46,34 @@ class ConversationController extends Controller
   
   
 
-
-  public function sendMessage()
+  
+  public function sendMessage($params)
   {
     $this->auth();
 
-    $messageText = $_POST['message'];
-    $conversationId = $_POST['conversationId'];
-    $senderId = $_SESSION['idUser'];
+    var_dump($params);
+    
 
-    $messageDAO = new MessageDAO();
-    $messageDAO->save($conversationId, $senderId, $messageText);
+    $senderId = $_SESSION['idUser'];
+    $idRecipent = $params[0];
+    $messageText = "";
+    if(count($params) > 2) {
+      for($i = 1; $i < count($params); $i++) {
+        $messageText.=$params[$i];
+        if($i != count($params)-1) {
+          $messageText .= "/";
+        }
+      }
+    }else {
+    $messageText = $params[1];
+    }
+    
+    // // $conversationId = $_POST['conversationId'];
+
+    // $messageDAO = new MessageDAO();
+    // $messageDAO->save($conversationId, $senderId, $messageText);
 
     // Redirecione para a página de visualização da conversa
-    $this->redirect('/conversation/view/' . $conversationId);
+    echo "$idRecipent|$senderId|$messageText";
   }
 }

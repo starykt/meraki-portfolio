@@ -26,8 +26,11 @@ services:
     ports:
       - "6382:6382"
   db:
+    build:
+      context: ./Database
     container_name: db
-    image: mysql
+    volumes:
+      - ./database/meraki.sql:/docker-entrypoint-initdb.d/meraki.sql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: secret123

@@ -307,4 +307,25 @@ class UserController extends Controller
 
     $this->redirect('/user/profileEdit');
   }
+
+  public function reportNivel()
+  {
+      $userDao = new UserDAO();
+      $topUsers = $userDao->getUsersByLevel();
+  
+      $loggedInUser = $_SESSION['idUser'];
+  
+      $position = null;
+      foreach ($topUsers as $index => $user) {
+          if ($user->getIdUser() === $loggedInUser) {
+              $position = $index + 1;
+              break;
+          }
+      }
+  
+      $this->setViewParam('topUsers', $topUsers);
+      $this->setViewParam('userPosition', $position);
+      $this->render('/user/reportNivel');
+  }
+  
 }

@@ -118,7 +118,7 @@ class UserDAO extends BaseDAO
 
             $user = new User();
             $user->setIdUser($userData['idUser']);
-            $user->setTag($userData['nickname']);
+            $user->setTag($userData['tag']);
             $user->setNickname($userData['nickname']);
             $user->setEmail($userData['email']);
             $user->setPassword($userData['password']);
@@ -141,6 +141,25 @@ class UserDAO extends BaseDAO
         }
     }
 
+    public function getUsersByLevel()
+    {
+        $query = "SELECT * FROM Users ORDER BY level DESC";
+        $result = $this->select($query);
+
+        $users = [];
+        while ($row = $result->fetch()) {
+            $user = new User();
+            $user->setIdUser($row['idUser']);
+            $user->setNickname($row['nickname']);
+            $user->setTag($row['tag']);
+            $user->setAvatar($row['avatar']);
+            $user->setLevel($row['level']);
+            $users[] = $user;
+        }
+
+        return $users;
+    }
+
     public function edit(User $user)
     {
         try {
@@ -149,8 +168,8 @@ class UserDAO extends BaseDAO
             $email = $user->getEmail();
             $resume = $user->getResume();
             $location = $user->getLocation();
-            $avatar = $user->getAvatar(); 
-    
+            $avatar = $user->getAvatar();
+
             $params = [
                 ':idUser' => $idUser,
                 ':nickname' => $nickname,
@@ -158,7 +177,7 @@ class UserDAO extends BaseDAO
                 ':resume' => $resume,
                 ':location' => $location,
             ];
-    
+
             return $this->update('Users', "nickname = :nickname, email = :email, resume = :resume, location = :location", $params, "idUser = :idUser");
         } catch (\Exception $e) {
             throw new \Exception("Erro na atualização dos dados do usuário. " . $e->getMessage(), 500);
@@ -166,20 +185,20 @@ class UserDAO extends BaseDAO
     }
 
     public function updateAvatar($idUserName, $avatarName)
-{
-  try {
-    $idUser = $idUserName;
-    $avatar = $avatarName;
+    {
+        try {
+            $idUser = $idUserName;
+            $avatar = $avatarName;
 
-    $params = [
-        ':idUser' => $idUser,
-        ':avatar' => $avatar,
-    ];
-    return $this->update('Users', "avatar = :avatar", $params, "idUser = :idUser");
-} catch (\Exception $e) {
-    throw new \Exception("Erro na atualização dos dados. " . $e->getMessage(), 500);
-}
-}
+            $params = [
+                ':idUser' => $idUser,
+                ':avatar' => $avatar,
+            ];
+            return $this->update('Users', "avatar = :avatar", $params, "idUser = :idUser");
+        } catch (\Exception $e) {
+            throw new \Exception("Erro na atualização dos dados. " . $e->getMessage(), 500);
+        }
+    }
     public function drop(int $idUser)
     {
         try {

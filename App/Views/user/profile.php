@@ -21,6 +21,16 @@ Admin? <?php if ($viewVar['user']->getAdmin() == true) { ?>
 <?php } ?> <br>
 Perfil criado em: <?= $viewVar['user']->getCreatedAt()->format('Y-m-d H:i:s') ?><br>
 <br>
+ferramentas: 
+<?php foreach ($viewVar['userTools'] as $tool): ?>
+    <div>
+        <h3>Ferramenta: <?= $tool->getCaption() ?></h3>
+        <img id="avatarImage" src="http://<?php echo APP_HOST; ?>/public/images/tools/<?= $tool->getIcon() ?>" width="20px" height="20px"><br>
+    </div>
+<?php endforeach; ?>
+
+<br>
+
 <form action="http://<?php echo APP_HOST; ?>/user/delete/<?= $viewVar['user']->getIdUser() ?>" method="post" id="form_cadastro">
     <button type="submit" class="buttonSubmit">Excluir conta</button>
     </div>

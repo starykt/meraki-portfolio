@@ -11,8 +11,11 @@ use App\Models\DAO\ImageDAO;
 use App\Models\DAO\LikeDAO;
 use App\Models\DAO\ProjectDAO;
 use App\Models\DAO\SaveProjectDAO;
+use App\Models\DAO\ToolDAO;
 use App\Models\DAO\UserDAO;
+use App\Models\DAO\UserToolDAO;
 use App\Models\Entidades\User;
+use App\Models\Entidades\UserTool;
 use Exception;
 
 class UserController extends Controller
@@ -32,6 +35,18 @@ class UserController extends Controller
     $commentCount = $commentDAO->getCommentCountByUserId($idUser);
     $like = $likeDAO->getLikeCountByUserId($idUser);
     $saveCount = $saveProjectDAO->getSavedProjectsCountByUserId($idUser);
+
+    $tools = [];
+    $userToolDAO = new UserToolDAO();
+    $userTools = $userToolDAO->getByUserId($idUser);
+    $toolDAO = new ToolDAO();
+    foreach ($userTools as $userTool) {
+      $toolId = $userTool->getIdTool();
+      $tool = $toolDAO->getById($toolId);
+      if ($tool) {
+        $tools[] = $tool;
+      }
+    }
 
     $mostLikedProjects = $likeDAO->getUserMostLikedProjects($idUser);
     foreach ($mostLikedProjects as $project) {
@@ -63,6 +78,7 @@ class UserController extends Controller
       $comments = $commentDAO->getCommentsByProjectId($project->getIdProject());
       $project->setComments($comments);
     }
+    $this->setViewParam('userTools', $tools);
     $this->setViewParam('commentCount', $commentCount);
     $this->setViewParam('like', $like);
     $this->setViewParam('saveCount', $saveCount);
@@ -87,6 +103,18 @@ class UserController extends Controller
     $like = $likeDAO->getLikeCountByUserId($idUser);
     $saveCount = $saveProjectDAO->getSavedProjectsCountByUserId($idUser);
 
+    $tools = [];
+    $userToolDAO = new UserToolDAO();
+    $userTools = $userToolDAO->getByUserId($idUser);
+    $toolDAO = new ToolDAO();
+    foreach ($userTools as $userTool) {
+      $toolId = $userTool->getIdTool();
+      $tool = $toolDAO->getById($toolId);
+      if ($tool) {
+        $tools[] = $tool;
+      }
+    }
+
     $mostLikedProjects = $likeDAO->getUserMostLikedProjects($idUser);
     foreach ($mostLikedProjects as $project) {
       $project->setDetails($projectDao->getById($project->getIdProject()));
@@ -118,6 +146,7 @@ class UserController extends Controller
       $project->setComments($comments);
     }
 
+    $this->setViewParam('userTools', $tools);
     $this->setViewParam('commentCount', $commentCount);
     $this->setViewParam('like', $like);
     $this->setViewParam('saveCount', $saveCount);
@@ -147,7 +176,6 @@ class UserController extends Controller
   }
 
 
-
   public function deleteConfirm()
   {
     $this->auth();
@@ -167,22 +195,62 @@ class UserController extends Controller
     Sessao::limpaErro();
   }
 
-
-
   public function profileEdit()
   {
     $this->auth();
     $userDao = new UserDAO();
     $user = $userDao->getById($_SESSION['idUser']);
+    $toolDAO = new ToolDAO();
+    $tools = $toolDAO->list();
+
+    $tools2 = [];
+    $userToolDAO = new UserToolDAO();
+    $userTools = $userToolDAO->getByUserId($_SESSION['idUser']);
+
+    foreach ($userTools as $userTool) {
+      $toolId = $userTool->getIdTool();
+      $tool = $toolDAO->getById($toolId);
+      if ($tool) {
+        $tools2[] = $tool;
+      }
+    }
 
     if ($user) {
       $this->setViewParam('user', $user);
+      $this->setViewParam('tools', $tools);
+      $this->setViewParam('userTools', $tools2);
       $this->render('/user/profileEdit');
     } else {
       Sessao::gravaErro("Usuário não encontrado.");
       $this->redirect('/user/profile');
     }
   }
+  public function saveUserToolAssociations($userId)
+  {
+    $tools = isset($_POST['tools']) && is_array($_POST['tools']) ? $_POST['tools'] : [];
+
+    $userDAO = new UserDAO();
+    $user = $userDAO->getById($userId);
+
+    if ($user) {
+      $userToolDAO = new UserToolDAO();
+
+      foreach ($tools as $toolId) {
+        $userTool = new UserTool();
+
+        $toolDAO = new ToolDAO();
+        $tool = $toolDAO->getById($toolId);
+
+        if ($tool) {
+          $userTool->setIdUser($user->getIdUser());
+          $userTool->setIdTool($tool->getIdTool());
+
+          $userToolDAO->save($userTool);
+        }
+      }
+    }
+  }
+
   public function update()
   {
     $this->auth();
@@ -213,6 +281,10 @@ class UserController extends Controller
     $user->setResume($_POST['resume']);
     $user->setLocation($_POST['location']);
 
+    $selectedTools = isset($_POST['tools']) ? $_POST['tools'] : [];
+
+    $this->saveUserToolAssociations($idUser);
+
     try {
       $userDao->edit($user);
       Sessao::gravaMensagem("Informações do usuário atualizadas com sucesso.");
@@ -221,5 +293,18 @@ class UserController extends Controller
       Sessao::gravaErro("Erro ao atualizar as informações do usuário. " . $e->getMessage());
       $this->redirect('/user/profileEdit');
     }
+  }
+
+  public function deleteTool()
+  {
+    $idUser = $_SESSION["idUser"];
+    $idTool = $_GET['idTool'];
+
+    $userToolDAO = new UserToolDAO();
+
+    $userToolDAO->deleteByUserId($idUser, $idTool);
+    Sessao::gravaMensagem("Ferramenta excluída com sucesso.");
+
+    $this->redirect('/user/profileEdit');
   }
 }

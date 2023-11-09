@@ -21,6 +21,14 @@ Admin? <?php if ($viewVar['user']->getAdmin() == true) { ?>
 <?php } ?> <br>
 Perfil criado em: <?= $viewVar['user']->getCreatedAt()->format('Y-m-d H:i:s') ?><br>
 <br>
+ferramentas: 
+<?php foreach ($viewVar['userTools'] as $tool): ?>
+    <div>
+        <h3>Ferramenta: <?= $tool->getCaption() ?></h3>
+        <p>Icon: <?= $tool->getIcon() ?></p>
+    </div>
+<?php endforeach; ?>
+
 
 <h3>Comentários: <?= $viewVar['commentCount'] ?></h3>
 

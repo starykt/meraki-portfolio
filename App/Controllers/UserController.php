@@ -328,4 +328,23 @@ class UserController extends Controller
       $this->render('/user/reportNivel');
   }
   
+  public function reportLike()
+{
+    $userDao = new UserDAO();
+    $topUsers = $userDao->getUsersByLikes();
+
+    $loggedInUser = $_SESSION['idUser'];
+
+    $position = null;
+    foreach ($topUsers as $index => $user) {
+        if ($user->getIdUser() === $loggedInUser) {
+            $position = $index + 1;
+            break;
+        }
+    }
+
+    $this->setViewParam('topUsers', $topUsers);
+    $this->setViewParam('userPosition', $position);
+    $this->render('/user/reportLike');
+}
 }

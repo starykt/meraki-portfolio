@@ -141,6 +141,33 @@ class UserDAO extends BaseDAO
         }
     }
 
+    public function getUsersByLikes()
+    {
+        $query = "SELECT u.*, COUNT(l.idLike) AS likeCount
+                  FROM Users u
+                  LEFT JOIN Projects p ON u.idUser = p.idUser
+                  LEFT JOIN Likes l ON p.idProject = l.idProject
+                  GROUP BY u.idUser
+                  ORDER BY likeCount DESC";
+
+        $result = $this->select($query);
+
+        $users = [];
+        while ($row = $result->fetch()) {
+            $user = new User();
+            $user->setIdUser($row['idUser']);
+            $user->setNickname($row['nickname']);
+            $user->setTag($row['tag']);
+            $user->setAvatar($row['avatar']);
+            $user->setLevel($row['level']);
+            $user->setLikes($row['likeCount']);
+            $users[] = $user;
+        }
+
+        return $users;
+    }
+
+
     public function getUsersByLevel()
     {
         $query = "SELECT * FROM Users ORDER BY level DESC";

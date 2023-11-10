@@ -3,6 +3,7 @@
   <thead>
     <tr>
       <th>Posição</th>
+      <th>Avatar</th>
       <th>Nome do Usuário</th>
       <th>Nível</th>
     </tr>
@@ -16,6 +17,7 @@
     ?>
         <tr>
           <td><?= $index + 1 ?></td>
+          <td><img id="avatarImage" src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $user->getAvatar() ?>" width="30px" height="30px"><br></td>
           <td><?= $user->getNickname() ?></td>
           <td><?= $user->getLevel() ?></td>
         </tr>
@@ -30,6 +32,7 @@
           </tr>
           <tr>
             <td><?= $viewVar['userPosition'] ?></td>
+            <td><img id="avatarImage" src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $user->getAvatar() ?>" width="30px" height="30px"><br></td>
             <td><?= $user->getNickname() ?></td>
             <td><?= $user->getLevel() ?></td>
           </tr>

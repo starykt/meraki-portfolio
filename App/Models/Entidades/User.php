@@ -17,7 +17,17 @@ class User
 	private \DateTime $createdAt;
 	private ?string $location = null;
 
+	private $likes;
 
+	public function getLikes()
+	{
+			return $this->likes;
+	}
+
+	public function setLikes($likes)
+	{
+			$this->likes = $likes;
+	}
 	/**
 	 * @return int|null
 	 */

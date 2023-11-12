@@ -1,12 +1,13 @@
 <?php
-
 namespace App\Models\Entidades;
 
-class Winner
+class Competitor
 {
     private $idChallenge;
     private $idUser;
+    private $position;
 
+  
 
 	/**
 	 * @return mixed
@@ -39,7 +40,21 @@ class Winner
 		$this->idUser = $idUser;
 		return $this;
 	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getPosition() {
+		return $this->position;
+	}
+	
+	/**
+	 * @param mixed $position 
+	 * @return self
+	 */
+	public function setPosition($position): self {
+		$this->position = $position;
+		return $this;
+	}
 }
-
-
 ?>

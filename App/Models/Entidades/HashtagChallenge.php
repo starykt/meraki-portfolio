@@ -1,11 +1,10 @@
 <?php
-
 namespace App\Models\Entidades;
 
-class Winner
+class HashtagChallenge
 {
     private $idChallenge;
-    private $idUser;
+    private $idHashtag;
 
 
 	/**
@@ -27,19 +26,17 @@ class Winner
 	/**
 	 * @return mixed
 	 */
-	public function getIdUser() {
-		return $this->idUser;
+	public function getIdHashtag() {
+		return $this->idHashtag;
 	}
 	
 	/**
-	 * @param mixed $idUser 
+	 * @param mixed $idHashtag 
 	 * @return self
 	 */
-	public function setIdUser($idUser): self {
-		$this->idUser = $idUser;
+	public function setIdHashtag($idHashtag): self {
+		$this->idHashtag = $idHashtag;
 		return $this;
 	}
 }
-
-
 ?>

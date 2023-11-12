@@ -98,4 +98,27 @@ class HashtagDAO extends BaseDAO
 
         return false;
     }
+
+    public function getByHashtag($hashtag)
+    {
+        $sql = "SELECT * FROM Hashtags WHERE hashtag = :hashtag";
+        $params = [':hashtag' => $hashtag];
+    
+        try {
+            $result = $this->select($sql, $params);
+    
+            if ($result) {
+                $data = $result->fetch();
+    
+                if ($data) {
+                    return new Hashtag($data);
+                }
+            }
+    
+            return null;
+        } catch (\Exception $e) {
+            throw new \Exception("Erro ao obter a hashtag. " . $e->getMessage(), 500);
+        }
+    }
+    
 }

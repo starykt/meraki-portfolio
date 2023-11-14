@@ -1,7 +1,10 @@
 <?php
 namespace App\Models\DAO;
 
+use App\Models\Entidades\Award;
 use App\Models\Entidades\Challenge;
+use App\Models\Entidades\Hashtag;
+
 class ChallengeDAO extends BaseDAO
 {
 public function save(Challenge $challenge)
@@ -86,4 +89,5 @@ public function updateBanner($idChallenge, $bannerName)
 
         return $challenges;
     }
+
 }

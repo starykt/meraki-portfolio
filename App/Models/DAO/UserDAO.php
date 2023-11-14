@@ -211,6 +211,25 @@ class UserDAO extends BaseDAO
         }
     }
 
+    public function getUserByChallengeId($challengeId)
+    {
+        $query = "SELECT U.* FROM Users U
+                  JOIN Challenges C ON U.idUser = C.idUser
+                  WHERE C.idChallenge = $challengeId";
+    
+        $result = $this->select($query);
+    
+        if ($row = $result->fetch()) {
+            $user = new User();
+            $user->setIdUser($row['idUser']);
+            $user->setNickname($row['nickname']);
+            $user->setAvatar($row['avatar']);
+            return $user;
+        }
+    
+        return null;
+    }
+    
     public function updateAvatar($idUserName, $avatarName)
     {
         try {

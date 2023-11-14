@@ -6,6 +6,19 @@ class HashtagChallenge
     private $idChallenge;
     private $idHashtag;
 
+		private $hashtag;
+    private $challenge;
+
+
+    public function setHashtag(Hashtag $hashtag)
+    {
+        $this->hashtag = $hashtag;
+    }
+
+    public function setChallenge(Challenge $challenge)
+    {
+        $this->challenge = $challenge;
+    }
 
 	/**
 	 * @return mixed

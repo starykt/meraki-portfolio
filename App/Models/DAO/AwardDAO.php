@@ -42,6 +42,26 @@ class AwardDAO extends BaseDAO
       }
   }
 
+  public function getAwardsByChallengeId($challengeId)
+  {
+      $query = "SELECT A.* FROM Awards A
+                JOIN Awards AC ON A.idAward = AC.idAward
+                WHERE AC.idChallenge = $challengeId";
+      $resultado = $this->select($query);
+  
+      $awards = [];
+      while ($row = $resultado->fetch()) {
+          $award = new Award();
+          $award->setIdAward($row['idAward']);
+          $award->setDescription($row['description']);
+          $award->setImagePath($row['imagePath']);
+  
+          $awards[] = $award;
+      }
+  
+      return $awards;
+  }
+  
   public function getById($id)
   {
       $result = $this->select("SELECT * FROM Awards WHERE idAward = $id");

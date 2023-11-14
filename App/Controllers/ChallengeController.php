@@ -11,6 +11,7 @@ use App\Models\DAO\HashtagChallengeDAO;
 use App\Models\DAO\HashtagDAO;
 use App\Models\DAO\HashtagsChallengeDAO;
 use App\Models\DAO\HashtagsChallengesDAO;
+use App\Models\DAO\UserDAO;
 use App\Models\Entidades\Award;
 use App\Models\Entidades\Challenge;
 use App\Models\Entidades\Hashtag;
@@ -19,12 +20,33 @@ class ChallengeController extends Controller
 {
     public function index()
     {
-        $challengesDAO = new ChallengeDAO();
-        $challenges = $challengesDAO->getAll();
+        try {
+            $challengesDAO = new ChallengeDAO();
+            $challenges = $challengesDAO->getAll();
 
-        $this->setViewParam('challenges', $challenges);
-        $this->render('/challenge/index');
+            $hashtagChallengeDAO = new HashtagChallengeDAO();
+            $awardsDAO = new AwardDAO();
+            $usersDAO = new UserDAO();
+            $usersList = [];
+            $awardsList = [];
+            $hashtagsList = [];
+
+            foreach ($challenges as $challenge) {
+                $usersList[$challenge->getIdChallenge()] = $usersDAO->getUserByChallengeId($challenge->getIdChallenge());
+                $awardsList[$challenge->getIdChallenge()] = $awardsDAO->getAwardsByChallengeId($challenge->getIdChallenge());
+                $hashtagsList[$challenge->getIdChallenge()] = $hashtagChallengeDAO->getHashtagByChallengeId($challenge->getIdChallenge());
+            }
+            $this->setViewParam('usersList', $usersList);
+            $this->setViewParam('awardsList', $awardsList);
+            $this->setViewParam('challenges', $challenges);
+            $this->setViewParam('hashtagsList', $hashtagsList);
+            $this->render('/challenge/index');
+        } catch (\Exception $e) {
+            echo "Erro: " . $e->getMessage();
+        }
     }
+
+
     public function register()
     {
         $hashtagDAO = new HashtagDAO();
@@ -89,8 +111,7 @@ class ChallengeController extends Controller
         $hashtag = new Hashtag();
         $hashtag->setHashtag($_POST['hashtag']);
         $hashtagDAO = new HashtagDAO();
-        $hashtagId= $hashtagDAO->save($hashtag);
-    
+        $hashtagId = $hashtagDAO->save($hashtag);;
         $hashtagsChallengesDAO = new HashtagChallengeDAO();
         $hashtagsChallengesDAO->associateHashtagToChallenge($lastChallengeId, $hashtagId);
         $this->redirect('/challenge/index');

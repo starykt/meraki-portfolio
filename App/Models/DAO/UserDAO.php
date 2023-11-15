@@ -216,9 +216,9 @@ class UserDAO extends BaseDAO
         $query = "SELECT U.* FROM Users U
                   JOIN Challenges C ON U.idUser = C.idUser
                   WHERE C.idChallenge = $challengeId";
-    
+
         $result = $this->select($query);
-    
+
         if ($row = $result->fetch()) {
             $user = new User();
             $user->setIdUser($row['idUser']);
@@ -226,10 +226,10 @@ class UserDAO extends BaseDAO
             $user->setAvatar($row['avatar']);
             return $user;
         }
-    
+
         return null;
     }
-    
+
     public function updateAvatar($idUserName, $avatarName)
     {
         try {
@@ -245,6 +245,22 @@ class UserDAO extends BaseDAO
             throw new \Exception("Erro na atualização dos dados. " . $e->getMessage(), 500);
         }
     }
+
+    public function updateUserLevel($idUser, $level, $xp)
+    {
+        try {
+            $params = [
+                ':idUser' => $idUser,
+                ':level' => $level,
+                ':xp' => $xp,
+            ];
+            return $this->update('Users', 'level = :level, xp = :xp', $params, 'idUser = :idUser');
+        } catch (\Exception $e) {
+            throw new \Exception("Erro ao atualizar nível do usuário. " . $e->getMessage(), 500);
+        }
+    }
+
+
     public function drop(int $idUser)
     {
         try {

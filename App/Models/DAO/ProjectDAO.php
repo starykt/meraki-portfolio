@@ -101,6 +101,8 @@ class ProjectDAO extends BaseDAO
         }
     }
 
+ 
+
 
     public function alter(int $projectId, string $title, string $description)
     {

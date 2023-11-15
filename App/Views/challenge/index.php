@@ -39,9 +39,10 @@
             <?php endif; ?>
         </ul>
     </div>
-    <?php  if($viewVar['user']->getAdmin() == true){?>
-        
-    <a href="http://<?= APP_HOST ?>/challenge/alter/<?= $challenge->getIdChallenge() ?>"> editar </a><br>
-        <a href="http://<?= APP_HOST ?>/project/<?= $challenge->getIdChallenge()?>"> excluir </a></br>
-    <hr>
-<?php } endforeach; ?>
+    <?php if ($viewVar['user']->getAdmin() == true) { ?>
+
+        <a href="http://<?= APP_HOST ?>/challenge/alter/<?= $challenge->getIdChallenge() ?>"> editar </a><br>
+        <a href="http://<?= APP_HOST ?>/project/<?= $challenge->getIdChallenge() ?>"> excluir </a></br>
+        <hr>
+<?php }
+endforeach; ?>

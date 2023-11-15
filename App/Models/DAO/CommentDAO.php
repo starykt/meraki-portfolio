@@ -47,7 +47,7 @@ class CommentDAO extends BaseDAO
     public function getById($id)
     {
         $resultado = $this->select(
-            "SELECT c.text, c.createdAt, u.nickname, u.avatar as user
+            "SELECT c.idComment, c.text, c.idUser, u.nickname as user
             FROM Comments as c
             INNER JOIN Users as u ON c.idUser = u.idUser
             WHERE c.idComment = $id"
@@ -55,11 +55,16 @@ class CommentDAO extends BaseDAO
     
         $dataSetComment = $resultado->fetch();
     
-        if($dataSetComment) {
+        if ($dataSetComment) {
             $Comment = new Comment();
+            $Comment->setIdComment($dataSetComment['idComment']);
             $Comment->setText($dataSetComment['text']);
-            $Comment->getUser()->setNickname($dataSetComment['user']);
-            $Comment->getUser()->setAvatar($dataSetComment['avatar']);
+    
+            $user = new User();
+            $user->setIdUser($dataSetComment['idUser']);
+            $user->setNickname($dataSetComment['user']);
+  
+            $Comment->setUser($user);
     
             return $Comment;
         }

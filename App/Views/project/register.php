@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Upload Form</title>
-</head>
-
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <body>
   <h2>Upload Form</h2>
   <form action="http://<?php echo APP_HOST; ?>/project/save" method="POST" enctype="multipart/form-data">
@@ -34,6 +26,3 @@
 
       <input type="submit" value="Upload">
   </form>
-</body>
-
-</html>

@@ -2,6 +2,8 @@
 
 namespace App\Models\Entidades;
 
+use App\Models\DAO\UserDAO;
+
 class User
 {
 	private int $idUser;
@@ -18,6 +20,32 @@ class User
 	private ?string $location = null;
 
 	private $likes;
+
+	function updateXPAndLevel($userId, $xpGained)
+	{
+			$userDAO = new UserDAO();
+			$user = $userDAO->getById($userId);
+	
+			$currentLevel = $user->getLevel();
+			$currentXP = $user->getXP();
+	
+			$baseXP = 100;
+			$xpPerLevel = 100;
+	
+			$xpForNextLevel = $baseXP + $xpPerLevel * $currentLevel;
+	
+			$newXP = $currentXP + $xpGained;
+			$user->setXP($newXP);
+	
+			while ($newXP >= $xpForNextLevel) {
+					$currentLevel++;
+					$newXP -= $xpForNextLevel;
+					$xpForNextLevel = $baseXP + $xpPerLevel * $currentLevel;
+			}
+			
+			$user->setLevel($currentLevel);
+			$userDAO->updateUserLevel($userId, $currentLevel, $newXP);
+	}
 
 	public function getLikes()
 	{

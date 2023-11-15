@@ -56,7 +56,7 @@ class ProjectController extends Controller
       $comments = $commentDAO->getCommentsByProjectId($project->getIdProject());
       $project->setComments($comments);
     }
-    
+
 
     self::setViewParam('listProject', $projects);
     self::setViewParam('user', $userDAO->getById($_SESSION['idUser']));
@@ -75,7 +75,7 @@ class ProjectController extends Controller
     $savedProjects = $saveProjectDAO->list();
     $userDAO = new UserDAO();
     $projectDAO = new ProjectDAO();
-    $projectsToDisplay = []; 
+    $projectsToDisplay = [];
 
     foreach ($savedProjects as $savedProject) {
       $idProject = $savedProject->getIdProject();
@@ -119,7 +119,7 @@ class ProjectController extends Controller
     Sessao::limpaMensagem();
     Sessao::limpaErro();
   }
- 
+
 
   public function alter()
   {
@@ -206,10 +206,15 @@ class ProjectController extends Controller
       $project = $this->createProject();
 
       $lastProjectId = $this->saveProject($project);
-
+      $userXP = new User();
+  
+      $projectDAO = new ProjectDAO();
+      $project = $projectDAO->getById($lastProjectId);
       $this->handleImageUploads($lastProjectId);
       $this->handleFileUploads($lastProjectId);
       $this->saveHashtagProjectAssociations($lastProjectId);
+      $userXP->updateXPAndLevel($project->getUser()->getIdUser(), 25);
+  
     } catch (\Exception $e) {
       Sessao::gravaMensagem($e->getMessage());
     }
@@ -409,10 +414,14 @@ class ProjectController extends Controller
     $this->auth();
     if (isset($_GET['idProject'])) {
       $projectId = (int)$_GET['idProject'];
-
+      $userXP = new User();
+  
+      $projectDAO = new ProjectDAO();
+      $project = $projectDAO->getById($projectId);
       $projectDAO = new ProjectDAO();
       try {
         $projectDAO->drop($projectId);
+        $userXP->updateXPAndLevel($project->getUser()->getIdUser(), -25);
         Sessao::gravaMensagem("Projeto removido com sucesso.");
       } catch (\Exception $e) {
         Sessao::gravaMensagem("Erro ao remover o projeto: " . $e->getMessage());
@@ -479,37 +488,48 @@ class ProjectController extends Controller
 
   public function like($params)
   {
-    $this->auth();
-    $userDAO = new UserDAO();
-    $user = $userDAO->getById($_SESSION['idUser']);
-
-    $idProject = $params[0];
-    $likeDAO = new LikeDAO();
-    $likeStatus = $likeDAO->getLikeStatus($idProject, $user->getIdUser());
-
-    if ($likeStatus) {
-      $likeDAO->deleteLike($idProject, $user->getIdUser());
-    } else {
-      $likeDAO->createLike($idProject, $user->getIdUser());
-    }
-
-    $this->redirect('/project');
+      $this->auth();
+      $userDAO = new UserDAO();
+      $user = $userDAO->getById($_SESSION['idUser']);
+      $idProject = $params[0];
+      $likeDAO = new LikeDAO();
+      $likeStatus = $likeDAO->getLikeStatus($idProject, $user->getIdUser());
+      $userXP = new User();
+      $userXP2 = new User();
+      $projectDAO = new ProjectDAO();
+      $project = $projectDAO->getById($idProject);
+      
+      if ($likeStatus) {
+          $likeDAO->deleteLike($idProject, $user->getIdUser());
+          $userXP->updateXPAndLevel($project->getUser()->getIdUser(), -10);
+          $userXP2->updateXPAndLevel($_SESSION['idUser'], -5);
+      } else {
+          $likeDAO->createLike($idProject, $user->getIdUser());
+          $userXP->updateXPAndLevel($project->getUser()->getIdUser(), 10);
+          $userXP2->updateXPAndLevel($_SESSION['idUser'], 5);
+      }
+  
+      $this->redirect('/project/list');
   }
-
+  
   public function saveProjectFavorite($params)
   {
     $this->auth();
     $userDAO = new UserDAO();
     $user = $userDAO->getById($_SESSION['idUser']);
-
     $idProject = $params[0];
+    $userXP = new User();
+    $projectDAO = new ProjectDAO();
+    $project = $projectDAO->getById($idProject);
     $saveProjectDAO = new SaveProjectDAO();
     $saveStatus = $saveProjectDAO->getSaveStatus($idProject, $user->getIdUser());
 
     if ($saveStatus) {
       $saveProjectDAO->deleteSave($idProject, $user->getIdUser());
+      $userXP->updateXPAndLevel($project->getUser()->getIdUser(), -20);
     } else {
       $saveProjectDAO->createSave($idProject, $user->getIdUser());
+      $userXP->updateXPAndLevel($project->getUser()->getIdUser(), 20);
     }
 
     $this->redirect('/project/list');
@@ -530,6 +550,11 @@ class ProjectController extends Controller
     $idProject = basename($_SERVER['REQUEST_URI']);
     $idProject = intval($idProject);
 
+    $userXP = new User();
+    $userXP2 = new User();
+    $projectDAO = new ProjectDAO();
+    $project = $projectDAO->getById($idProject);
+
     $article = $projectDAO->getById($idProject);
     $comment = new Comment();
     $comment->setText(nl2br($_POST['text']));
@@ -537,7 +562,8 @@ class ProjectController extends Controller
     $comment->setProject($article);
     $comment->setDateCreate(new \DateTime());
     $commentDAO->save($comment);
-
+    $userXP->updateXPAndLevel($project->getUser()->getIdUser(), 15);
+    $userXP2->updateXPAndLevel($_SESSION["idUser"], 10);
     $this->redirect('/project');
   }
 
@@ -546,10 +572,16 @@ class ProjectController extends Controller
     $this->auth();
 
     $idComentario = $params[0];
+    $idProject = $params[1];
     $commentDAO = new CommentDAO();
-
+    $userXP = new User();
+    $userXP2 = new User();
+    $projectDAO = new ProjectDAO();
+    $project = $projectDAO->getById($idProject);
+    $userXP->updateXPAndLevel($project->getUser()->getIdUser(), -15);
+    $userXP2->updateXPAndLevel($_SESSION["idUser"], -10);
     $commentDAO->drop($idComentario);
-
+ 
     $this->redirect('/project');
   }
   public function listSaves()
@@ -559,7 +591,7 @@ class ProjectController extends Controller
     $savedProjects = $saveProjectDAO->getSavedProjectsByUserId($idUser);
 
     $projectDAO = new ProjectDAO();
-    $projectsToDisplay = []; 
+    $projectsToDisplay = [];
 
     foreach ($savedProjects as $savedProject) {
       $idProject = $savedProject->getIdProject();
@@ -599,59 +631,56 @@ class ProjectController extends Controller
   }
   public function mostRecentSavedProjects()
   {
-      $this->auth();
-  
-      $saveProjectDAO = new SaveProjectDAO();
-      $likeDAO = new LikeDAO();
-      $idUser = $_SESSION['idUser'];
-      $savedProjects = $saveProjectDAO->getSavedProjectsByUserId($idUser);
-  
-      $projectDAO = new ProjectDAO();
+    $this->auth();
+
+    $saveProjectDAO = new SaveProjectDAO();
+    $likeDAO = new LikeDAO();
+    $idUser = $_SESSION['idUser'];
+    $savedProjects = $saveProjectDAO->getSavedProjectsByUserId($idUser);
+
+    $projectDAO = new ProjectDAO();
+    $imageDAO = new ImageDAO();
+    $fileDAO = new FileDAO();
+    $hashtagDAO = new HashtagProjectDAO();
+    $commentDAO = new CommentDAO();
+
+    $projectsToDisplay = [];
+
+    foreach ($savedProjects as $savedProject) {
+      $idProject = $savedProject->getIdProject();
+      $project = $projectDAO->getById($idProject);
+
       $imageDAO = new ImageDAO();
+      $images = $imageDAO->getImagesByProjectId($idProject);
+      $project->setImages($images);
+
       $fileDAO = new FileDAO();
+      $files = $fileDAO->getFilesByProjectId($idProject);
+      $project->setFiles($files);
+
       $hashtagDAO = new HashtagProjectDAO();
+      $hashtags = $hashtagDAO->getByProjectId($idProject);
+      $project->setHashtags($hashtags);
+
+      $likeDAO = new LikeDAO();
+      $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
+      $project->setLikeCount($likeCount);
+
+      $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
+      $project->setLikeStatus($likeStatus);
+
       $commentDAO = new CommentDAO();
-  
-      $projectsToDisplay = [];
-  
-      foreach ($savedProjects as $savedProject) {
-          $idProject = $savedProject->getIdProject();
-          $project = $projectDAO->getById($idProject);
-  
-          $imageDAO = new ImageDAO();
-          $images = $imageDAO->getImagesByProjectId($idProject);
-          $project->setImages($images);
-  
-          $fileDAO = new FileDAO();
-          $files = $fileDAO->getFilesByProjectId($idProject);
-          $project->setFiles($files);
-  
-          $hashtagDAO = new HashtagProjectDAO();
-          $hashtags = $hashtagDAO->getByProjectId($idProject);
-          $project->setHashtags($hashtags);
-  
-          $likeDAO = new LikeDAO();
-          $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
-          $project->setLikeCount($likeCount);
-  
-          $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
-          $project->setLikeStatus($likeStatus);
-  
-          $commentDAO = new CommentDAO();
-          $comments = $commentDAO->getCommentsByProjectId($idProject);
-          $project->setComments($comments);
-  
-          $projectsToDisplay[] = $project;
-      }
+      $comments = $commentDAO->getCommentsByProjectId($idProject);
+      $project->setComments($comments);
 
-      usort($projectsToDisplay, function($a, $b) {
-          return $b->getCreated_At() <=> $a->getCreated_At();
-      });
-  
-      self::setViewParam('savedProjects', $projectsToDisplay);
-      $this->render('/project/mostRecentSavedProjects');
+      $projectsToDisplay[] = $project;
+    }
+
+    usort($projectsToDisplay, function ($a, $b) {
+      return $b->getCreated_At() <=> $a->getCreated_At();
+    });
+
+    self::setViewParam('savedProjects', $projectsToDisplay);
+    $this->render('/project/mostRecentSavedProjects');
   }
-  
-
-
 }

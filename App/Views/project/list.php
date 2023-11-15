@@ -21,7 +21,7 @@
 
 <?php foreach ($viewVar['listProject'] as $project) { ?>
     <br>
-    Criado por: 
+    Criado por:
     <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $project->getUser()->getAvatar(); ?>" width="50px" height="50px" alt="Foto de Perfil">
     <?= $project->getUser()->getNickname() ?> #<?= $project->getUser()->getTag() ?> <br>
     <div class="card-project">
@@ -49,11 +49,12 @@
                     <span>#<?= $hashtagProject->getHashtag()->getHashtag() ?></span>
                 <?php } ?>
             </div>
-        <?php } if($project->getUser()->getIdUser() == $_SESSION["idUser"]){?>
-        
-        <a href="http://<?= APP_HOST ?>/project/alter/<?= $project->getIdProject() ?>"> editar </a><br>
-        <a href="http://<?= APP_HOST ?>/project/delete?idProject=<?= $project->getIdProject() ?>"> excluir </a></br>
-        <?php }?>
+        <?php }
+        if ($project->getUser()->getIdUser() == $_SESSION["idUser"]) { ?>
+
+            <a href="http://<?= APP_HOST ?>/project/alter/<?= $project->getIdProject() ?>"> editar </a><br>
+            <a href="http://<?= APP_HOST ?>/project/delete?idProject=<?= $project->getIdProject() ?>"> excluir </a></br>
+        <?php } ?>
         <a href="http://<?= APP_HOST ?>/project/report/<?= $project->getIdProject() ?>"> report </a>
         <form method="POST" action="http://<?php echo APP_HOST; ?>/project/like/<?= $project->getIdProject(); ?>">
             <button id="likeButton" type="submit" name="likeButton" class="like-button" onclick="likeButtonClick(this);">
@@ -68,7 +69,7 @@
         <form method="POST" action="http://<?php echo APP_HOST; ?>/project/saveProjectFavorite/<?= $project->getIdProject(); ?>">
             <button id="likeButton" type="submit" name="likeButton" class="like-button" onclick="likeButtonClick(this);">
                 <span class="heart" <?php if (isset($project) && $project->getSaveStatus()) { ?> style="color:red;" <?php } else { ?> style="background-color:none;" <?php } ?>>
-                &#128190; 
+                    &#128190;
                 </span>
             </button>
             <br>
@@ -83,17 +84,17 @@
     </div>
     <?php foreach ($project->getComments() as $comment) {
         $user = $comment->getUser(); ?>
-    <div class="comment">
-    Comentado por:  <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $user->getAvatar(); ?>" width="50px" height="50px" alt="Foto de Perfil">
-      <?= $comment->getUser()->getNickname() ?> #<?= $user->getTag() ?> <br>
-      <strong><?= $comment->getText() ?></strong> <br>
-      <?= $comment->getDateCreate()->format('d-m-Y H:i:s') ?> <br>
-      <form action="http://<?php echo APP_HOST; ?>/project/deleteComment/<?= $comment->getIdComment() ?>" method="post" id="form_cadastro">
-        <button type="submit" class="buttonSubmit">Excluir</button>
-            </div>
+        <div class="comment">
+            Comentado por: <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $user->getAvatar(); ?>" width="50px" height="50px" alt="Foto de Perfil">
+            <?= $comment->getUser()->getNickname() ?> #<?= $user->getTag() ?> <br>
+            <strong><?= $comment->getText() ?></strong> <br>
+            <?= $comment->getDateCreate()->format('d-m-Y H:i:s') ?> <br>
+            <form action="http://<?php echo APP_HOST; ?>/project/deleteComment/<?= $comment->getIdComment() ?>/<?= $project->getIdProject(); ?>" method="post" id="form_cadastro">
+                <button type="submit" class="buttonSubmit">Excluir</button>
+        </div>
         </form>
-    </div> <br>
-<?php } ?>
+        </div> <br>
+    <?php } ?>
 
     </form>
     </div>

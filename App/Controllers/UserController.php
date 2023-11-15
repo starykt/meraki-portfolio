@@ -309,26 +309,26 @@ class UserController extends Controller
 
   public function reportNivel()
   {
-      $userDao = new UserDAO();
-      $topUsers = $userDao->getUsersByLevel();
-  
-      $loggedInUser = $_SESSION['idUser'];
-  
-      $position = null;
-      foreach ($topUsers as $index => $user) {
-          if ($user->getIdUser() === $loggedInUser) {
-              $position = $index + 1;
-              break;
-          }
+    $userDao = new UserDAO();
+    $topUsers = $userDao->getUsersByLevel();
+
+    $loggedInUser = $_SESSION['idUser'];
+
+    $position = null;
+    foreach ($topUsers as $index => $user) {
+      if ($user->getIdUser() === $loggedInUser) {
+        $position = $index + 1;
+        break;
       }
-  
-      $this->setViewParam('topUsers', $topUsers);
-      $this->setViewParam('userPosition', $position);
-      $this->render('/user/reportNivel');
+    }
+
+    $this->setViewParam('topUsers', $topUsers);
+    $this->setViewParam('userPosition', $position);
+    $this->render('/user/reportNivel');
   }
-  
+
   public function reportLike()
-{
+  {
     $userDao = new UserDAO();
     $topUsers = $userDao->getUsersByLikes();
 
@@ -336,14 +336,15 @@ class UserController extends Controller
 
     $position = null;
     foreach ($topUsers as $index => $user) {
-        if ($user->getIdUser() === $loggedInUser) {
-            $position = $index + 1;
-            break;
-        }
+      if ($user->getIdUser() === $loggedInUser) {
+        $position = $index + 1;
+        break;
+      }
     }
 
     $this->setViewParam('topUsers', $topUsers);
     $this->setViewParam('userPosition', $position);
     $this->render('/user/reportLike');
-}
+  }
+
 }

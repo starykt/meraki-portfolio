@@ -23,7 +23,6 @@ class HashtagDAO extends BaseDAO
         return null;
     }
 
-
     public function save(Hashtag $hashtag)
     {
         try {
@@ -62,20 +61,19 @@ class HashtagDAO extends BaseDAO
     public function alter(Hashtag $hashtag)
     {
         try {
-            $idHashtag = $hashtag->getIdHashtag();
-            $hashtag = $hashtag->getHashtag();
-
             $params = [
-                ':idHashtag' => $idHashtag,
-                ':hashtag' => $hashtag
+                ':idHashtag' => $hashtag->getIdHashtag(),
+                ':hashtag' => $hashtag->getHashtag(),
             ];
-
-            return $this->update('Hashtags', "hashtag = :Hashtag", $params, "idHashtag = :idHashtag");
+    
+            $where = 'idHashtag = :idHashtag';
+    
+            $this->update('Hashtags', 'hashtag = :hashtag', $params, $where);
         } catch (\Exception $e) {
-            throw new \Exception("Erro na atualização dos dados. " . $e->getMessage(), 500);
+            throw new \Exception("Erro na alteração da hashtag. " . $e->getMessage(), 500);
         }
     }
-
+    
 
     public function drop(int $idHashtag)
     {
@@ -99,26 +97,45 @@ class HashtagDAO extends BaseDAO
         return false;
     }
 
+    public function getByChallengeId($challengeId)
+    {
+        $query = "SELECT H.* FROM Hashtags H
+              JOIN Hashtags_Challenges HC ON H.idHashtag = HC.idHashtag
+              WHERE HC.idChallenge = $challengeId";
+
+        $result = $this->select($query);
+        $row = $result->fetch();
+
+        if ($row) {
+            $hashtag = new Hashtag();
+            $hashtag->setIdHashtag($row['idHashtag']);
+            $hashtag->setHashtag($row['hashtag']);
+            return $hashtag;
+        }
+
+        return null;
+    }
+
+
     public function getByHashtag($hashtag)
     {
         $sql = "SELECT * FROM Hashtags WHERE hashtag = :hashtag";
         $params = [':hashtag' => $hashtag];
-    
+
         try {
             $result = $this->select($sql, $params);
-    
+
             if ($result) {
                 $data = $result->fetch();
-    
+
                 if ($data) {
                     return new Hashtag($data);
                 }
             }
-    
+
             return null;
         } catch (\Exception $e) {
             throw new \Exception("Erro ao obter a hashtag. " . $e->getMessage(), 500);
         }
     }
-    
 }

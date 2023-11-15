@@ -62,6 +62,31 @@ class AwardDAO extends BaseDAO
       return $awards;
   }
   
+  public function getByChallengeId($challengeId)
+  {
+      $query = "SELECT * FROM Awards WHERE idChallenge = $challengeId";
+      $result = $this->select($query);
+  
+      $awards = [];
+      while ($row = $result->fetch()) {
+          $award = new Award();
+          $award->setIdAward($row['idAward']);
+          $award->setIdChallenge($row['idChallenge']);
+          $award->setDescription($row['description']);
+          $award->setImagePath($row['imagePath']);
+          $award->setDate($row['date']);
+  
+          $awards[] = $award;
+      }
+  
+      if (count($awards) == 1) {
+          return $awards[0];
+      }
+  
+      return $awards;
+  }
+  
+
   public function getById($id)
   {
       $result = $this->select("SELECT * FROM Awards WHERE idAward = $id");
@@ -82,30 +107,26 @@ class AwardDAO extends BaseDAO
       return null;
   }
 
-  public function updateAward(Award $award)
+  public function alterAward(Award $award)
   {
       try {
-          $idAward = $award->getIdAward();
-          $idUser = $award->getIdUser();
-          $idChallenge = $award->getIdChallenge();
-          $description = $award->getDescription();
-          $date = $award->getDate();
-          $imagePath = $award->getImagePath();
-
           $params = [
-              ':idUser' => $idUser,
-              ':idChallenge' => $idChallenge,
-              ':description' => $description,
-              ':date' => $date,
-              ':imagePath' => $imagePath,
-              ':idAward' => $idAward,
+              ':idUser' => $award->getIdUser(),
+              ':idChallenge' => $award->getIdChallenge(),
+              ':description' => $award->getDescription(),
+              ':date' => $award->getDate(),
+              ':imagePath' => $award->getImagePath(),
+              ':idAward' => $award->getIdAward(),
           ];
-
-          return $this->update('Awards', 'idUser = :idUser, idChallenge = :idChallenge, description = :description, date = :date, imagePath = :imagePath', "idAward = :idAward", $params);
+  
+          $where = 'idAward = :idAward';
+  
+          $this->update('Awards', 'idUser = :idUser, idChallenge = :idChallenge, description = :description, date = :date, imagePath = :imagePath', $params, $where);
       } catch (\Exception $e) {
-          throw new \Exception("Error updating award. " . $e->getMessage(), 500);
+          throw new \Exception("Erro na alteração do prêmio. " . $e->getMessage(), 500);
       }
   }
+  
 
   public function drop($id)
   {
@@ -136,4 +157,3 @@ class AwardDAO extends BaseDAO
       return $awards;
   }
 }
-?>

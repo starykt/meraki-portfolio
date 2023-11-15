@@ -61,11 +61,24 @@ public function updateBanner($idChallenge, $bannerName)
 
         return $challenge;
     }
-
-    public function updateChallenge(Challenge $challenge)
+    public function alterChallenge(Challenge $challenge)
     {
-        // Implemente a lógica de update aqui
+        try {
+            $params = [
+                ':goal' => $challenge->getGoal(),
+                ':name' => $challenge->getName(),
+                ':reward' => $challenge->getReward(),
+                ':idChallenge' => $challenge->getIdChallenge(),
+            ];
+    
+            $where = 'idChallenge = :idChallenge';
+    
+            $this->update('Challenges', 'goal = :goal, name = :name, reward = :reward', $params, $where);
+        } catch (\Exception $e) {
+            throw new \Exception("Erro na alteração do desafio. " . $e->getMessage(), 500);
+        }
     }
+    
 
     public function deleteChallenge($id)
     {

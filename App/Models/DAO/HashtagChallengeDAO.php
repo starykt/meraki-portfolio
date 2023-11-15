@@ -64,7 +64,23 @@ class HashtagChallengeDAO extends BaseDAO
         return null;
     }
     
-    
+  
+public function getByChallengeId($challengeId)
+{
+    $query = "SELECT * FROM Hashtags_Challenges WHERE idChallenge = $challengeId";
+    $result = $this->select($query);
+    $hashtagChallengeList = [];
+
+    while ($row = $result->fetch()) {
+        $hashtagChallenge = new HashtagChallenge();
+        $hashtagChallenge->setIdHashtag($row['idHashtag']);
+        $hashtagChallenge->setIdChallenge($row['idChallenge']);
+        $hashtagChallengeList[] = $hashtagChallenge;
+    }
+
+    return $hashtagChallengeList;
+}
+
     private function isAssociationExists($idChallenge, $idHashtag)
     {
         $result = $this->select(

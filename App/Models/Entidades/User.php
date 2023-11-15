@@ -295,4 +295,14 @@ class User
 		$this->location = $location;
 		return $this;
 	}
+	public function toArray(): array
+    {
+        return [
+            'idUser' => $this->idUser,
+            'tag' => $this->tag,
+            'nickname' => $this->nickname,
+            'email' => $this->email,
+            'avatar' => $this->avatar,
+        ];
+    }
 }

@@ -14,33 +14,35 @@ class MessageDAO extends BaseDAO
         return $result->fetchObject(Message::class);
     }
 
+
     public function save(Message $message)
     {
         try {
-            $conversationId = $message->getConversation()->getIdConversation();
             $senderId = $message->getSender()->getIdUser();
+            $receiverId = $message->getReceiver()->getIdUser();
             $messageText = $message->getMessage();
             $sentAt = $message->getSentAt();
 
             $params = [
-                ':conversationId' => $conversationId,
                 ':senderId' => $senderId,
+                ':receiverId' => $receiverId,
                 ':message' => $messageText,
-                ':sentAt' => $sentAt,
+                ':sent_at' => $sentAt,
             ];
 
-            return $this->insert('Messages', ':conversationId, :senderId, :message, :sentAt', $params);
+            return $this->insert('Messages', ':senderId, :receiverId, :message, :sent_at', $params);
 
         } catch (\Exception $e) {
             throw new \Exception("Error saving message data. " . $e->getMessage(), 500);
         }
     }
 
-    public function getMessagesByConversationId(int $conversationId): array
+    public function getMessagesByChat(int $sender, $receiver): array
     {
         try {
             $messages = [];
-            $result = $this->select("SELECT * FROM messages WHERE conversationId = :conversationId", [':conversationId' => $conversationId]);
+            $sql = "SELECT * FROM Messages WHERE (senderId = $sender AND receiverId=$receiver) OR (senderId = $receiver AND receiverId = $sender)";
+            $result = $this->select($sql, []);
             
             while ($messageData = $result->fetch()) {
                 $message = new Message();
@@ -52,12 +54,17 @@ class MessageDAO extends BaseDAO
                 $userDAO = new UserDAO();
                 $sender = $userDAO->getById($senderId); 
                 $message->setSender($sender);
+
+                $receiverId = $messageData['receiverId'];
                 
-                $message->setConversation($messageData['conversationId']);
+                $userDAO = new UserDAO();
+                $receiver = $userDAO->getById($receiverId); 
+                $message->setReceiver($receiver);
+                
                 $message->setMessage($messageData['message']);
                 $message->setSentAt($messageData['sent_at']);
                 
-                $messages[] = $message;
+                array_push($messages, $message);
             }
     
             return $messages;
@@ -65,6 +72,8 @@ class MessageDAO extends BaseDAO
             throw new \Exception("Error fetching messages for conversation. " . $e->getMessage(), 500);
         }
     }
+
+    
     
     
 }

@@ -5,8 +5,8 @@ namespace App\Models\Entidades;
 class Message
 {
     private ?int $idMessage;
-    private Conversation $conversation;
     private User $sender;
+    private User $receiver;
     private string $message;
     private string $sent_at;
 
@@ -20,14 +20,14 @@ class Message
         $this->idMessage = $idMessage;
     }
 
-    public function getConversation(): Conversation
+    public function getReceiver(): User
     {
-        return $this->conversation;
+        return $this->receiver;
     }
 
-    public function setConversation(Conversation $conversation): void
+    public function setReceiver(User $receiver): void
     {
-        $this->conversation = $conversation;
+        $this->receiver = $receiver;
     }
 
     public function getSender(): User
@@ -58,5 +58,15 @@ class Message
     public function setSentAt(string $sent_at): void
     {
         $this->sent_at = $sent_at;
+    }
+    public function toArray(): array
+    {
+        return [
+            'idMessage' => $this->idMessage,
+            'sender' => $this->sender->toArray(),
+            'receiver' => $this->receiver->toArray(),
+            'message' => $this->message,
+            'sent_at' => $this->sent_at,
+        ];
     }
 }

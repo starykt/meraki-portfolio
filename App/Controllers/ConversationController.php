@@ -6,6 +6,7 @@ use App\Lib\Sessao;
 use App\Models\DAO\ConversationDAO;
 use App\Models\DAO\MessageDAO;
 use App\Models\DAO\UserDAO;
+use App\Models\Entidades\Message;
 
 class ConversationController extends Controller
 {
@@ -15,10 +16,14 @@ class ConversationController extends Controller
     $this->auth();
     $userDao = new UserDAO();
 
+    $messageDao = new MessageDAO();
+    $chat = $messageDao->getMessagesByChat($idUser_Recipient, $_SESSION['idUser']);
+
     $userLogged = $userDao->getById($_SESSION['idUser']);
     $userRecipient = $userDao->getById($idUser_Recipient);
     self::setViewParam('userLogged', $userLogged);
     self::setViewParam('userRecipient', $userRecipient);
+    self::setViewParam('chat', $chat);
     
     // $conversationDAO = new ConversationDAO();
     // $conversations = $conversationDAO->listConversations($_SESSION['idUser']);
@@ -26,54 +31,46 @@ class ConversationController extends Controller
 
     $this->render('/conversation/index');
   }
-
-  public function chat($conversationId)
+  public function chat($params)
   {
-      $conversationId = intval($conversationId); // Converter para inteiro
-  
-      $messageDAO = new MessageDAO();
-      $messages = $messageDAO->getMessagesByConversationId($conversationId);
-      self::setViewParam('messages', $messages);
-  
-      // Agora você pode chamar o método getById passando um valor inteiro
-      $conversationDAO = new ConversationDAO();
-      $conversation = $conversationDAO->getById($conversationId);
-  
-      self::setViewParam('conversation', $conversation);
-  
-      $this->render('/conversation/chat');
-  }
-  
-  
-
-  
-  public function sendMessage($params)
-  {
+    $idUser_Recipient = $params[0];
     $this->auth();
 
-    var_dump($params);
+    $messageDao = new MessageDAO();
+    $chat = $messageDao->getMessagesByChat($idUser_Recipient, $_SESSION['idUser']);
+    $chatArray = [];
+    foreach($chat as $msg) {
+      array_push($chatArray, $msg->toArray());
+    }
+
+    header('Content-Type: application/json');
+    echo json_encode($chatArray);
+
+    
+  }
+  public function sendMessage()
+  {
+    $this->auth();
+    $dados = json_decode(file_get_contents("php://input"));
     
 
     $senderId = $_SESSION['idUser'];
-    $idRecipent = $params[0];
-    $messageText = "";
-    if(count($params) > 2) {
-      for($i = 1; $i < count($params); $i++) {
-        $messageText.=$params[$i];
-        if($i != count($params)-1) {
-          $messageText .= "/";
-        }
-      }
-    }else {
-    $messageText = $params[1];
-    }
+    $idRecipent = $dados->idUser_Recipent;
+    $messageText = $dados->message;
     
+    $userDao = new UserDAO();
+    $sender = $userDao->getById($senderId);
+    $receiver = $userDao->getById($idRecipent);
+
     // // $conversationId = $_POST['conversationId'];
+    $message = new Message();
+    $message->setMessage($messageText);
+    $message->setSender($sender);
+    $message->setReceiver($receiver);
+    $message->setSentAt(date ("Y-m-d H:m:s"));
 
-    // $messageDAO = new MessageDAO();
-    // $messageDAO->save($conversationId, $senderId, $messageText);
+    $messageDAO = new MessageDAO();
+    $messageDAO->save($message);
 
-    // Redirecione para a página de visualização da conversa
-    echo "$idRecipent|$senderId|$messageText";
   }
 }

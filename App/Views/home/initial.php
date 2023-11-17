@@ -34,7 +34,7 @@
       modal.style.display = "none";
     }
   </script>
-  <a href="http://<?= APP_HOST ?>/user/profile">
+  <a href="http://<?= APP_HOST ?>/user/index">
     <button class="not-a-player-button">meus dados</button>
   </a>
 </body>

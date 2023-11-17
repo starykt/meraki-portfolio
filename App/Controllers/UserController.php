@@ -83,7 +83,7 @@ class UserController extends Controller
     $this->setViewParam('like', $like);
     $this->setViewParam('saveCount', $saveCount);
     $this->setViewParam('projects', $mostLikedProjects);
-    $this->render('/user/profile');
+    $this->render('/user/index');
     Sessao::limpaMensagem();
     Sessao::limpaErro();
   }
@@ -189,7 +189,7 @@ class UserController extends Controller
       $this->redirect('/home');
     } else {
       Sessao::gravaErro("Senha incorreta. Usuário não excluído.");
-      $this->redirect('/user/profile');
+      $this->render('/user/index');
     }
     Sessao::limpaMensagem();
     Sessao::limpaErro();
@@ -222,7 +222,7 @@ class UserController extends Controller
       $this->render('/user/profileEdit');
     } else {
       Sessao::gravaErro("Usuário não encontrado.");
-      $this->redirect('/user/profile');
+      $this->render('/user/index');
     }
   }
   public function saveUserToolAssociations($userId)
@@ -287,7 +287,7 @@ class UserController extends Controller
     try {
       $userDao->edit($user);
       Sessao::gravaMensagem("Informações do usuário atualizadas com sucesso.");
-      $this->redirect('/user/profile');
+      $this->render('/user/index');
     } catch (\Exception $e) {
       Sessao::gravaErro("Erro ao atualizar as informações do usuário. " . $e->getMessage());
       $this->redirect('/user/profileEdit');

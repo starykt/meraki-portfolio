@@ -10,6 +10,9 @@
   <label for="reward">Recompensa:</label>
   <input type="text" id="reward" name="reward" value="<?= $viewVar['challenge']->getReward(); ?>" required><br>
 
+  <label for="deadline">Deadline:</label>
+  <input type="date" id="deadline" name="deadline" required>
+
   <label for="banner">Banner (Imagem Atual):</label>
   <img src="http://<?php echo APP_HOST; ?>/public/images/challenges/<?= $viewVar['challenge']->getBanner(); ?>" width="100px" height="100px">
   <input type="file" id="banner" name="banner" accept="image/*"><br>

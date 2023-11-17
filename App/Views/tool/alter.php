@@ -1,3 +1,30 @@
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 <form action="http://<?= APP_HOST ?>/tool/update" method="POST" enctype="multipart/form-data">
     <div>
         <label for="icon">Ícone:</label>
@@ -9,6 +36,8 @@
         <label for="caption">Legenda</label>
         <input type="text" name="caption" id="caption" value="<?php echo $viewVar['tool']->getCaption(); ?>" required>
     </div>
+    <label for="color">Cor:</label>
+        <input type="color" name="color" id="color" value="#000000" required><br>
 
     <input type="hidden" name="idTool" value="<?php echo $viewVar['tool']->getIdTool(); ?>">
 

@@ -1,12 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Ferramenta</title>
-</head>
-
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <body>
     <h1>Registrar Nova Ferramenta</h1>
 
@@ -27,6 +41,9 @@
 
         <label for="caption">Legenda:</label>
         <input type="text" name="caption" id="caption" required><br>
+
+        <label for="color">Cor:</label>
+        <input type="color" name="color" id="color" value="#000000" required><br>
 
         <button type="submit">Registrar Ferramenta</button>
     </form>

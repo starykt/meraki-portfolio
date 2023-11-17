@@ -1,5 +1,5 @@
 <?php
-// ChallengeController.php
+
 namespace App\Controllers;
 
 use App\Lib\Sessao;
@@ -22,7 +22,7 @@ class ChallengeController extends Controller
     {
         try {
             $challengesDAO = new ChallengeDAO();
-            $challenges = $challengesDAO->getAll();
+            $challenges = $challengesDAO->getChallengesAll();
 
             $hashtagChallengeDAO = new HashtagChallengeDAO();
             $awardsDAO = new AwardDAO();
@@ -38,6 +38,8 @@ class ChallengeController extends Controller
                 $hashtagsList[$challenge->getIdChallenge()] = $hashtagChallengeDAO->getHashtagByChallengeId($challenge->getIdChallenge());
             }
 
+            $this->endChallenge($challenges);
+
             $this->setViewParam('user', $user);
             $this->setViewParam('usersList', $usersList);
             $this->setViewParam('awardsList', $awardsList);
@@ -46,6 +48,35 @@ class ChallengeController extends Controller
             $this->render('/challenge/index');
         } catch (\Exception $e) {
             echo "Erro: " . $e->getMessage();
+        }
+    }
+
+    public function endChallenge($challenges)
+    {
+        $challengeDAO = new ChallengeDAO();
+        $awardsDAO = new AwardDAO();
+        $userDAO = new UserDAO();
+
+        foreach ($challenges as $challenge) {
+            if (strtotime($challenge->getDeadline()) < time()) {
+                $winner = $challengeDAO->getChallengeWinner($challenge->getIdChallenge());
+
+                if ($winner) {
+                    $idChallenge = $challenge->getIdChallenge();
+                    $existingUserId = $awardsDAO->checkAwardUserId($idChallenge);
+
+                    if ($existingUserId === null) {
+                        $award = new Award();
+                        $award->setIdUser($winner->getUserId());
+                        $award->setIdChallenge($idChallenge);
+
+                        $awardsDAO->updateUser($award);
+
+                        $xpToAdd = $challenge->getReward();
+                        $userDAO->updateXPAndLevel($winner->getUserId(), $xpToAdd);
+                    }
+                }
+            }
         }
     }
 
@@ -69,6 +100,7 @@ class ChallengeController extends Controller
         $challenge->setGoal($_POST['goal']);
         $challenge->setName($_POST['name']);
         $challenge->setReward($_POST['reward']);
+        $challenge->setDeadline($_POST['deadline']);
         $lastChallengeId = $challengesDAO->save($challenge);
 
         $challenge = $challengesDAO->getById($lastChallengeId);
@@ -171,6 +203,7 @@ class ChallengeController extends Controller
         $challenge->setGoal($_POST['goal']);
         $challenge->setName($_POST['name']);
         $challenge->setReward($_POST['reward']);
+        $challenge->setDeadline($_POST['deadline']);
 
         $challengesDAO->alterChallenge($challenge);
         $awardsDAO = new AwardDAO();

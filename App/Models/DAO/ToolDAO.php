@@ -8,25 +8,26 @@ use Exception;
 class ToolDAO extends BaseDAO
 {
 
-  public function list()
-  {
-      $result = $this->select("SELECT * FROM Tools");
+    public function list()
+    {
+        $result = $this->select("SELECT * FROM Tools");
 
-      $dataSet = $result->fetchAll();
-      $listTool = [];
+        $dataSet = $result->fetchAll();
+        $listTool = [];
 
-      if ($dataSet) {
-          foreach ($dataSet as $data) {
-              $tool = new Tool();
-              $tool->setIdTool($data['idTool']);
-              $tool->setIcon($data['icon']);
-              $tool->setCaption($data['caption']);
-              $listTool[] = $tool;
-          }
-      }
+        if ($dataSet) {
+            foreach ($dataSet as $data) {
+                $tool = new Tool();
+                $tool->setIdTool($data['idTool']);
+                $tool->setIcon($data['icon']);
+                $tool->setCaption($data['caption']);
+                $tool->setColor($data['color']); 
+                $listTool[] = $tool;
+            }
+        }
 
-      return $listTool;
-  }
+        return $listTool;
+    }
 
     public function getById(int $idTool)
     {
@@ -38,6 +39,7 @@ class ToolDAO extends BaseDAO
             $tool->setIdTool($toolData['idTool']);
             $tool->setIcon($toolData['icon']);
             $tool->setCaption($toolData['caption']);
+            $tool->setColor($toolData['color']); 
             return $tool;
         }
 
@@ -49,18 +51,41 @@ class ToolDAO extends BaseDAO
         try {
             $icon = $tool->getIcon();
             $caption = $tool->getCaption();
+            $color = $tool->getColor(); 
 
             $params = [
                 ':icon' => $icon,
                 ':caption' => $caption,
+                ':color' => $color, 
             ];
 
-            return $this->insert('Tools', ':icon, :caption', $params);
+            return $this->insert('Tools', ':icon, :caption, :color', $params);
         } catch (\Exception $e) {
             throw new \Exception("Erro na gravação dos dados. " . $e->getMessage(), 500);
         }
     }
 
+
+    public function edit(Tool $tool)
+    {
+        try {
+            $idTool = $tool->getIdTool();
+            $icon = $tool->getIcon();
+            $caption = $tool->getCaption();
+            $color = $tool->getColor(); 
+
+            $params = [
+                ':idTool' => $idTool,
+                ':icon' => $icon,
+                ':caption' => $caption,
+                ':color' => $color, 
+            ];
+
+            return $this->update('Tools', "icon = :icon, caption = :caption, color = :color", $params, "idTool = :idTool");
+        } catch (\Exception $e) {
+            throw new \Exception("Erro na atualização dos dados. " . $e->getMessage(), 500);
+        }
+    }
    
 
 public function updateIcon($toolId, $iconName)
@@ -81,24 +106,7 @@ public function updateIcon($toolId, $iconName)
 }
 
 
-    public function edit(Tool $tool)
-    {
-        try {
-            $idTool = $tool->getIdTool();
-            $icon = $tool->getIcon();
-            $caption = $tool->getCaption();
 
-            $params = [
-                ':idTool' => $idTool,
-                ':icon' => $icon,
-                ':caption' => $caption,
-            ];
-
-            return $this->update('Tools', "icon = :icon, caption = :caption", $params, "idTool = :idTool");
-        } catch (\Exception $e) {
-            throw new \Exception("Erro na atualização dos dados. " . $e->getMessage(), 500);
-        }
-    }
 
     public function drop(int $idTool)
     {

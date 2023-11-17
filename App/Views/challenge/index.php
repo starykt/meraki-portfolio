@@ -1,3 +1,12 @@
+<?php
+
+function formatDate($deadline)
+{
+    $dateTime = new DateTime($deadline);
+    return $dateTime->format('d/m/Y H:i:s');
+}
+?>
+
 <h1>Lista de Desafios</h1>
 
 <?php foreach ($viewVar['challenges'] as $challenge) : ?>
@@ -15,6 +24,8 @@
         <h2><?= $challenge->getName() ?></h2>
         <p>Meta: <?= $challenge->getGoal() ?></p>
         <p>Recompensa: <?= $challenge->getReward() ?></p>
+    
+        <p>Prazo final: <?= formatDate($challenge->getDeadline()) ?></p>
         <img src="http://<?php echo APP_HOST; ?>/public/images/challenges/<?= $challenge->getBanner() ?>" width="200px" height="200px">
         <h3>Hashtags Associadas:</h3>
         <ul>

@@ -24,13 +24,16 @@
   <label for="reward">Recompensa:</label>
   <input type="text" id="reward" name="reward" required><br>
 
+  <label for="deadline">Deadline:</label>
+  <input type="date" id="deadline" name="deadline" required>
+
   <label for="banner">Banner (Imagem):</label>
   <input type="file" id="banner" name="banner" accept="image/*" required><br>
 
   <h2>Nova hashtag para desafio</h2>
-          <div>
-            <input type="text" name="hashtag" placeholder="Hashtag" required>
-          </div>
+  <div>
+    <input type="text" name="hashtag" placeholder="Hashtag" required>
+  </div>
 
   <label for="description">Descrição do Prêmio:</label>
   <input type="text" id="description" name="description" required><br>

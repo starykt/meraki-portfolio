@@ -269,4 +269,57 @@ class UserDAO extends BaseDAO
             throw new \Exception("Erro ao excluir o usuario. " . $e->getMessage(), 500);
         }
     }
+
+public function updateXPAndLevel($userId, $xpGained)
+{
+    try {
+        $user = $this->getById($userId);
+
+        if (!$user) {
+            throw new \Exception("User not found.");
+        }
+
+        $currentLevel = $user->getLevel();
+        $currentXP = $user->getXP();
+
+        $baseXP = 100;
+        $xpPerLevel = 100;
+
+        $xpForNextLevel = $baseXP + $xpPerLevel * $currentLevel;
+
+        $newXP = $currentXP + $xpGained;
+
+        while ($newXP >= $xpForNextLevel) {
+            $currentLevel++;
+            $newXP -= $xpForNextLevel;
+            $xpForNextLevel = $baseXP + $xpPerLevel * $currentLevel;
+        }
+
+        $user->setLevel($currentLevel);
+        $user->setXP($newXP);
+
+        $this->updateUserLevel2($user);
+    } catch (\Exception $e) {
+        throw new \Exception("Error updating XP and level. " . $e->getMessage(), 500);
+    }
+}
+
+public function updateUserLevel2(User $user)
+{
+    try {
+        $params = [
+            ':level' => $user->getLevel(),
+            ':xp' => $user->getXP(),
+            ':userId' => $user->getIdUser(),
+        ];
+
+        $condition = 'idUser = :userId';
+
+        $this->update('Users', 'level = :level, xp = :xp', $params, $condition);
+    } catch (\Exception $e) {
+        throw new \Exception("Error updating user level. " . $e->getMessage(), 500);
+    }
+}
+
+
 }

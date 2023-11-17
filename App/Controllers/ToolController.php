@@ -38,7 +38,7 @@ class ToolController extends Controller
 
       $tool = new Tool();
       $tool->setCaption($caption);
-
+      $tool->setColor($_POST["color"]);
       $toolDAO = new ToolDAO();
       $toolId = $toolDAO->save($tool);
 
@@ -90,7 +90,7 @@ class ToolController extends Controller
           }
   
           $tool->setCaption($caption);
-  
+          $tool->setColor($_POST["color"]);
           if ($_FILES['icon']['error'] === UPLOAD_ERR_OK) {
               $objUpload = new Upload($_FILES['icon']);
               $objUpload->setName('icon-id' . $idTool);

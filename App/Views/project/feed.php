@@ -1,29 +1,128 @@
-<link href="http://<?php echo APP_HOST; ?>/public/css/feed-page.css" rel="stylesheet">
 <body>
-<pre> </pre>
+  <section>
+    <div class="card-new-post">
+      <div class="avatar">
+        <img src="./user.png" alt="" />
+      </div>
 
-<div class="feed-page">
-  <div class="button-new">
-      <p>NEW POST</p>
-  </div>
-  <div class="new-project">
-    <div class="div-icon">
-      <img src="https://i.pinimg.com/236x/f5/dd/c6/f5ddc690ab0783246299f9045bb2dec4.jpg" class="user-icon">
+      <p class="text-card">Its me... Mario?</p>
+      <p class="new-post-notification">NEW POST</p>
     </div>
-    <div class="text-project">
-      It's me... Mario?
-    </div>
-  </div>
 
-  <div class="list-project">
-    <div class="icon-profile">
-      <img src="https://i.pinimg.com/236x/f5/dd/c6/f5ddc690ab0783246299f9045bb2dec4.jpg" class="user">
-      <div class="circle1"></div>
-      <div class="circle2"></div>
-    </div>
-    <div class="project-post">
-      <p class="title-project">Project XXXXXX</p>
-      <p class="user-nametag">User#28374</p>
-    </div>
-  </div>
-</div>
+    <article>
+      <div class="wrapper-chat">
+        <div class="message">
+          <div class="status-indicator">
+            <div class="indicator-dot"></div>
+            <div class="indicator-dot"></div>
+          </div>
+          <div class="user-avatar"></div>
+          <div class="text-bubble">
+            <header>
+              <p>mingle #9823</p>
+            </header>
+            <p class="text">
+              New 3D Persona made with my favorite sofware: Blender <3
+            </p>
+
+            <div class="buttons">
+              <button class="button like" style="background-color: #2a8194">
+                <img
+                  src="./menu-icon/gostar.png"
+                  style="height: 30px; width: 30px"
+                  alt=""
+                />
+                <span class="count">100</span>
+              </button>
+              <button
+                class="button blue message-button"
+                style="background-color: #2a8194"
+              >
+                <img
+                  src="./menu-icon/comente.png"
+                  style="height: 30px; width: 30px"
+                  alt=""
+                />
+                <span class="count">100</span>
+              </button>
+              <button
+                class="button blue favorite"
+                style="background-color: #2a8194"
+              >
+                <img
+                  src="./menu-icon/marca-paginas.png"
+                  style="height: 30px; width: 30px"
+                  alt=""
+                />
+                <span class="count">100</span>
+              </button>
+              <button class="button red warning">
+                <img
+                  src="./menu-icon/atencao.png"
+                  style="height: 50px; width: 50px"
+                  alt=""
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="message">
+          <div class="status-indicator">
+            <div class="indicator-dot"></div>
+            <div class="indicator-dot"></div>
+          </div>
+          <div class="user-avatar"></div>
+          <div class="text-bubble">
+            <header>
+              <p>mingle #9823</p>
+            </header>
+            <p class="text">
+              New 3D Persona made with my favorite sofware: Blender <3
+            </p>
+
+            <div class="buttons">
+              <button class="button like" style="background-color: #2a8194">
+                <img
+                  src="./menu-icon/gostar.png"
+                  style="height: 30px; width: 30px"
+                  alt=""
+                />
+                <span class="count">100</span>
+              </button>
+              <button
+                class="button blue message-button"
+                style="background-color: #2a8194"
+              >
+                <img
+                  src="./menu-icon/comente.png"
+                  style="height: 30px; width: 30px"
+                  alt=""
+                />
+                <span class="count">100</span>
+              </button>
+              <button
+                class="button blue favorite"
+                style="background-color: #2a8194"
+              >
+                <img
+                  src="./menu-icon/marca-paginas.png"
+                  style="height: 30px; width: 30px"
+                  alt=""
+                />
+                <span class="count">100</span>
+              </button>
+              <button class="button red warning">
+                <img
+                  src="./menu-icon/atencao.png"
+                  style="height: 50px; width: 50px"
+                  alt=""
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+</body>

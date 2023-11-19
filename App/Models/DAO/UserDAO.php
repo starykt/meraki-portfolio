@@ -167,6 +167,28 @@ class UserDAO extends BaseDAO
         return $users;
     }
 
+    public function getUsersByAwards()
+    {
+        $query = "SELECT u.*, COUNT(a.idAward) AS awardCount
+                  FROM Users u
+                  LEFT JOIN Awards a ON u.idUser = a.idUser
+                  GROUP BY u.idUser
+                  ORDER BY awardCount DESC";
+        $result = $this->select($query);
+
+        $users = [];
+        while ($row = $result->fetch()) {
+            $user = new User();
+            $user->setIdUser($row['idUser']);
+            $user->setNickname($row['nickname']);
+            $user->setTag($row['tag']);
+            $user->setAvatar($row['avatar']);
+            $user->setLevel($row['level']);
+            $user->setAwards($row['awardCount']);
+            $users[] = $user;
+        }
+        return $users;
+    }
 
     public function getUsersByLevel()
     {
@@ -270,56 +292,54 @@ class UserDAO extends BaseDAO
         }
     }
 
-public function updateXPAndLevel($userId, $xpGained)
-{
-    try {
-        $user = $this->getById($userId);
+    public function updateXPAndLevel($userId, $xpGained)
+    {
+        try {
+            $user = $this->getById($userId);
 
-        if (!$user) {
-            throw new \Exception("User not found.");
-        }
+            if (!$user) {
+                throw new \Exception("User not found.");
+            }
 
-        $currentLevel = $user->getLevel();
-        $currentXP = $user->getXP();
+            $currentLevel = $user->getLevel();
+            $currentXP = $user->getXP();
 
-        $baseXP = 100;
-        $xpPerLevel = 100;
+            $baseXP = 100;
+            $xpPerLevel = 100;
 
-        $xpForNextLevel = $baseXP + $xpPerLevel * $currentLevel;
-
-        $newXP = $currentXP + $xpGained;
-
-        while ($newXP >= $xpForNextLevel) {
-            $currentLevel++;
-            $newXP -= $xpForNextLevel;
             $xpForNextLevel = $baseXP + $xpPerLevel * $currentLevel;
+
+            $newXP = $currentXP + $xpGained;
+
+            while ($newXP >= $xpForNextLevel) {
+                $currentLevel++;
+                $newXP -= $xpForNextLevel;
+                $xpForNextLevel = $baseXP + $xpPerLevel * $currentLevel;
+            }
+
+            $user->setLevel($currentLevel);
+            $user->setXP($newXP);
+
+            $this->updateUserLevel2($user);
+        } catch (\Exception $e) {
+            throw new \Exception("Error updating XP and level. " . $e->getMessage(), 500);
         }
-
-        $user->setLevel($currentLevel);
-        $user->setXP($newXP);
-
-        $this->updateUserLevel2($user);
-    } catch (\Exception $e) {
-        throw new \Exception("Error updating XP and level. " . $e->getMessage(), 500);
     }
-}
 
-public function updateUserLevel2(User $user)
-{
-    try {
-        $params = [
-            ':level' => $user->getLevel(),
-            ':xp' => $user->getXP(),
-            ':userId' => $user->getIdUser(),
-        ];
+    public function updateUserLevel2(User $user)
+    {
+        try {
+            $params = [
+                ':level' => $user->getLevel(),
+                ':xp' => $user->getXP(),
+                ':userId' => $user->getIdUser(),
+            ];
 
-        $condition = 'idUser = :userId';
+            $condition = 'idUser = :userId';
 
-        $this->update('Users', 'level = :level, xp = :xp', $params, $condition);
-    } catch (\Exception $e) {
-        throw new \Exception("Error updating user level. " . $e->getMessage(), 500);
+            $this->update('Users', 'level = :level, xp = :xp', $params, $condition);
+        } catch (\Exception $e) {
+            throw new \Exception("Error updating user level. " . $e->getMessage(), 500);
+        }
     }
-}
-
-
 }

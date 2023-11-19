@@ -63,7 +63,18 @@ class AwardDAO extends BaseDAO
             throw new \Exception("Erro ao obter prêmios do usuário. " . $e->getMessage(), 500);
         }
     }
+    public function getAwardCountByUserId($userId)
+    {
+        $query = "SELECT COUNT(idAward) AS awardCount FROM Awards WHERE idUser = $userId";
 
+        $result = $this->select($query);
+
+        if ($result) {
+            $row = $result->fetch();
+            return $row['awardCount'];
+        }
+        return 0;
+    }
     public function getAwardsByChallengeId($challengeId)
     {
         $query = "SELECT A.* FROM Awards A

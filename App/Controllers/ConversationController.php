@@ -31,6 +31,22 @@ class ConversationController extends Controller
 
     $this->render('/conversation/index');
   }
+  
+  public function conversations()
+  {
+      $this->auth();
+      $userDao = new UserDAO();
+  
+      $messageDao = new ConversationDAO();
+      $conversations = $messageDao->getConversations($_SESSION['idUser']);
+  
+      $userLogged = $userDao->getById($_SESSION['idUser']);
+      self::setViewParam('userLogged', $userLogged);
+      self::setViewParam('conversations', $conversations);
+  
+      $this->render('/conversation/conversations');
+  }
+  
   public function chat($params)
   {
     $idUser_Recipient = $params[0];

@@ -1,5 +1,17 @@
 <br><br><br><br><br><br><br><br><br><br>
 <style>
+    .img-user-message-sent {
+        width: 32px;
+        height: 32px;
+        border-radius: 360px;
+        float: right;
+    }
+    .img-user-message-received {
+        width: 32px;
+        height: 32px;
+        border-radius: 360px;
+        float: left;
+    }
     textarea {
         width: 100%;
         padding: 10px;
@@ -165,7 +177,10 @@
         messages.forEach(function(message) {
             var messageElement = document.createElement("div");
             messageElement.className = "message " + (message.sender.idUser === userLogged ? "sent" : "received");
-            messageElement.innerHTML = "<p>" + message.message + "</p>";
+            let content = ""
+            content += `<img src='http://<?php echo APP_HOST; ?>/public/images/users/${message.sender.avatar}' class='img-user-message-${ message.sender.idUser === userLogged ? "sent" : "received"}'>`
+            content += "<p>" + message.message + "</p>";
+            messageElement.innerHTML = content;
             chatContainer.appendChild(messageElement);
         });
     }

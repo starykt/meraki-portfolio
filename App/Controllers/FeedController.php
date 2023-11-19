@@ -10,7 +10,7 @@ class FeedController extends Controller
 {
     public function index()
     {
-        $this->render('/project/feed');
+        $this->render('/project/index');
         Sessao::limpaMensagem();
         Sessao::limpaErro();
     }

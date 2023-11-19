@@ -137,6 +137,6 @@ class LoginController extends Controller
     Sessao::limpaFormulario();
     Sessao::limpaErro();
     Sessao::limpaMensagem();
-    $this->render('/project/feed');
+    $this->redirect('/project/index');
   }
 }

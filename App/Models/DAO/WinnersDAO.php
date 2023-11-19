@@ -3,7 +3,6 @@ namespace App\Models\DAO;
 
 use App\Models\Entidades\Winner;
 
-// WinnersDAO.php
 class WinnersDAO extends BaseDAO
 {
     public function save(Winner $winner)
@@ -17,7 +16,7 @@ class WinnersDAO extends BaseDAO
                 ':idUser' => $idUser,
             ];
 
-            return $this->insert('Winners', 'idChallenge, idUser', $params);
+            return $this->insert('Winners', ':idChallenge, :idUser', $params);
         } catch (\Exception $e) {
             throw new \Exception("Error saving winner. " . $e->getMessage(), 500);
         }

@@ -12,9 +12,11 @@ use App\Models\DAO\HashtagDAO;
 use App\Models\DAO\HashtagsChallengeDAO;
 use App\Models\DAO\HashtagsChallengesDAO;
 use App\Models\DAO\UserDAO;
+use App\Models\DAO\WinnersDAO;
 use App\Models\Entidades\Award;
 use App\Models\Entidades\Challenge;
 use App\Models\Entidades\Hashtag;
+use App\Models\Entidades\Winner;
 
 class ChallengeController extends Controller
 {
@@ -22,8 +24,8 @@ class ChallengeController extends Controller
     {
         try {
             $challengesDAO = new ChallengeDAO();
-            $challenges = $challengesDAO->getChallengesAll();
-
+            $challenges = $challengesDAO->getAll();
+            $challengesFinally =$challengesDAO->getChallengesAll();
             $hashtagChallengeDAO = new HashtagChallengeDAO();
             $awardsDAO = new AwardDAO();
             $usersDAO = new UserDAO();
@@ -38,7 +40,7 @@ class ChallengeController extends Controller
                 $hashtagsList[$challenge->getIdChallenge()] = $hashtagChallengeDAO->getHashtagByChallengeId($challenge->getIdChallenge());
             }
 
-            $this->endChallenge($challenges);
+            $this->endChallenge($challengesFinally);
 
             $this->setViewParam('user', $user);
             $this->setViewParam('usersList', $usersList);
@@ -69,11 +71,16 @@ class ChallengeController extends Controller
                         $award = new Award();
                         $award->setIdUser($winner->getUserId());
                         $award->setIdChallenge($idChallenge);
-
+                        
                         $awardsDAO->updateUser($award);
-
                         $xpToAdd = $challenge->getReward();
                         $userDAO->updateXPAndLevel($winner->getUserId(), $xpToAdd);
+
+                        $winners = new Winner();
+                        $winners->setIdUser($winner->getUserId());
+                        $winners->setIdChallenge($idChallenge);
+                        $winnersDAO = new WinnersDAO();
+                        $winnersDAO->save($winners);  
                     }
                 }
             }

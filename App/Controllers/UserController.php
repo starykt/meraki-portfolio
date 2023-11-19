@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Lib\Sessao;
 use App\Lib\Upload;
+use App\Models\DAO\AwardDAO;
 use App\Models\DAO\CommentDAO;
 use App\Models\DAO\FileDAO;
 use App\Models\DAO\HashtagProjectDAO;
@@ -78,12 +79,16 @@ class UserController extends Controller
       $comments = $commentDAO->getCommentsByProjectId($project->getIdProject());
       $project->setComments($comments);
     }
+
+    $awardDAO = new AwardDAO();
+    $userAwards = $awardDAO->getUserAwards($idUser);
+    $this->setViewParam('userAwards', $userAwards);
     $this->setViewParam('userTools', $tools);
     $this->setViewParam('commentCount', $commentCount);
     $this->setViewParam('like', $like);
     $this->setViewParam('saveCount', $saveCount);
     $this->setViewParam('projects', $mostLikedProjects);
-    $this->render('/user/index');
+    $this->render('/user/profile');
     Sessao::limpaMensagem();
     Sessao::limpaErro();
   }
@@ -145,7 +150,9 @@ class UserController extends Controller
       $comments = $commentDAO->getCommentsByProjectId($project->getIdProject());
       $project->setComments($comments);
     }
-
+    $awardDAO = new AwardDAO();
+    $userAwards = $awardDAO->getUserAwards($idUser);
+    $this->setViewParam('userAwards', $userAwards);
     $this->setViewParam('userTools', $tools);
     $this->setViewParam('commentCount', $commentCount);
     $this->setViewParam('like', $like);
@@ -189,7 +196,7 @@ class UserController extends Controller
       $this->redirect('/home');
     } else {
       Sessao::gravaErro("Senha incorreta. Usuário não excluído.");
-      $this->render('/user/index');
+      $this->render('/user/profile');
     }
     Sessao::limpaMensagem();
     Sessao::limpaErro();
@@ -222,7 +229,7 @@ class UserController extends Controller
       $this->render('/user/profileEdit');
     } else {
       Sessao::gravaErro("Usuário não encontrado.");
-      $this->render('/user/index');
+      $this->render('/user/profile');
     }
   }
   public function saveUserToolAssociations($userId)
@@ -287,7 +294,7 @@ class UserController extends Controller
     try {
       $userDao->edit($user);
       Sessao::gravaMensagem("Informações do usuário atualizadas com sucesso.");
-      $this->render('/user/index');
+      $this->redirect('/user/profile');
     } catch (\Exception $e) {
       Sessao::gravaErro("Erro ao atualizar as informações do usuário. " . $e->getMessage());
       $this->redirect('/user/profileEdit');
@@ -346,5 +353,4 @@ class UserController extends Controller
     $this->setViewParam('userPosition', $position);
     $this->render('/user/reportLike');
   }
-
 }

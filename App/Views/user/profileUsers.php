@@ -16,6 +16,13 @@ Level: <?= $viewVar['user']->getLevel() ?><br>
 XP: <?= $viewVar['user']->getXp() ?><br>
 Resumo: <?= $viewVar['user']->getResume() ?><br>
 Local: <?= $viewVar['user']->getLocation() ?><br>
+<h2>Prêmios do Usuário</h2>
+        <ul>
+            <?php foreach ($viewVar['userAwards'] as $award) : ?>
+                <li><?= $award->getDescription(); ?></li>
+                <img src="http://<?php echo APP_HOST; ?>/public/images/awards/<?= $award->getImagePath() ?>" width="20px" height="20px"><br>
+            <?php endforeach; ?>
+        </ul>
 Admin? <?php if ($viewVar['user']->getAdmin() == true) { ?>
     Administrador
 <?php } ?> <br>

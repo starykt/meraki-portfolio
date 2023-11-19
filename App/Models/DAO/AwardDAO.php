@@ -42,6 +42,27 @@ class AwardDAO extends BaseDAO
             throw new \Exception("Erro na atualização do caminho da imagem do prêmio. " . $e->getMessage(), 500);
         }
     }
+    public function getUserAwards($userId)
+    {
+        try {
+            $sql = "SELECT * FROM Awards WHERE idUser = $userId";
+
+            $result = $this->select($sql);
+
+            $userAwards = [];
+            foreach ($result as $data) {
+                $award = new Award();
+                $award->setIdAward($data['idAward']);
+                $award->setDescription($data['description']);
+                $award->setImagePath($data['imagePath']);
+                $userAwards[] = $award;
+            }
+
+            return $userAwards;
+        } catch (\Exception $e) {
+            throw new \Exception("Erro ao obter prêmios do usuário. " . $e->getMessage(), 500);
+        }
+    }
 
     public function getAwardsByChallengeId($challengeId)
     {

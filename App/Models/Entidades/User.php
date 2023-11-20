@@ -19,8 +19,17 @@ class User
 	private \DateTime $createdAt;
 	private ?string $location = null;
 	private $likes;
-
+	private ?string $status = null;
 	private int $awards;
+	public function setStatus($status)
+	{
+		$this->status = $status;
+	}
+
+	public function getStatus()
+	{
+		return $this->status;
+	}
 
 	/**
 	 * @param int $awards

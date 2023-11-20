@@ -48,6 +48,7 @@ class UserDAO extends BaseDAO
                 $user->setIdUser($data['idUser']);
                 $user->setNickname($data['nickname']);
                 $user->setAvatar($data['avatar']);
+                $user->setStatus($data['status']);
                 $listUser[] = $user;
             }
         }
@@ -71,7 +72,7 @@ class UserDAO extends BaseDAO
             $level = 1;
             $xp = 0;
             $resume = $user->getResume();
-            $admin = 1;
+            $admin = 0;
             $createdAt = $user->getCreatedAt()->format('Y-m-d H:i:s');
             $location = $user->getLocation();
 
@@ -130,6 +131,7 @@ class UserDAO extends BaseDAO
             $createdAt = \DateTime::createFromFormat('Y-m-d H:i:s', $userData['createdAt']);
             $user->setCreatedAt($createdAt);
             $user->setLocation($userData['location']);
+            $user->setStatus($userData['status']);
 
             if (!password_verify($password, $user->getPassword())) {
                 return 0;
@@ -161,6 +163,7 @@ class UserDAO extends BaseDAO
             $user->setAvatar($row['avatar']);
             $user->setLevel($row['level']);
             $user->setLikes($row['likeCount']);
+            $user->setStatus($row['status']);
             $users[] = $user;
         }
 
@@ -185,6 +188,7 @@ class UserDAO extends BaseDAO
             $user->setAvatar($row['avatar']);
             $user->setLevel($row['level']);
             $user->setAwards($row['awardCount']);
+            $user->setStatus($row['status']);
             $users[] = $user;
         }
         return $users;
@@ -203,6 +207,7 @@ class UserDAO extends BaseDAO
             $user->setTag($row['tag']);
             $user->setAvatar($row['avatar']);
             $user->setLevel($row['level']);
+            $user->setStatus($row['status']);
             $users[] = $user;
         }
 
@@ -246,6 +251,7 @@ class UserDAO extends BaseDAO
             $user->setIdUser($row['idUser']);
             $user->setNickname($row['nickname']);
             $user->setAvatar($row['avatar']);
+            $user->setStatus($row['status']);
             return $user;
         }
 
@@ -289,6 +295,18 @@ class UserDAO extends BaseDAO
             return $this->delete('Users', "idUser = $idUser");
         } catch (\Exception $e) {
             throw new \Exception("Erro ao excluir o usuario. " . $e->getMessage(), 500);
+        }
+    }
+    public function updateStatus($idUser, $status)
+    {
+        try {
+            $params = [
+                ':idUser' => $idUser,
+                ':status' => $status,
+            ];
+            return $this->update('Users', 'status = :status', $params, 'idUser = :idUser');
+        } catch (\Exception $e) {
+            throw new \Exception("Erro ao atualizar nível do usuário. " . $e->getMessage(), 500);
         }
     }
 

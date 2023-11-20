@@ -1,6 +1,9 @@
 <link href="http://<?php echo APP_HOST; ?>/public/css/landing-page.css" rel="stylesheet">
 <body>
   <div class="wrapper">
+    <div class="logo">
+      <img class="logo-img" src="http://<?php echo APP_HOST; ?>/public/images/meraki.png">
+    <div>
     <div class="big-circle">
       <div class="message">.</div>
       <div class="purple-play-button">

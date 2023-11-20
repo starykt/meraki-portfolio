@@ -2,6 +2,7 @@
 <body>
   <div class="wrapper">
     <div class="big-circle">
+      <div class="message">.</div>
       <div class="purple-play-button">
         <a href="http://<?= APP_HOST ?>/login/index">
           <img src="http://<?php echo APP_HOST; ?>/public/images/playButton.png">

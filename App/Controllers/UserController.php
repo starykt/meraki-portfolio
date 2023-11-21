@@ -320,15 +320,23 @@ class UserController extends Controller
 
   public function saveEducation()
   {
-    $education = new Education();
-    $education->setFormation($_POST["formation"]);
-    $education->setIdUser($_SESSION["idUser"]);
+      $educationDAO = new EducationDAO();
+      $existingEducations = $educationDAO->getByUserId($_SESSION["idUser"]);
+  
+      if (count($existingEducations) == 3) {
+          echo "Você atingiu o limite máximo de 3 educações.";
+          return;
+      }
 
-    $educationDAO = new EducationDAO();
-    $educationDAO->save($education);
-
-    $this->redirect('/user/profileEdit');
+      $education = new Education();
+      $education->setFormation($_POST["formation"]);
+      $education->setIdUser($_SESSION["idUser"]);
+  
+      $educationDAO->save($education);
+  
+      $this->redirect('/user/profileEdit');
   }
+  
 
 
   public function dropEducation($params)

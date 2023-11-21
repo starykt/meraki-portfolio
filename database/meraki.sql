@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Tempo de geração: 20-Nov-2023 às 00:17
+-- Tempo de geração: 21-Nov-2023 às 22:36
 -- Versão do servidor: 8.0.21
 -- versão do PHP: 8.2.11
 
@@ -93,7 +93,8 @@ INSERT INTO `Comments` (`idComment`, `idUser`, `idProject`, `text`, `dateCreate`
 (7, 3, 13, 'eae', '2023-11-09 18:01:04'),
 (14, 3, 16, 'teste', '2023-11-15 02:48:47'),
 (15, 3, 16, 'teste', '2023-11-15 02:49:07'),
-(16, 3, 16, 'teste', '2023-11-15 02:51:46');
+(16, 3, 16, 'teste', '2023-11-15 02:51:46'),
+(17, 1, 26, 'topp', '2023-11-21 21:05:05');
 
 -- --------------------------------------------------------
 
@@ -118,6 +119,15 @@ CREATE TABLE `Educations` (
   `formation` varchar(200) NOT NULL,
   `idUser` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Extraindo dados da tabela `Educations`
+--
+
+INSERT INTO `Educations` (`idEducation`, `formation`, `idUser`) VALUES
+(1, ' fffffffffff', 1),
+(2, 'rapaz', 1),
+(3, 'rapaz', 1);
 
 -- --------------------------------------------------------
 
@@ -149,8 +159,7 @@ CREATE TABLE `Files` (
 
 INSERT INTO `Files` (`idFiles`, `idProject`, `file`) VALUES
 (15, 11, 'file-id11-1698953116-0.pdf'),
-(16, 3, 'file-id3-1699295600-0.pdf'),
-(17, 17, 'file-id17-1700016945-0.mwb');
+(16, 3, 'file-id3-1699295600-0.pdf');
 
 -- --------------------------------------------------------
 
@@ -225,8 +234,7 @@ INSERT INTO `Hashtags_Projects` (`idHashtag`, `idProject`) VALUES
 (2, 11),
 (7, 11),
 (2, 13),
-(2, 14),
-(7, 17);
+(2, 14);
 
 -- --------------------------------------------------------
 
@@ -250,8 +258,7 @@ INSERT INTO `Images` (`idImage`, `idProject`, `image`) VALUES
 (10, 8, 'img-id8-2.png'),
 (11, 8, 'img-id8-3.png'),
 (18, 3, 'img-id3-1698595005-0.jpg'),
-(25, 11, 'img-id11-1698953116-0.png'),
-(26, 17, 'img-id17-1700016945-0.png');
+(25, 11, 'img-id11-1698953116-0.png');
 
 -- --------------------------------------------------------
 
@@ -296,7 +303,8 @@ INSERT INTO `Likes` (`idLike`, `idUser`, `idProject`) VALUES
 (44, 3, 8),
 (45, 3, 15),
 (51, 3, 16),
-(52, 12, 3);
+(52, 12, 3),
+(53, 1, 26);
 
 -- --------------------------------------------------------
 
@@ -384,6 +392,29 @@ INSERT INTO `Messages` (`idMessage`, `senderId`, `receiverId`, `sent_at`, `messa
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `Notifications`
+--
+
+CREATE TABLE `Notifications` (
+  `idNotification` int NOT NULL,
+  `idUser` int NOT NULL,
+  `notification` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Extraindo dados da tabela `Notifications`
+--
+
+INSERT INTO `Notifications` (`idNotification`, `idUser`, `notification`) VALUES
+(1, 2, 'Your project has been deleted as it does not comply with community guidelines.'),
+(2, 1, 'You just won a challenge! Check your profile for the new prize!'),
+(3, 1, 'Someone liked your new project!'),
+(4, 1, 'It looks like people are saving your project!'),
+(5, 1, 'People are commenting on your new project!');
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `Projects`
 --
 
@@ -410,7 +441,10 @@ INSERT INTO `Projects` (`idProject`, `idUser`, `title`, `description`, `created_
 (14, 1, 'teste', 'aaaaaa', '2023-11-03 01:17:58'),
 (15, 7, 'teste', 'teste', '2023-11-15 02:20:22'),
 (16, 12, 'teste', 'teste', '2023-11-15 02:21:21'),
-(17, 3, 'teste', 'teste', '2023-11-15 02:55:44');
+(23, 2, 'SSSSSSSSS', 'SSSSSSSSSSSSSSSSSSSSSS', '2023-11-21 20:37:47'),
+(24, 2, 'SSSSSSSSS', 'SSSSSSSSSSSSSSSSSSSSSS', '2023-11-21 20:37:47'),
+(25, 2, 'SSSSSSSSS', 'SSSSSSSSSSSSSSSSSSSSSS', '2023-11-21 20:37:47'),
+(26, 1, 'aaaaaaa', 'aaaaaaaaaaaaaaaaaaa', '2023-11-21 21:04:30');
 
 -- --------------------------------------------------------
 
@@ -431,7 +465,9 @@ CREATE TABLE `Report` (
 --
 
 INSERT INTO `Report` (`idReport`, `idUser`, `idProject`, `report`, `action`) VALUES
-(1, 2, 3, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 0);
+(1, 2, 3, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 0),
+(8, 2, 23, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAA', 0),
+(9, 2, 24, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAA', 0);
 
 -- --------------------------------------------------------
 
@@ -456,7 +492,8 @@ INSERT INTO `Save_Projects` (`idSave`, `idProject`, `idUser`) VALUES
 (7, 3, 3),
 (9, 6, 3),
 (10, 8, 3),
-(11, 13, 11);
+(11, 13, 11),
+(14, 26, 1);
 
 -- --------------------------------------------------------
 
@@ -506,13 +543,14 @@ CREATE TABLE `Users` (
 --
 
 INSERT INTO `Users` (`idUser`, `tag`, `nickname`, `email`, `password`, `avatar`, `level`, `xp`, `resume`, `admin`, `createdAt`, `location`, `status`) VALUES
-(1, 3182, 'nick', 'nicolealvesraimundo@gmail.com', '$2y$10$olQTF4mSKWX6.sEx8hOWy.BgAq.DTZLlJiIZ8T/f5rZfwetcx1Ij.', 'avatar-id1.jpg', 100, 2800, 'alibabaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaa', 1, '2023-08-26 11:48:25', 'Itapevi, Sp', NULL),
-(2, 6149, 'amor', 'amor@gmail.com', '$2y$10$ptSxKR8Ld8SQiWUahYOE/OCWWhAUFtS94wRsh5iaQPmiciA/vHg4u', 'cat.jpg', 87, 10, NULL, 1, '2023-10-30 23:02:58', NULL, NULL),
-(3, 1240, 'luis', 'luis@gmail.com', '$2y$10$7/P0zds4rLb9SIqb1uXNcOX9srVUyvHVhNy/aH5itMQ22MGVYxxPe', 'avatar-id3.jpg', 3, 25, 'meu resuminho', 1, '2023-11-02 20:51:28', '', NULL),
-(5, 1303, 'teste', 'teste@gmail.com', '$2y$10$HQWesWLoaOz84gfHeiC4iOPuMx5KK0HcpBPmAeB6wWU3Y0kTNjBzO', 'cat.jpg', 4, 0, 'kkkkkkkkkkk', 1, '2023-11-03 01:34:14', 'bbkkkkkkkkkkkk', NULL),
+(1, 3182, 'nick', 'nicolealvesraimundo@gmail.com', '$2y$10$olQTF4mSKWX6.sEx8hOWy.BgAq.DTZLlJiIZ8T/f5rZfwetcx1Ij.', 'avatar-id1.jpg', 100, 3660, 'alibabaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaa', 1, '2023-08-26 11:48:25', 'Itapevi, Sp', NULL),
+(2, 6149, 'amor', 'amor@gmail.com', '$2y$10$ptSxKR8Ld8SQiWUahYOE/OCWWhAUFtS94wRsh5iaQPmiciA/vHg4u', 'cat.jpg', 87, -15, NULL, 1, '2023-10-30 23:02:58', NULL, NULL),
+(3, 1240, 'luis', 'luis@gmail.com', '$2y$10$7/P0zds4rLb9SIqb1uXNcOX9srVUyvHVhNy/aH5itMQ22MGVYxxPe', 'avatar-id3.jpg', 3, 0, 'meu resuminho', 1, '2023-11-02 20:51:28', '', NULL),
+(5, 1303, 'teste', 'teste@gmail.com', '$2y$10$HQWesWLoaOz84gfHeiC4iOPuMx5KK0HcpBPmAeB6wWU3Y0kTNjBzO', 'cat.jpg', 4, -25, 'kkkkkkkkkkk', 1, '2023-11-03 01:34:14', 'bbkkkkkkkkkkkk', NULL),
 (7, 4120, 'teste3', 'Lety@gmail.com', '$2y$10$4cijvcz5FpViNEi5l4eu7OBlZhNm0DjkCfu99euZOlOfpe4v1wQRG', 'cat.jpg', 3, 10, NULL, 1, '2023-11-06 14:03:55', NULL, NULL),
 (11, 9506, 'teste2', 'nick@gmail.com', '$2y$10$0MZUPUV3JkxVV8cnFTETluH1c3RL6gY5hVOaFHDliBvrEp7ud1k0y', 'cat.jpg', 5, 0, NULL, 0, '2023-11-06 14:14:32', NULL, NULL),
-(12, 3180, 'aaaaaaaaaaaaaa', 'aaaaaaaaa@fghvjj', '$2y$10$lnXq0Yooji6INBEq3pD0Me4WQcWSUu0QigkI/gyiLlWbFVC2cU4gO', 'cat.jpg', 20, 0, NULL, 1, '2023-11-06 14:20:12', NULL, 'banned');
+(12, 3180, 'aaaaaaaaaaaaaa', 'aaaaaaaaa@fghvjj', '$2y$10$lnXq0Yooji6INBEq3pD0Me4WQcWSUu0QigkI/gyiLlWbFVC2cU4gO', 'cat.jpg', 20, 0, NULL, 1, '2023-11-06 14:20:12', NULL, 'banned'),
+(13, 4307, 'nicks', 'nicks@gmail.com', '$2y$10$c4TGBJlggu/C/bR04f7xt.zHckiwU8etgzc4AUAY7hSplC0aJ.JKm', 'cat.jpg', 1, 0, NULL, 1, '2023-11-20 23:20:59', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -653,6 +691,13 @@ ALTER TABLE `Messages`
   ADD KEY `receiver` (`receiverId`);
 
 --
+-- Índices para tabela `Notifications`
+--
+ALTER TABLE `Notifications`
+  ADD PRIMARY KEY (`idNotification`),
+  ADD KEY `idUser` (`idUser`);
+
+--
 -- Índices para tabela `Projects`
 --
 ALTER TABLE `Projects`
@@ -722,13 +767,13 @@ ALTER TABLE `Challenges`
 -- AUTO_INCREMENT de tabela `Comments`
 --
 ALTER TABLE `Comments`
-  MODIFY `idComment` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `idComment` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de tabela `Educations`
 --
 ALTER TABLE `Educations`
-  MODIFY `idEducation` int NOT NULL AUTO_INCREMENT;
+  MODIFY `idEducation` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `Favorites`
@@ -758,7 +803,7 @@ ALTER TABLE `Images`
 -- AUTO_INCREMENT de tabela `Likes`
 --
 ALTER TABLE `Likes`
-  MODIFY `idLike` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `idLike` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT de tabela `Messages`
@@ -767,22 +812,28 @@ ALTER TABLE `Messages`
   MODIFY `idMessage` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
+-- AUTO_INCREMENT de tabela `Notifications`
+--
+ALTER TABLE `Notifications`
+  MODIFY `idNotification` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT de tabela `Projects`
 --
 ALTER TABLE `Projects`
-  MODIFY `idProject` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `idProject` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de tabela `Report`
 --
 ALTER TABLE `Report`
-  MODIFY `idReport` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idReport` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `Save_Projects`
 --
 ALTER TABLE `Save_Projects`
-  MODIFY `idSave` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `idSave` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de tabela `Tools`
@@ -794,7 +845,7 @@ ALTER TABLE `Tools`
 -- AUTO_INCREMENT de tabela `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `idUser` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `idUser` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Restrições para despejos de tabelas
@@ -873,6 +924,12 @@ ALTER TABLE `Likes`
 ALTER TABLE `Messages`
   ADD CONSTRAINT `Messages_ibfk_1` FOREIGN KEY (`senderId`) REFERENCES `Users` (`idUser`),
   ADD CONSTRAINT `Messages_ibfk_2` FOREIGN KEY (`receiverId`) REFERENCES `Users` (`idUser`);
+
+--
+-- Limitadores para a tabela `Notifications`
+--
+ALTER TABLE `Notifications`
+  ADD CONSTRAINT `Notifications_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `Users` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `Projects`

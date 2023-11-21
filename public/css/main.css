@@ -39,7 +39,7 @@ header .homeOption img {
 
 .top-bar {
   height: 45px;
-  background-color: #4e0b88c7;
+  background-color: #da89ff7e;
 }
 
 .bottom-wave {
@@ -95,4 +95,11 @@ header .homeOption img {
   50% { height: 100%  }
   75% { height: 100%  }
   100% { height: 100%  }
+}
+
+@media (min-width: 1200px) and (max-width: 1919px) {
+  .bottom-wave {
+    bottom: -30px;
+    margin-left: 0px;
+  }
 }

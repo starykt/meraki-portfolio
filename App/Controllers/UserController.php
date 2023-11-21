@@ -320,6 +320,7 @@ class UserController extends Controller
     $topUsers = $userDao->getUsersByLevel();
 
     $loggedInUser = $_SESSION['idUser'];
+    $loggedInUserObject = $userDao->getById($loggedInUser);
 
     $position = null;
     foreach ($topUsers as $index => $user) {
@@ -331,12 +332,16 @@ class UserController extends Controller
 
     $this->setViewParam('topUsers', $topUsers);
     $this->setViewParam('userPosition', $position);
+    $this->setViewParam('loggedInUser', $loggedInUserObject);
+    $this->setViewParam('loggedInUserLevel', $loggedInUserObject->getLevel());
     $this->render('/user/reportNivel');
   }
 
   public function reportLike()
   {
     $userDao = new UserDAO();
+    $likeDao = new LikeDAO();
+
     $topUsers = $userDao->getUsersByLikes();
 
     $loggedInUser = $_SESSION['idUser'];
@@ -349,8 +354,39 @@ class UserController extends Controller
       }
     }
 
+    $loggedInUserObject = $userDao->getById($loggedInUser);
+    $loggedInUserLikes = $likeDao->getLikeCountByUserId($loggedInUser);
+
     $this->setViewParam('topUsers', $topUsers);
     $this->setViewParam('userPosition', $position);
+    $this->setViewParam('loggedInUser', $loggedInUserObject);
+    $this->setViewParam('loggedInUserLikes', $loggedInUserLikes);
     $this->render('/user/reportLike');
+  }
+  public function reportAward()
+  {
+    $userDao = new UserDAO();
+    $awardDao = new AwardDAO();
+
+    $topUsers = $userDao->getUsersByAwards();
+
+    $loggedInUser = $_SESSION['idUser'];
+
+    $position = null;
+    foreach ($topUsers as $index => $user) {
+      if ($user->getIdUser() === $loggedInUser) {
+        $position = $index + 1;
+        break;
+      }
+    }
+
+    $loggedInUserObject = $userDao->getById($loggedInUser);
+    $loggedInUserAwards = $awardDao->getAwardCountByUserId($loggedInUser);
+
+    $this->setViewParam('topUsers', $topUsers);
+    $this->setViewParam('userPosition', $position);
+    $this->setViewParam('loggedInUser', $loggedInUserObject);
+    $this->setViewParam('loggedInUserAwards', $loggedInUserAwards);
+    $this->render('/user/reportAward');
   }
 }

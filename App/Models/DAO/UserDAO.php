@@ -48,6 +48,7 @@ class UserDAO extends BaseDAO
                 $user->setIdUser($data['idUser']);
                 $user->setNickname($data['nickname']);
                 $user->setAvatar($data['avatar']);
+                $user->setStatus($data['status']);
                 $listUser[] = $user;
             }
         }
@@ -71,7 +72,7 @@ class UserDAO extends BaseDAO
             $level = 1;
             $xp = 0;
             $resume = $user->getResume();
-            $admin = 1;
+            $admin = 0;
             $createdAt = $user->getCreatedAt()->format('Y-m-d H:i:s');
             $location = $user->getLocation();
 
@@ -130,6 +131,7 @@ class UserDAO extends BaseDAO
             $createdAt = \DateTime::createFromFormat('Y-m-d H:i:s', $userData['createdAt']);
             $user->setCreatedAt($createdAt);
             $user->setLocation($userData['location']);
+            $user->setStatus($userData['status']);
 
             if (!password_verify($password, $user->getPassword())) {
                 return 0;
@@ -161,12 +163,36 @@ class UserDAO extends BaseDAO
             $user->setAvatar($row['avatar']);
             $user->setLevel($row['level']);
             $user->setLikes($row['likeCount']);
+            $user->setStatus($row['status']);
             $users[] = $user;
         }
 
         return $users;
     }
 
+    public function getUsersByAwards()
+    {
+        $query = "SELECT u.*, COUNT(a.idAward) AS awardCount
+                  FROM Users u
+                  LEFT JOIN Awards a ON u.idUser = a.idUser
+                  GROUP BY u.idUser
+                  ORDER BY awardCount DESC";
+        $result = $this->select($query);
+
+        $users = [];
+        while ($row = $result->fetch()) {
+            $user = new User();
+            $user->setIdUser($row['idUser']);
+            $user->setNickname($row['nickname']);
+            $user->setTag($row['tag']);
+            $user->setAvatar($row['avatar']);
+            $user->setLevel($row['level']);
+            $user->setAwards($row['awardCount']);
+            $user->setStatus($row['status']);
+            $users[] = $user;
+        }
+        return $users;
+    }
 
     public function getUsersByLevel()
     {
@@ -181,6 +207,7 @@ class UserDAO extends BaseDAO
             $user->setTag($row['tag']);
             $user->setAvatar($row['avatar']);
             $user->setLevel($row['level']);
+            $user->setStatus($row['status']);
             $users[] = $user;
         }
 
@@ -224,6 +251,7 @@ class UserDAO extends BaseDAO
             $user->setIdUser($row['idUser']);
             $user->setNickname($row['nickname']);
             $user->setAvatar($row['avatar']);
+            $user->setStatus($row['status']);
             return $user;
         }
 
@@ -269,57 +297,67 @@ class UserDAO extends BaseDAO
             throw new \Exception("Erro ao excluir o usuario. " . $e->getMessage(), 500);
         }
     }
-
-public function updateXPAndLevel($userId, $xpGained)
-{
-    try {
-        $user = $this->getById($userId);
-
-        if (!$user) {
-            throw new \Exception("User not found.");
+    public function updateStatus($idUser, $status)
+    {
+        try {
+            $params = [
+                ':idUser' => $idUser,
+                ':status' => $status,
+            ];
+            return $this->update('Users', 'status = :status', $params, 'idUser = :idUser');
+        } catch (\Exception $e) {
+            throw new \Exception("Erro ao atualizar nível do usuário. " . $e->getMessage(), 500);
         }
+    }
 
-        $currentLevel = $user->getLevel();
-        $currentXP = $user->getXP();
+    public function updateXPAndLevel($userId, $xpGained)
+    {
+        try {
+            $user = $this->getById($userId);
 
-        $baseXP = 100;
-        $xpPerLevel = 100;
+            if (!$user) {
+                throw new \Exception("User not found.");
+            }
 
-        $xpForNextLevel = $baseXP + $xpPerLevel * $currentLevel;
+            $currentLevel = $user->getLevel();
+            $currentXP = $user->getXP();
 
-        $newXP = $currentXP + $xpGained;
+            $baseXP = 100;
+            $xpPerLevel = 100;
 
-        while ($newXP >= $xpForNextLevel) {
-            $currentLevel++;
-            $newXP -= $xpForNextLevel;
             $xpForNextLevel = $baseXP + $xpPerLevel * $currentLevel;
+
+            $newXP = $currentXP + $xpGained;
+
+            while ($newXP >= $xpForNextLevel) {
+                $currentLevel++;
+                $newXP -= $xpForNextLevel;
+                $xpForNextLevel = $baseXP + $xpPerLevel * $currentLevel;
+            }
+
+            $user->setLevel($currentLevel);
+            $user->setXP($newXP);
+
+            $this->updateUserLevel2($user);
+        } catch (\Exception $e) {
+            throw new \Exception("Error updating XP and level. " . $e->getMessage(), 500);
         }
-
-        $user->setLevel($currentLevel);
-        $user->setXP($newXP);
-
-        $this->updateUserLevel2($user);
-    } catch (\Exception $e) {
-        throw new \Exception("Error updating XP and level. " . $e->getMessage(), 500);
     }
-}
 
-public function updateUserLevel2(User $user)
-{
-    try {
-        $params = [
-            ':level' => $user->getLevel(),
-            ':xp' => $user->getXP(),
-            ':userId' => $user->getIdUser(),
-        ];
+    public function updateUserLevel2(User $user)
+    {
+        try {
+            $params = [
+                ':level' => $user->getLevel(),
+                ':xp' => $user->getXP(),
+                ':userId' => $user->getIdUser(),
+            ];
 
-        $condition = 'idUser = :userId';
+            $condition = 'idUser = :userId';
 
-        $this->update('Users', 'level = :level, xp = :xp', $params, $condition);
-    } catch (\Exception $e) {
-        throw new \Exception("Error updating user level. " . $e->getMessage(), 500);
+            $this->update('Users', 'level = :level, xp = :xp', $params, $condition);
+        } catch (\Exception $e) {
+            throw new \Exception("Error updating user level. " . $e->getMessage(), 500);
+        }
     }
-}
-
-
 }

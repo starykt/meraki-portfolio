@@ -18,43 +18,70 @@ class User
 	private int $admin;
 	private \DateTime $createdAt;
 	private ?string $location = null;
-
 	private $likes;
+	private ?string $status = null;
+	private int $awards;
+	public function setStatus($status)
+	{
+		$this->status = $status;
+	}
+
+	public function getStatus()
+	{
+		return $this->status;
+	}
+
+	/**
+	 * @param int $awards
+	 */
+	public function setAwards(int $awards)
+	{
+		$this->awards = $awards;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getAwards(): int
+	{
+		return $this->awards ?? 0;
+	}
+
 
 	function updateXPAndLevel($userId, $xpGained)
 	{
-			$userDAO = new UserDAO();
-			$user = $userDAO->getById($userId);
-	
-			$currentLevel = $user->getLevel();
-			$currentXP = $user->getXP();
-	
-			$baseXP = 100;
-			$xpPerLevel = 100;
-	
+		$userDAO = new UserDAO();
+		$user = $userDAO->getById($userId);
+
+		$currentLevel = $user->getLevel();
+		$currentXP = $user->getXP();
+
+		$baseXP = 100;
+		$xpPerLevel = 100;
+
+		$xpForNextLevel = $baseXP + $xpPerLevel * $currentLevel;
+
+		$newXP = $currentXP + $xpGained;
+		$user->setXP($newXP);
+
+		while ($newXP >= $xpForNextLevel) {
+			$currentLevel++;
+			$newXP -= $xpForNextLevel;
 			$xpForNextLevel = $baseXP + $xpPerLevel * $currentLevel;
-	
-			$newXP = $currentXP + $xpGained;
-			$user->setXP($newXP);
-	
-			while ($newXP >= $xpForNextLevel) {
-					$currentLevel++;
-					$newXP -= $xpForNextLevel;
-					$xpForNextLevel = $baseXP + $xpPerLevel * $currentLevel;
-			}
-			
-			$user->setLevel($currentLevel);
-			$userDAO->updateUserLevel($userId, $currentLevel, $newXP);
+		}
+
+		$user->setLevel($currentLevel);
+		$userDAO->updateUserLevel($userId, $currentLevel, $newXP);
 	}
 
 	public function getLikes()
 	{
-			return $this->likes;
+		return $this->likes;
 	}
 
 	public function setLikes($likes)
 	{
-			$this->likes = $likes;
+		$this->likes = $likes;
 	}
 	/**
 	 * @return int|null
@@ -95,14 +122,14 @@ class User
 
 	/**
 	 * 
-   * @return string
-     */
-    public function generateRandomTag(): string
-    {
-        $randomNumber = mt_rand(1000, 9999);
-        $tag = (string) $randomNumber;
-        return $tag;
-    }
+	 * @return string
+	 */
+	public function generateRandomTag(): string
+	{
+		$randomNumber = mt_rand(1000, 9999);
+		$tag = (string) $randomNumber;
+		return $tag;
+	}
 
 
 	/**
@@ -296,13 +323,13 @@ class User
 		return $this;
 	}
 	public function toArray(): array
-    {
-        return [
-            'idUser' => $this->idUser,
-            'tag' => $this->tag,
-            'nickname' => $this->nickname,
-            'email' => $this->email,
-            'avatar' => $this->avatar,
-        ];
-    }
+	{
+		return [
+			'idUser' => $this->idUser,
+			'tag' => $this->tag,
+			'nickname' => $this->nickname,
+			'email' => $this->email,
+			'avatar' => $this->avatar,
+		];
+	}
 }

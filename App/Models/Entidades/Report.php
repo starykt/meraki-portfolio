@@ -9,8 +9,53 @@ class Report
     private Project $idProject;
     private $report;
     private $action;
-
-
+		private $files;
+		private $images;
+		private $hashtags;
+		
+		public function setHashtags(array $hashtags): self
+		{
+			$this->hashtags = $hashtags;
+			return $this;
+		}
+		public function hasHashtags(): bool
+		{
+			return !empty($this->hashtags);
+		}
+		public function getHashtags(): array
+		{
+			return $this->hashtags ?? [];
+		}
+	
+		public function setFiles(array $files)
+		{
+			$this->files = $files;
+		}
+	
+		public function hasFiles(): bool
+		{
+			return !empty($this->files);
+		}
+	
+		public function getFiles(): array
+		{
+			return $this->files;
+		}
+	
+		public function setImages(array $images)
+		{
+			$this->images = $images;
+		}
+	
+		public function hasImages(): bool
+		{
+			return !empty($this->images);
+		}
+	
+		public function getImages(): array
+		{
+			return $this->images;
+		}
 	/**
 	 * @return mixed
 	 */

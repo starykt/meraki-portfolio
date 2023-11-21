@@ -8,11 +8,14 @@ use App\Models\DAO\AwardDAO;
 use App\Models\DAO\ChallengeDAO;
 use App\Models\DAO\HashtagChallengeDAO;
 use App\Models\DAO\HashtagDAO;
+use App\Models\DAO\NotificationDAO;
 use App\Models\DAO\UserDAO;
-use App\Models\DAO\WinnersDAO;
+use App\Models\DAO\WinnerDAO;
 use App\Models\Entidades\Award;
 use App\Models\Entidades\Challenge;
 use App\Models\Entidades\Hashtag;
+use App\Models\Entidades\Notification;
+use App\Models\Entidades\User;
 use App\Models\Entidades\Winner;
 
 class ChallengeController extends Controller
@@ -76,8 +79,17 @@ class ChallengeController extends Controller
                         $winners = new Winner();
                         $winners->setIdUser($winner->getUserId());
                         $winners->setIdChallenge($idChallenge);
-                        $winnersDAO = new WinnersDAO();
+                        $winnersDAO = new WinnerDAO();
                         $winnersDAO->save($winners);  
+
+                        $notification = new Notification();
+                        $notification->setNotification('You just won a challenge! Check your profile for the new prize!');
+                        $user = new User();
+                        $user->setIdUser($winner->getUserId());
+                        $notification->setUser($user);
+                        $notificationDAO = new NotificationDAO();
+                        $notificationDAO->save($notification);
+                  
                     }
                 }
             }

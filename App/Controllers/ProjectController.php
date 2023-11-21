@@ -11,6 +11,7 @@ use App\Models\DAO\HashtagDAO;
 use App\Models\DAO\HashtagProjectDAO;
 use App\Models\DAO\ImageDAO;
 use App\Models\DAO\LikeDAO;
+use App\Models\DAO\NotificationDAO;
 use App\Models\DAO\ProjectDAO;
 use App\Models\DAO\ReportDAO;
 use App\Models\DAO\SaveProjectDAO;
@@ -19,6 +20,7 @@ use App\Models\Entidades\Comment;
 use App\Models\Entidades\File;
 use App\Models\Entidades\HashtagProject;
 use App\Models\Entidades\Image;
+use App\Models\Entidades\Notification;
 use App\Models\Entidades\Project;
 use App\Models\Entidades\Report;
 use App\Models\Entidades\User;
@@ -207,14 +209,13 @@ class ProjectController extends Controller
 
       $lastProjectId = $this->saveProject($project);
       $userXP = new User();
-  
+
       $projectDAO = new ProjectDAO();
       $project = $projectDAO->getById($lastProjectId);
       $this->handleImageUploads($lastProjectId);
       $this->handleFileUploads($lastProjectId);
       $this->saveHashtagProjectAssociations($lastProjectId);
       $userXP->updateXPAndLevel($project->getUser()->getIdUser(), 25);
-  
     } catch (\Exception $e) {
       Sessao::gravaMensagem($e->getMessage());
     }
@@ -415,7 +416,7 @@ class ProjectController extends Controller
     if (isset($_GET['idProject'])) {
       $projectId = (int)$_GET['idProject'];
       $userXP = new User();
-  
+
       $projectDAO = new ProjectDAO();
       $project = $projectDAO->getById($projectId);
       $projectDAO = new ProjectDAO();
@@ -488,30 +489,37 @@ class ProjectController extends Controller
 
   public function like($params)
   {
-      $this->auth();
-      $userDAO = new UserDAO();
-      $user = $userDAO->getById($_SESSION['idUser']);
-      $idProject = $params[0];
-      $likeDAO = new LikeDAO();
-      $likeStatus = $likeDAO->getLikeStatus($idProject, $user->getIdUser());
-      $userXP = new User();
-      $userXP2 = new User();
-      $projectDAO = new ProjectDAO();
-      $project = $projectDAO->getById($idProject);
-      
-      if ($likeStatus) {
-          $likeDAO->deleteLike($idProject, $user->getIdUser());
-          $userXP->updateXPAndLevel($project->getUser()->getIdUser(), -10);
-          $userXP2->updateXPAndLevel($_SESSION['idUser'], -5);
-      } else {
-          $likeDAO->createLike($idProject, $user->getIdUser());
-          $userXP->updateXPAndLevel($project->getUser()->getIdUser(), 10);
-          $userXP2->updateXPAndLevel($_SESSION['idUser'], 5);
-      }
-  
-      $this->redirect('/project/list');
+    $this->auth();
+    $userDAO = new UserDAO();
+    $user = $userDAO->getById($_SESSION['idUser']);
+    $idProject = $params[0];
+    $likeDAO = new LikeDAO();
+    $likeStatus = $likeDAO->getLikeStatus($idProject, $user->getIdUser());
+    $userXP = new User();
+    $userXP2 = new User();
+    $projectDAO = new ProjectDAO();
+    $project = $projectDAO->getById($idProject);
+
+    if ($likeStatus) {
+      $likeDAO->deleteLike($idProject, $user->getIdUser());
+      $userXP->updateXPAndLevel($project->getUser()->getIdUser(), -10);
+      $userXP2->updateXPAndLevel($_SESSION['idUser'], -5);
+    } else {
+      $likeDAO->createLike($idProject, $user->getIdUser());
+      $userXP->updateXPAndLevel($project->getUser()->getIdUser(), 10);
+      $userXP2->updateXPAndLevel($_SESSION['idUser'], 5);
+      $notification = new Notification();
+      $notification->setNotification('Someone liked your new project!');
+      $user = new User();
+      $user->setIdUser($project->getUser()->getIdUser());
+      $notification->setUser($user);
+      $notificationDAO = new NotificationDAO();
+      $notificationDAO->save($notification);
+    }
+
+    $this->redirect('/project/list');
   }
-  
+
   public function saveProjectFavorite($params)
   {
     $this->auth();
@@ -530,6 +538,13 @@ class ProjectController extends Controller
     } else {
       $saveProjectDAO->createSave($idProject, $user->getIdUser());
       $userXP->updateXPAndLevel($project->getUser()->getIdUser(), 20);
+      $notification = new Notification();
+      $notification->setNotification('It looks like people are saving your project!');
+      $user = new User();
+      $user->setIdUser($project->getUser()->getIdUser());
+      $notification->setUser($user);
+      $notificationDAO = new NotificationDAO();
+      $notificationDAO->save($notification);
     }
 
     $this->redirect('/project/list');
@@ -564,6 +579,13 @@ class ProjectController extends Controller
     $commentDAO->save($comment);
     $userXP->updateXPAndLevel($project->getUser()->getIdUser(), 15);
     $userXP2->updateXPAndLevel($_SESSION["idUser"], 10);
+    $notification = new Notification();
+    $notification->setNotification('People are commenting on your new project!');
+    $user = new User();
+    $user->setIdUser($project->getUser()->getIdUser());
+    $notification->setUser($user);
+    $notificationDAO = new NotificationDAO();
+    $notificationDAO->save($notification);
     $this->redirect('/project');
   }
 
@@ -581,7 +603,7 @@ class ProjectController extends Controller
     $userXP->updateXPAndLevel($project->getUser()->getIdUser(), -15);
     $userXP2->updateXPAndLevel($_SESSION["idUser"], -10);
     $commentDAO->drop($idComentario);
- 
+
     $this->redirect('/project');
   }
   public function listSaves()
@@ -683,4 +705,11 @@ class ProjectController extends Controller
     self::setViewParam('savedProjects', $projectsToDisplay);
     $this->render('/project/mostRecentSavedProjects');
   }
+
+  public function listNotifications() {
+    $notificationsDAO = new NotificationDAO();
+    $notifications= $notificationsDAO->getNotificationsByUserId($_SESSION['idUser']);
+    self::setViewParam('notifications', $notifications);
+    $this->render('/project/listNotifications');
+}
 }

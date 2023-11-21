@@ -3,7 +3,7 @@ namespace App\Models\DAO;
 
 use App\Models\Entidades\Winner;
 
-class WinnersDAO extends BaseDAO
+class WinnerDAO extends BaseDAO
 {
     public function save(Winner $winner)
     {

@@ -26,7 +26,7 @@ abstract class Controller
     {
         $viewVar = $this->getViewVar();
         $Sessao  = Sessao::class;
-        if ($view != "/login/index" && $view != "/login/register" && $view != "/") {
+        if ($view != "/login/index" && $view != "/login/register" && $view != "/home/index") {
             $user = new UserDAO; 
 
             require_once PATH . '/App/Views/layouts/header.php';

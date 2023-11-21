@@ -125,6 +125,46 @@ input {
   }
 }
 
+@media (min-width: 992px) and (max-width: 1199px) {
+  form {
+    display: grid;
+    text-align: start;
+    margin-left: 80px;
+    margin-bottom: 300px;
+    justify-items: center;
+  }
+
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  input {
+    width: 38vw;
+    height: 8vh;
+    font-size: 22px;
+  }
+
+  .button-position {
+    position: relative;
+    display: flex;
+  }
+
+  .continue-button {
+    right: 0px;
+    width: 250px;
+    font-size: 26px;
+    position: relative;
+  }
+
+  .gameControl img {
+    width: 150%;
+    margin-left: 130px;
+    margin-bottom: 200px;
+  }
+}
+
 @media (min-width: 1200px) and (max-width: 1919px) {
   form {
     display: grid;
@@ -139,7 +179,6 @@ input {
     align-items: center;
     justify-content: flex-start;
   }
-
   
   input {
     width: 38vw;
@@ -160,7 +199,7 @@ input {
   }
 
   .gameControl img {
-    width: 100%;
+    width: 140%;
     margin-left: 220px;
     margin-bottom: 200px;
   }

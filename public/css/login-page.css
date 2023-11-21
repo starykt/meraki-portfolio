@@ -48,6 +48,7 @@ datalist {
   border: none;
   color: white;
   font-size: 20px;
+  cursor: pointer;
   font-weight: 400;
   position: relative;
   margin-bottom: 15px;
@@ -95,8 +96,9 @@ datalist {
 
   .title-form-desktop {
     display: flex;
-    flex-direction: row-reverse;
+    cursor: pointer;
     align-items: center;
+    flex-direction: row-reverse;
   }
 
   .title-form-desktop:first-child {
@@ -128,8 +130,9 @@ datalist {
 @media (min-width: 1200px) and (max-width: 1919px) {
   .title-form-desktop {
     display: flex;
-    flex-direction: row-reverse;
+    cursor: pointer;
     align-items: center;
+    flex-direction: row-reverse;
   }
 
   .title-form-desktop:first-child {
@@ -172,6 +175,7 @@ datalist {
     display: flex;
     color: white;
     font-size: 26px;
+    cursor: pointer;
     align-items: center;
     border-radius: 70px;
     justify-content: center;

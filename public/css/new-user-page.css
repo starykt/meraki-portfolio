@@ -4,21 +4,23 @@
 }
 
 form {
-  align-items: center;
-  text-align: center;
   color: white;
-
+  margin-top: 60px;
+  text-align: center;
+  align-items: center;
+  font-family: 'K2D', Arial;
 }
 
 input {
-  width: 250px;
-  height: 42px;
+  width: 70vw;
+  height: 6vh;
   border: none;
   color: white;
   font-size: 16px;
   padding-left: 10px;
   margin-bottom: 16px;
   border-radius: 100px;
+  font-family: 'K2D', Arial;
   background-color: #da89ff9a;
   box-shadow: 10px 8px 5px #00000038;
 }
@@ -30,15 +32,17 @@ input {
 
 .continue-button {
   width: 50%;
-  height: 8%;
   right: 10px;
   border: none;
-  padding: 10px;
+  padding: 13px;
+  z-index: 99999;
   color: white;
+  cursor: pointer;
   font-size: 20px;
   margin-top: 20px;
   font-weight: bold;
   position: absolute;
+  height: fit-content;
   align-items: center;
   display: inline-flex;
   border-radius: 100px;
@@ -54,7 +58,7 @@ input {
 }
 
 .gameControl img {
-  width: 120%;
+  width: 150%;
   z-index: 999;
   position: relative;
 }
@@ -74,5 +78,49 @@ input {
   }
   100% {
     transform: translate(0, 0);
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1919px) {
+  form {
+    display: grid;
+    text-align: start;
+    margin-left: 100px;
+    margin-bottom: 200px;
+    justify-items: center;
+  }
+
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  
+  input {
+    width: 38vw;
+    height: 8vh;
+    font-size: 22px;
+    padding-left: 10px;
+    margin-bottom: 22px;
+    border-radius: 100px;
+  }
+
+  .button-position {
+    position: relative;
+    display: flex;
+  }
+
+  .continue-button {
+    right: 0px;
+    width: 250px;
+    font-size: 26px;
+    position: relative;
+  }
+
+  .gameControl img {
+    width: 100%;
+    margin-left: 220px;
+    margin-bottom: 200px;
   }
 }

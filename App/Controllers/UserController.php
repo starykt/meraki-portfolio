@@ -6,6 +6,7 @@ use App\Lib\Sessao;
 use App\Lib\Upload;
 use App\Models\DAO\AwardDAO;
 use App\Models\DAO\CommentDAO;
+use App\Models\DAO\EducationDAO;
 use App\Models\DAO\FileDAO;
 use App\Models\DAO\HashtagProjectDAO;
 use App\Models\DAO\ImageDAO;
@@ -15,6 +16,7 @@ use App\Models\DAO\SaveProjectDAO;
 use App\Models\DAO\ToolDAO;
 use App\Models\DAO\UserDAO;
 use App\Models\DAO\UserToolDAO;
+use App\Models\Entidades\Education;
 use App\Models\Entidades\User;
 use App\Models\Entidades\UserTool;
 use Exception;
@@ -209,7 +211,8 @@ class UserController extends Controller
     $user = $userDao->getById($_SESSION['idUser']);
     $toolDAO = new ToolDAO();
     $tools = $toolDAO->list();
-
+    $educationDAO = new EducationDAO();
+    $education = $educationDAO->getByUserId($_SESSION['idUser']);
     $tools2 = [];
     $userToolDAO = new UserToolDAO();
     $userTools = $userToolDAO->getByUserId($_SESSION['idUser']);
@@ -223,6 +226,7 @@ class UserController extends Controller
     }
 
     if ($user) {
+      $this->setViewParam('educations', $education);
       $this->setViewParam('user', $user);
       $this->setViewParam('tools', $tools);
       $this->setViewParam('userTools', $tools2);
@@ -314,6 +318,26 @@ class UserController extends Controller
     $this->redirect('/user/profileEdit');
   }
 
+  public function saveEducation()
+  {
+    $education = new Education();
+    $education->setFormation($_POST["formation"]);
+    $education->setIdUser($_SESSION["idUser"]);
+
+    $educationDAO = new EducationDAO();
+    $educationDAO->save($education);
+
+    $this->redirect('/user/profileEdit');
+  }
+
+
+  public function dropEducation($params)
+  {
+    $education = $params[0];
+    $educationDAO = new EducationDAO();
+    $educationDAO->save($education);
+    $this->redirect('/user/profileEdit');
+  }
   public function reportNivel()
   {
     $userDao = new UserDAO();

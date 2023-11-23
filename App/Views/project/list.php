@@ -83,9 +83,9 @@
             </div>
         </form>
     </div>
+    <span class="like-count"><?= $project->getCommentCount(); ?></span>
     <?php foreach ($project->getComments() as $comment) {
         $user = $comment->getUser(); ?>
-        <span class="like-count"><?= $project->getCommentCount(); ?></span>
         <div class="comment">
             Comentado por: <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $user->getAvatar(); ?>" width="50px" height="50px" alt="Foto de Perfil">
             <?= $comment->getUser()->getNickname() ?> #<?= $user->getTag() ?> <br>

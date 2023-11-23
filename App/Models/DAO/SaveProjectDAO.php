@@ -81,4 +81,20 @@ class SaveProjectDAO extends BaseDAO
 
         return false;
     }
+
+    
+    public function getSavedCountByArticleId($idProject)
+    {
+        $resultado = $this->select(
+            "SELECT COUNT(*) as SaveCount FROM Save_Projects WHERE idProject = " . $idProject
+        );
+    
+        $dataSet = $resultado->fetch();
+    
+        if ($dataSet) {
+            return $dataSet['SaveCount'];
+        }
+    
+        return 0;
+    }
 }

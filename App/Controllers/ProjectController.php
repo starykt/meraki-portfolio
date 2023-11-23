@@ -52,6 +52,11 @@ class ProjectController extends Controller
       $likeCount = $likeDAO->getLikeCountByArticleId($project->getIdProject());
       $project->setLikeCount($likeCount);
 
+      
+
+      $likeCount = $likeDAO->getLikeCountByArticleId($project->getIdProject());
+      $project->setLikeCount($likeCount);
+
       $likeStatus = $likeDAO->getLikeStatus($project->getIdProject(), $_SESSION['idUser']);
       $project->setLikeStatus($likeStatus);
 
@@ -106,9 +111,16 @@ class ProjectController extends Controller
       $saveStatus = $saveDAO->getSaveStatus($idProject, $_SESSION['idUser']);
       $project->setSaveStatus($saveStatus);
 
+      $SaveCount = $saveDAO->getSavedCountByArticleId($idProject);
+      $project->setSaveCount($SaveCount);
+
       $commentDAO = new CommentDAO();
       $comments = $commentDAO->getCommentsByProjectId($idProject);
       $project->setComments($comments);
+
+      $commentCount = $commentDAO->getCommentCountByArticleId($project->getIdProject());
+      $project->setCommentCount($commentCount);
+      
 
       $projectsToDisplay[] = $project;
     }

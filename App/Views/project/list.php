@@ -71,6 +71,7 @@
                 <span class="heart" <?php if (isset($project) && $project->getSaveStatus()) { ?> style="color:red;" <?php } else { ?> style="background-color:none;" <?php } ?>>
                     &#128190;
                 </span>
+                <span class="like-count"><?= $project->getSaveCount(); ?></span>
             </button>
             <br>
         </form>
@@ -84,6 +85,7 @@
     </div>
     <?php foreach ($project->getComments() as $comment) {
         $user = $comment->getUser(); ?>
+        <span class="like-count"><?= $project->getCommentCount(); ?></span>
         <div class="comment">
             Comentado por: <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $user->getAvatar(); ?>" width="50px" height="50px" alt="Foto de Perfil">
             <?= $comment->getUser()->getNickname() ?> #<?= $user->getTag() ?> <br>

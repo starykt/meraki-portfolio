@@ -13,7 +13,7 @@ header .wave {
   top: -15px;
   left: -38px;
   width: 110vw;
-  position: relative;
+  position: fixed;
 }
 
 header .homeOption {

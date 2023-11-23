@@ -1,83 +1,97 @@
+<link href="http://<?php echo APP_HOST; ?>/public/css/feed-page.css" rel="stylesheet">
+<body>
+  <section>
+    <div class="card-new-post">
+      <div class="avatar">
+        <img class="user-icon"src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>" />
+      </div>
 
-
-<p>sdfsdfsd</p>
-<p>sdfsdfsd</p>
-<p>sdfsdfsd</p>
-
-<a href="http://<?= APP_HOST ?>/project/register">
-    <button class="not-a-player-button">Cadastrar projeto</button>
-</a>
-
-<?php if ($Sessao::retornaMensagem()) { ?>
-    <div class="alert alert-warning" role="alert">
-        <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <?= $Sessao::retornaMensagem() ?>
-        <br>
+      <p class="text-card">Its me... Mario?</p>
+      <p class="new-post-notification">NEW POST</p>
     </div>
-<?php } ?>
 
-<?php foreach ($viewVar['listProject'] as $project) { ?>
-    <br>
-    <div class="card-project">
-        <strong><?= $project->getTitle() ?></strong> <br>
-        <strong><?= $project->getDescription() ?></strong> <br>
-        <strong><?= $project->getCreated_At()->format('Y-m-d H:i:s') ?></strong> <br>
-
-        <?php if ($project->hasImages()) { ?>
-            <?php foreach ($project->getImages() as $image) { ?>
-                <img src="http://<?php echo APP_HOST; ?>/public/images/projects/<?= $image->getImage() ?>" width="200px" height="200px" alt="Imagem do projeto">
-            <?php } ?>
-        <?php } ?>
-
-        <?php if ($project->hasFiles()) { ?>
-            <div class="project-files">
-                <?php foreach ($project->getFiles() as $file) { ?>
-                    <a href="http://<?php echo APP_HOST; ?>/public/files/projects/<?= $file->getFile() ?>" download><?= $file->getFile() ?></a><br>
+    <article>
+      <div class="wrapper-chat">
+        <?php foreach ($viewVar['listProject'] as $project) { ?>
+          <div class="message">
+            <div class="ideia-circles">
+              <div class="circles-1"></div>
+              <div class="circles-2"></div>
+            </div>
+            <div class="user-avatar"></div>
+            <div class="text-bubble">
+              <header>
+                <p class="nametag"><?= $project->getTitle() ?></p>
+              </header>
+              <p class="title">
+                <?= $project->getTitle() ?>
+              </p>
+              <p class="description-post">
+                <?= $project->getDescription() ?>
+              </p>
+              <div class="files">
+                <?php if ($project->hasFiles()) { ?>
+                  <div class="project-files">
+                    <?php foreach ($project->getFiles() as $file) { ?>
+                      <a href="http://<?php echo APP_HOST; ?>/public/files/projects/<?= $file->getFile() ?>" download>Download a file here (Carefull, this link hasn't been checked)</a><br>
+                    <?php } ?>
+                  </div>
+                  <br>
                 <?php } ?>
-            </div>
-        <?php } ?>
+              </div>
 
-        <?php if ($project->hasHashtags()) { ?>
-            <div class="project-hashtags">
-                <?php foreach ($project->getHashtags() as $hashtagProject) { ?>
-                    <span>#<?= $hashtagProject->getHashtag()->getHashtag() ?></span>
+              <div class="images">
+                <?php if ($project->hasImages()) { ?>
+                  <?php foreach ($project->getImages() as $image) { ?>
+                    <img class="one-image" src="http://<?php echo APP_HOST; ?>/public/images/projects/<?= $image->getImage() ?>" width="200px" height="200px" alt="Imagem do projeto">
+                  <?php } ?>
                 <?php } ?>
+              </div>
+
+              <div class="buttons">
+                <button class="button like">
+                  <img
+                    src="/public/images/icons/whiteLikeIcon.png"
+                    style="height: 30px; width: 30px"
+                  />
+                  <span class="count">100</span>
+                </button>
+                <button
+                  class="button blue message-button"
+                >
+                  <img
+                    src="/public/images/icons/whiteCommentIcon.png"
+                    style="height: 40px; width: 40px"
+                  />
+                  <span class="count">100</span>
+                </button>
+                <button
+                  class="button blue favorite"
+                >
+                  <img
+                    src="/public/images/icons/whiteSaveIcon.png"
+                    style="height: 35px; width: 35px"
+                  />
+                  <span class="count">100</span>
+                </button>
+                  <img
+                    src="/public/images/icons/warningIcon.png"
+                    style=" height: 50px; width: 50px;"
+                    class="warning-button"
+                  />
+              </div>
+              <div class="hashtags">
+                <?php if ($project->hasHashtags()) { ?>
+                    <?php foreach ($project->getHashtags() as $hashtagProject) { ?>
+                      <span style="margin: 10px 30px 0 0;">#<?= $hashtagProject->getHashtag()->getHashtag() ?></span>
+                    <?php } ?>
+                <?php } ?>
+              </div>
+
             </div>
+          </div>
         <?php } ?>
-
-        <a href="http://<?= APP_HOST ?>/project/alter/<?= $project->getIdProject() ?>"> editar </a><br>
-        <a href="http://<?= APP_HOST ?>/project/delete?idProject=<?= $project->getIdProject() ?>"> excluir </a></br>
-        <a href="http://<?= APP_HOST ?>/project/report/<?= $project->getIdProject() ?>"> report </a>
-        <form method="POST" action="http://<?php echo APP_HOST; ?>/project/like/<?= $project->getIdProject(); ?>">
-            <button id="likeButton" type="submit" name="likeButton" class="like-button" onclick="likeButtonClick(this);">
-                <span class="heart" <?php if (isset($project) && $project->getLikeStatus()) { ?> style="color:#FF57B2;" <?php } else { ?> style="background-color:none;" <?php } ?>>
-                    &#10084;
-                </span>
-                <span class="like-count"><?= $project->getLikeCount(); ?></span>
-            </button>
-            <br>
-        </form>
-        <form class="newCommentsForm" action="http://<?php echo APP_HOST; ?>/project/comment/<?= $project->getIdProject() ?>" method="post" id="form_cadastro">
-            <textarea cols="70" rows="5" name="text" id="text" value="<?php echo $Sessao::retornaValorFormulario('text'); ?>" required></textarea>
-            <div class="newCommentsFormFooter">
-                <button type="submit" class="buttonSubmit">Comentar</button>
-            </div>
-        </form>
-    </div>
-    <?php foreach ($project->getComments() as $comment) {
-        $user = $comment->getUser(); ?>
-    <div class="comment">
-        <strong><?= $comment->getText() ?></strong> <br>
-        Comentado por: <?= $comment->getUser()->getNickname() ?> #<?= $user->getTag() ?> <br>
-         <?= $comment->getDateCreate()->format('Y-m-d H:i:s') ?> <br>
-         <form action="http://<?php echo APP_HOST; ?>/project/deleteComment/<?= $comment->getIdComment() ?>/<?= $project->getIdProject(); ?>" method="post" id="form_cadastro">
-                <button type="submit" class="buttonSubmit">Excluir</button>
-        </div>
-        </form>
-    </div> <br>
-<?php } ?>
-
-    </form>
-    </div>
-    <br>
-<?php } ?>
+      </div>
+    </article>
+  </section>
+</body>

@@ -63,7 +63,7 @@ class ProjectController extends Controller
     self::setViewParam('listProject', $projects);
     self::setViewParam('user', $userDAO->getById($_SESSION['idUser']));
 
-    $this->render('/project/feed');
+    $this->render('/project/index');
 
     Sessao::limpaMensagem();
     Sessao::limpaErro();

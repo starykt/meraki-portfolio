@@ -15,7 +15,7 @@ class HomeController extends Controller
 
     public function initial()
     {
-        $this->render('/project/feed');
+        $this->render('/project/index');
         Sessao::limpaMensagem();
         Sessao::limpaErro();
     }

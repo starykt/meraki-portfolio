@@ -30,37 +30,47 @@ class ProjectController extends Controller
   public function index()
   {
     $this->auth();
-    $projectDAO = new ProjectDAO();
-    $projects = $projectDAO->list();
-    $likeDAO = new LikeDAO();
+    $saveProjectDAO = new ProjectDAO();
+    $savedProjects = $saveProjectDAO->list();
     $userDAO = new UserDAO();
-    $commentDAO = new CommentDAO();
+    $projectDAO = new ProjectDAO();
+    $projectsToDisplay = [];
 
-    foreach ($projects as $project) {
+    foreach ($savedProjects as $savedProject) {
+      $idProject = $savedProject->getIdProject();
+      $project = $projectDAO->getById($idProject);
+
       $imageDAO = new ImageDAO();
-      $images = $imageDAO->getImagesByProjectId($project->getIdProject());
+      $images = $imageDAO->getImagesByProjectId($idProject);
       $project->setImages($images);
 
       $fileDAO = new FileDAO();
-      $files = $fileDAO->getFilesByProjectId($project->getIdProject());
+      $files = $fileDAO->getFilesByProjectId($idProject);
       $project->setFiles($files);
 
       $hashtagDAO = new HashtagProjectDAO();
-      $hashtags = $hashtagDAO->getByProjectId($project->getIdProject());
+      $hashtags = $hashtagDAO->getByProjectId($idProject);
       $project->setHashtags($hashtags);
 
-      $likeCount = $likeDAO->getLikeCountByArticleId($project->getIdProject());
+      $likeDAO = new LikeDAO();
+      $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
       $project->setLikeCount($likeCount);
 
-      $likeStatus = $likeDAO->getLikeStatus($project->getIdProject(), $_SESSION['idUser']);
+      $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
       $project->setLikeStatus($likeStatus);
 
-      $comments = $commentDAO->getCommentsByProjectId($project->getIdProject());
+      $saveDAO = new SaveProjectDAO();
+      $saveStatus = $saveDAO->getSaveStatus($idProject, $_SESSION['idUser']);
+      $project->setSaveStatus($saveStatus);
+
+      $commentDAO = new CommentDAO();
+      $comments = $commentDAO->getCommentsByProjectId($idProject);
       $project->setComments($comments);
+
+      $projectsToDisplay[] = $project;
     }
 
-
-    self::setViewParam('listProject', $projects);
+    self::setViewParam('listProject', $projectsToDisplay);
     self::setViewParam('user', $userDAO->getById($_SESSION['idUser']));
 
     $this->render('/project/index');
@@ -517,7 +527,7 @@ class ProjectController extends Controller
       $notificationDAO->save($notification);
     }
 
-    $this->redirect('/project/list');
+    $this->redirect('/project/index');
   }
 
   public function saveProjectFavorite($params)

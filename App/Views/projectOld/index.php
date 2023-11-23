@@ -48,6 +48,8 @@
         <a href="http://<?= APP_HOST ?>/project/alter/<?= $project->getIdProject() ?>"> editar </a><br>
         <a href="http://<?= APP_HOST ?>/project/delete?idProject=<?= $project->getIdProject() ?>"> excluir </a></br>
         <a href="http://<?= APP_HOST ?>/project/report/<?= $project->getIdProject() ?>"> report </a>
+        
+        
         <form method="POST" action="http://<?php echo APP_HOST; ?>/project/like/<?= $project->getIdProject(); ?>">
             <button id="likeButton" type="submit" name="likeButton" class="like-button" onclick="likeButtonClick(this);">
                 <span class="heart" <?php if (isset($project) && $project->getLikeStatus()) { ?> style="color:#FF57B2;" <?php } else { ?> style="background-color:none;" <?php } ?>>

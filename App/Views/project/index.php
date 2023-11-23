@@ -18,10 +18,17 @@
               <div class="circles-1"></div>
               <div class="circles-2"></div>
             </div>
-            <div class="user-avatar"></div>
+            <a href="http://<?= APP_HOST ?>/user/profileUsers/<?= $project->getUser()->getIdUser() ?>">
+              <div class="user-avatar">
+                <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $project->getUser()->getAvatar() ?>"></img>
+              </div>
+            </a>
             <div class="text-bubble">
               <header>
-                <p class="nametag"><?= $project->getTitle() ?></p>
+                <p class="nametag">
+                  <?= $project->getUser()->getNickname() ?>
+                  #
+                  <?= $project->getUser()->getTag() ?></p>
               </header>
               <p class="title">
                 <?= $project->getTitle() ?>
@@ -49,13 +56,15 @@
               </div>
 
               <div class="buttons">
+              <a href="http://<?php echo APP_HOST; ?>/project/like/<?= $project->getIdProject(); ?>">
                 <button class="button like">
                   <img
-                    src="/public/images/icons/whiteLikeIcon.png"
+                    src="<?php echo $project->getLikeStatus() ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; ?>"
                     style="height: 30px; width: 30px"
-                  />
-                  <span class="count">100</span>
-                </button>
+                    />
+                    <span class="count"><?= $project->getLikeCount(); ?></span>
+                  </button>
+              </a>
                 <button
                   class="button blue message-button"
                 >

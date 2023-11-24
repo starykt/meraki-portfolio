@@ -360,4 +360,23 @@ class UserDAO extends BaseDAO
             throw new \Exception("Error updating user level. " . $e->getMessage(), 500);
         }
     }
+    public function searchUsers($term)
+    {
+        $term = '%' . $term . '%';
+        $sql = "SELECT * FROM Users WHERE CONCAT(nickname, ' #', tag) LIKE '$term'";
+        $result = $this->select($sql);
+
+        $users = [];
+
+        foreach ($result as $userData) {
+            $user = new User();
+            $user->setIdUser($userData['idUser']);
+            $user->setNickname($userData['nickname']);
+            $user->setTag($userData['tag']);
+            $user->setAvatar($userData['avatar']);
+            $users[] = $user;
+        }
+
+        return $users;
+    }
 }

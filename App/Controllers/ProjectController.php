@@ -15,6 +15,7 @@ use App\Models\DAO\NotificationDAO;
 use App\Models\DAO\ProjectDAO;
 use App\Models\DAO\ReportDAO;
 use App\Models\DAO\SaveProjectDAO;
+use App\Models\DAO\ToolDAO;
 use App\Models\DAO\UserDAO;
 use App\Models\Entidades\Comment;
 use App\Models\Entidades\File;
@@ -52,7 +53,7 @@ class ProjectController extends Controller
       $likeCount = $likeDAO->getLikeCountByArticleId($project->getIdProject());
       $project->setLikeCount($likeCount);
 
-      
+
 
       $likeCount = $likeDAO->getLikeCountByArticleId($project->getIdProject());
       $project->setLikeCount($likeCount);
@@ -120,7 +121,7 @@ class ProjectController extends Controller
 
       $commentCount = $commentDAO->getCommentCountByArticleId($project->getIdProject());
       $project->setCommentCount($commentCount);
-      
+
 
       $projectsToDisplay[] = $project;
     }
@@ -718,10 +719,35 @@ class ProjectController extends Controller
     $this->render('/project/mostRecentSavedProjects');
   }
 
-  public function listNotifications() {
+  public function listNotifications()
+  {
     $notificationsDAO = new NotificationDAO();
-    $notifications= $notificationsDAO->getNotificationsByUserId($_SESSION['idUser']);
+    $notifications = $notificationsDAO->getNotificationsByUserId($_SESSION['idUser']);
     self::setViewParam('notifications', $notifications);
     $this->render('/project/listNotifications');
+  }
+
+  public function search()
+{
+    $term = $_GET['term'] ?? '';
+    $type = $_GET['type'] ?? '';
+    $results = [];
+
+    if ($type === 'user') {
+        // Pesquisar usuários por nickname+tag ou user_tools
+        $userDAO = new UserDAO();
+        $results = $userDAO->searchUsers($term);
+    } elseif ($type === 'project') {
+        // Pesquisar projetos por hashtag ou outras lógicas específicas
+        $projectDAO = new ProjectDAO();
+        // $results = $projectDAO->searchProjects($term);
+    }
+
+    self::setViewParam('results', $results);
+    self::setViewParam('type', $type);
+    self::setViewParam('term', $term);
+
+    $this->render('/project/search');
 }
+
 }

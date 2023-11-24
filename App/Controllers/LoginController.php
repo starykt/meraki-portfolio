@@ -111,32 +111,32 @@ class LoginController extends Controller
 
   public function validation()
   {
-
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    Sessao::gravaFormulario($_POST);
-
-    if (empty(trim($email)) && empty(trim($password))) {
-      Sessao::gravaErro("Faltou digitar usuário e/ou senha!");
-      $this->redirect('/login');
-      return;
-    }
-
-    $userDAO = new UserDAO();
-
-    $idUser = $userDAO->verify($email, $password);
-
-    if ($idUser == 0) {
-      Sessao::gravaErro("Usuário ou senha incorretos. Tente novamente!");
-      $this->redirect('/login');
-      return;
-    }
-
-    Sessao::gravaLogin($idUser);
-
-    Sessao::limpaFormulario();
-    Sessao::limpaErro();
-    Sessao::limpaMensagem();
-    $this->redirect('/project/index');
+      $identifier = $_POST['email'];
+      $password = $_POST['password'];
+      Sessao::gravaFormulario($_POST);
+  
+      if (empty(trim($identifier)) && empty(trim($password))) {
+          Sessao::gravaErro("Faltou digitar usuário e/ou senha!");
+          $this->redirect('/login');
+          return;
+      }
+  
+      $userDAO = new UserDAO();
+  
+      $idUser = $userDAO->verify($identifier, $password);
+  
+      if ($idUser == 0) {
+          Sessao::gravaErro("Usuário ou senha incorretos. Tente novamente!");
+          $this->redirect('/login');
+          return;
+      }
+  
+      Sessao::gravaLogin($idUser);
+  
+      Sessao::limpaFormulario();
+      Sessao::limpaErro();
+      Sessao::limpaMensagem();
+      $this->redirect('/project/index');
   }
+  
 }

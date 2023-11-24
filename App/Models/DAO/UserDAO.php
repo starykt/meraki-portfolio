@@ -107,10 +107,13 @@ class UserDAO extends BaseDAO
         }
     }
 
-    public function verify(string $email, string $password)
+    public function verify(string $identifier, string $password)
     {
         try {
-            $query = $this->select("SELECT * FROM Users WHERE email = '$email'");
+            $isEmail = filter_var($identifier, FILTER_VALIDATE_EMAIL) !== false;
+            $condition = $isEmail ? "email" : "CONCAT(nickname, '#', tag)";
+
+            $query = $this->select("SELECT * FROM Users WHERE $condition = '$identifier'");
             $userData = $query->fetch();
 
             if (!$userData) {
@@ -368,23 +371,21 @@ class UserDAO extends BaseDAO
                 LEFT JOIN Users_Tools ut ON u.idUser = ut.idUser
                 LEFT JOIN Tools t ON ut.idTool = t.idTool
                 WHERE CONCAT(u.nickname, ' #', u.tag) LIKE '$term' OR t.caption LIKE '$term'";
-        
+
         $result = $this->select($sql);
-        
+
         $users = [];
-        
+
         foreach ($result as $userData) {
             $user = new User();
             $user->setIdUser($userData['idUser']);
             $user->setNickname($userData['nickname']);
             $user->setTag($userData['tag']);
             $user->setAvatar($userData['avatar']);
-        
+
             $users[] = $user;
         }
-        
+
         return $users;
     }
-    
-    
 }

@@ -72,17 +72,19 @@
                     src="/public/images/icons/whiteCommentIcon.png"
                     style="height: 40px; width: 40px"
                   />
-                  <span class="count">100</span>
+                  <span class="count"><?= $project->getCommentCount(); ?></span>
                 </button>
-                <button
-                  class="button blue favorite"
-                >
-                  <img
-                    src="/public/images/icons/whiteSaveIcon.png"
-                    style="height: 35px; width: 35px"
-                  />
-                  <span class="count">100</span>
-                </button>
+                <a href="http://<?php echo APP_HOST; ?>/project/saveProjectFavorite/<?= $project->getIdProject(); ?>">
+                  <button
+                    class="button blue favorite"
+                  >
+                    <img
+                      src="<?php echo $project->getSaveStatus() ? '/public/images/icons/blueSaveIcon.png' : '/public/images/icons/whiteSaveIcon.png'; ?>"
+                      style="<?php echo $project->getSaveStatus() ? 'height: 30px; width: 30px;' : 'height: 35px; width: 35px;' ?>"
+                    />
+                    <span class="count"><?= $project->getSaveCount(); ?></span>
+                  </button>
+                </a>
                   <img
                     src="/public/images/icons/warningIcon.png"
                     style=" height: 50px; width: 50px;"

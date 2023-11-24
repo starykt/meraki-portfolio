@@ -57,25 +57,23 @@ class ProjectController extends Controller
       $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
       $project->setLikeCount($likeCount);
 
-<<<<<<< HEAD
       $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
-=======
-
-
-      $likeCount = $likeDAO->getLikeCountByArticleId($project->getIdProject());
-      $project->setLikeCount($likeCount);
-
-      $likeStatus = $likeDAO->getLikeStatus($project->getIdProject(), $_SESSION['idUser']);
->>>>>>> 732c851978f49fa9aac87f12b6083d7129da83ce
       $project->setLikeStatus($likeStatus);
 
       $saveDAO = new SaveProjectDAO();
       $saveStatus = $saveDAO->getSaveStatus($idProject, $_SESSION['idUser']);
       $project->setSaveStatus($saveStatus);
 
+      $SaveCount = $saveDAO->getSavedCountByArticleId($idProject);
+      $project->setSaveCount($SaveCount);
+
       $commentDAO = new CommentDAO();
       $comments = $commentDAO->getCommentsByProjectId($idProject);
       $project->setComments($comments);
+
+      $commentCount = $commentDAO->getCommentCountByArticleId($project->getIdProject());
+      $project->setCommentCount($commentCount);
+
 
       $projectsToDisplay[] = $project;
     }
@@ -574,7 +572,7 @@ class ProjectController extends Controller
       $notificationDAO->save($notification);
     }
 
-    $this->redirect('/project/list');
+    $this->redirect('/project/index');
   }
 
   public function comment()

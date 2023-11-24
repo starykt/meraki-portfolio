@@ -26,9 +26,8 @@
             <div class="text-bubble">
               <header>
                 <p class="nametag">
-                  <?= $project->getUser()->getNickname() ?>
-                  #
-                  <?= $project->getUser()->getTag() ?></p>
+                  <?= $project->getUser()->getNickname() ?>#<?= $project->getUser()->getTag() ?>
+                </p>
               </header>
               <p class="title">
                 <?= $project->getTitle() ?>
@@ -65,15 +64,146 @@
                     <span class="count"><?= $project->getLikeCount(); ?></span>
                   </button>
               </a>
+
+
+
+                    <!-- COMMENTS HERE STARTS -->
                 <button
                   class="button blue message-button"
-                >
+                  onclick="openModalComment(<?= $project->getIdProject() ?>)">
                   <img
                     src="/public/images/icons/whiteCommentIcon.png"
                     style="height: 40px; width: 40px"
                   />
                   <span class="count"><?= $project->getCommentCount(); ?></span>
                 </button>
+
+                <div id="#modalComment<?= $project->getIdProject(); ?>" class="modal-background" style="display: none;">
+                  <button class="button-close" onclick="closeModalComment(<?= $project->getIdProject() ?>)">
+                    <div class="close-modal">
+                      <img src="/public/images/icons/deleteIcon.png"></img>
+                    </div>
+                  </button>
+                  <div class="modal-container">
+                    <div class="wrapper-chat-modal">
+                      <div class="message-modal">
+                        <a href="http://<?= APP_HOST ?>/user/profileUsers/<?= $project->getUser()->getIdUser() ?>">
+                          <div class="user-avatar">
+                            <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $project->getUser()->getAvatar() ?>"></img>
+                          </div>
+                        </a>
+                        <div class="text-bubble">
+                          <header>
+                            <p class="nametag">
+                              <?= $project->getUser()->getNickname() ?>#<?= $project->getUser()->getTag() ?></p>
+                          </header>
+                          <p class="title">
+                            <?= $project->getTitle() ?>
+                          </p>
+                          <p class="description-post">
+                            <?= $project->getDescription() ?>
+                          </p>
+                          <div class="files">
+                            <?php if ($project->hasFiles()) { ?>
+                              <div class="project-files">
+                                <?php foreach ($project->getFiles() as $file) { ?>
+                                  <a href="http://<?php echo APP_HOST; ?>/public/files/projects/<?= $file->getFile() ?>" download>Download a file here (Carefull, this link hasn't been checked)</a><br>
+                                <?php } ?>
+                              </div>
+                              <br>
+                            <?php } ?>
+                          </div>
+
+                          <div class="images">
+                            <?php if ($project->hasImages()) { ?>
+                              <?php foreach ($project->getImages() as $image) { ?>
+                                <img class="one-image" src="http://<?php echo APP_HOST; ?>/public/images/projects/<?= $image->getImage() ?>" width="200px" height="200px" alt="Imagem do projeto">
+                              <?php } ?>
+                            <?php } ?>
+                          </div>
+
+                          <div class="buttons">
+                          <a href="http://<?php echo APP_HOST; ?>/project/like/<?= $project->getIdProject(); ?>">
+                            <button class="button like">
+                              <img
+                                src="<?php echo $project->getLikeStatus() ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; ?>"
+                                style="height: 30px; width: 30px"
+                                />
+                                <span class="count"><?= $project->getLikeCount(); ?></span>
+                              </button>
+                          </a>
+                            <a href="http://<?php echo APP_HOST; ?>/project/saveProjectFavorite/<?= $project->getIdProject(); ?>">
+                              <button
+                                class="button blue favorite"
+                              >
+                                <img
+                                  src="<?php echo $project->getSaveStatus() ? '/public/images/icons/blueSaveIcon.png' : '/public/images/icons/whiteSaveIcon.png'; ?>"
+                                  style="<?php echo $project->getSaveStatus() ? 'height: 30px; width: 30px;' : 'height: 35px; width: 35px;' ?>"
+                                />
+                                <span class="count"><?= $project->getSaveCount(); ?></span>
+                              </button>
+                            </a>
+                              <img
+                                src="/public/images/icons/warningIcon.png"
+                                style=" height: 50px; width: 50px;"
+                                class="warning-button"
+                              />
+                          </div>
+                          <div class="hashtags">
+                            <?php if ($project->hasHashtags()) { ?>
+                                <?php foreach ($project->getHashtags() as $hashtagProject) { ?>
+                                  <span style="margin: 10px 30px 0 0;">#<?= $hashtagProject->getHashtag()->getHashtag() ?></span>
+                                <?php } ?>
+                            <?php } ?>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="comments">
+                      <?php foreach ($project->getComments() as $comment) {
+                        $user = $comment->getUser(); ?>
+                        <div class="line">
+                          <div class="one-comment">
+                            <div class="user-avatar-comment">
+                                <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $project->getUser()->getAvatar() ?>"></img>
+                            </div>
+                            <div class="comment-text">
+                              <p><?= $comment->getText() ?></p>
+                            </div>
+                            <a href="http://<?php echo APP_HOST; ?>/project/deleteComment/<?= $comment->getIdComment() ?>/<?= $project->getIdProject(); ?>">
+                              <div class="delete-button">
+                                <img src="/public/images/icons/deleteIcon.png"></img>
+                              </div>
+                            </a>
+                          </div>
+                        </div>
+                      <?php } ?>
+                      <div class="new-comment">
+                        <div class="user-avatar-comment">
+                          <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $project->getUser()->getAvatar() ?>"></img>
+                        </div>
+                        <form method="post" action="http://<?php echo APP_HOST; ?>/project/comment/<?= $project->getIdProject() ?>">
+                          <div class="new-comment-text">
+                            <input type="text" placeholder="Make here a comment :)"  name="text" id="text" maxlength="50" required>
+                          </div>
+                          <button type="submit">
+                            <img src="/public/images/playButton.png"></img>
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+
+
+
+
+                
                 <a href="http://<?php echo APP_HOST; ?>/project/saveProjectFavorite/<?= $project->getIdProject(); ?>">
                   <button
                     class="button blue favorite"
@@ -106,3 +236,12 @@
     </article>
   </section>
 </body>
+<script>
+  function openModalComment(idproject) {
+    document.getElementById("#modalComment"+idproject).style.display = "flex";
+  }
+
+  function closeModalComment(idproject) {
+    document.getElementById("#modalComment"+idproject).style.display = "none";
+  }
+</script>

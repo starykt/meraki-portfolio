@@ -271,3 +271,185 @@ article {
 .warning-button:hover {
   opacity: 0.95;
 }
+
+/* Starting modal comment */
+.modal-background {
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  position: fixed;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.modal-container {
+  margin-top: 20px;
+  overflow-y: auto;
+}
+
+.modal-container::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+ }
+
+.block-background {
+  pointer-events: all;
+}
+
+.wrapper-chat-modal {
+  padding: 6px;
+}
+
+.message-modal {
+  display: flex;
+  margin-bottom: 0;
+  position: relative;
+  gap: 0;
+}
+
+.comments {
+  height: 40%;
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  position: relative;
+}
+
+.one-comment {
+  min-width: 225px;
+  max-width: 100%;
+  max-height: 60px;
+  padding: 12px;
+  display: flex;
+  position: absolute;
+  align-items: center;
+  margin-top: 12px;
+  margin-bottom: 120px;
+  border-radius: 50px;
+  justify-content: space-between;
+  background-color: rgba(137, 77, 188, 0.50) ;
+}
+
+.line {
+  width: 100%;
+  height: 110px;
+  border-top: 2px solid #ffffff4b;
+}
+
+.user-avatar-comment {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #d9d9d9;
+  position: relative;
+  justify-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-avatar-comment img {
+  width: 65px;
+  height: 65px;
+  border-radius: 100%;
+  box-shadow: 5px 5px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.comment-text {
+  color: #FFF;
+  font-size: 18px;
+  font-weight: 700;
+  margin-left: -73px;
+  font-family: Inter;
+}
+
+.new-comment-text {
+  color: #FFF;
+  font-size: 18px;
+  font-weight: 700;
+  margin-left: -10px;
+  font-family: Inter;
+}
+
+.delete-button {
+  position: relative;
+}
+
+.one-comment a {
+  top: -35px;
+  position: relative;
+}
+.delete-button img {
+  width: 20px;
+  height: 20px;
+}
+
+.close-modal {
+  display: flex;
+  position: relative;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.close-modal img {
+  filter: drop-shadow(5px 5px rgba(0, 0, 0, 0.25)); 
+}
+
+.modal-background .button-close {
+  left: 1045px;
+  border: none;
+  bottom: -32px;
+  display: flex;
+  cursor: pointer;
+  background: none;
+  width: fit-content;
+  position: relative;
+  height: fit-content;
+}
+
+.new-comment {
+  margin-top: 30px;
+  padding: 12px;
+  display: flex;
+  bottom: 0px;
+  max-height: 60px;
+  border-radius: 50px;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(137, 77, 188, 0.50) ;
+}
+
+.new-comment-text input {
+  width: 614px;
+  border: none;
+  color: #FFF;
+  margin-left: -200px;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: 700;
+  background: none;
+  font-family: Inter;
+}
+
+.new-comment-text input:focus {
+  border: none;
+  color: #FFF;
+  outline: none;
+  font-size: 20px;
+  background: none;
+}
+
+.new-comment button {
+  border: none;
+  display: flex;
+  cursor: pointer;
+  background: none;
+  width: fit-content;
+  position: relative;
+  height: fit-content;
+}
+
+form {
+
+}

@@ -4,6 +4,7 @@ namespace App\Models\DAO;
 
 use App\Models\Entidades\Project;
 use App\Models\Entidades\User;
+use DateTime;
 use Exception;
 
 class ProjectDAO extends BaseDAO
@@ -130,4 +131,56 @@ class ProjectDAO extends BaseDAO
             throw new \Exception("Error deleting the project. " . $e->getMessage(), 500);
         }
     }
+    public function getFullProjectById($projectId)
+    {
+        $sql = "SELECT p.*, u.idUser, u.nickname, u.tag AS userTag, u.avatar AS userAvatar
+                FROM Projects p
+                INNER JOIN Users u ON p.idUser = u.idUser
+                WHERE p.idProject = $projectId";
+
+        $result = $this->select($sql);
+    
+        foreach ($result as $projectData) {
+            $project = new Project();
+            $project->setIdProject($projectData['idProject']);
+            $project->setTitle($projectData['title']);
+            $project->setDescription($projectData['description']);
+            $project->setCreated_At(new DateTime($projectData['created_At']));
+            $user = new User();
+            $user->setIdUser($projectData['idUser']);
+            $user->setNickname($projectData['nickname']);
+            $user->setTag($projectData['userTag']);
+            $user->setAvatar($projectData['userAvatar']);
+            $project->setUser($user);
+    
+            return $project;
+        }
+    
+        return null;
+    }
+public function searchProjects($term)
+{
+    $term = '%' . $term . '%';
+    
+    $sql = "SELECT p.* FROM Projects p
+            INNER JOIN Hashtags_Projects ph ON p.idProject = ph.idProject
+            INNER JOIN Hashtags h ON ph.idHashtag = h.idHashtag
+            WHERE h.hashtag LIKE '$term'";
+    
+
+    $result = $this->select($sql);
+
+    $projects = [];
+
+    foreach ($result as $projectData) {
+        $project = new Project();
+        $project->setIdProject($projectData['idProject']);
+        $project->setTitle($projectData['title']);
+        $project->setDescription($projectData['description']);
+        $projects[] = $project;
+    }
+
+    return $projects;
+}
+
 }

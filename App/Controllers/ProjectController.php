@@ -728,19 +728,45 @@ class ProjectController extends Controller
   }
 
   public function search()
-{
+  {
     $term = $_GET['term'] ?? '';
     $type = $_GET['type'] ?? '';
     $results = [];
 
     if ($type === 'user') {
-        // Pesquisar usuários por nickname+tag ou user_tools
-        $userDAO = new UserDAO();
-        $results = $userDAO->searchUsers($term);
+      $userDAO = new UserDAO();
+      $results = $userDAO->searchUsers($term);
     } elseif ($type === 'project') {
-        // Pesquisar projetos por hashtag ou outras lógicas específicas
-        $projectDAO = new ProjectDAO();
-        // $results = $projectDAO->searchProjects($term);
+      $projectDAO = new ProjectDAO();
+      $projects = $projectDAO->searchProjects($term);
+      foreach ($projects as $project) {
+        $idProject= $project->getIdProject();
+        $fullProject = $projectDAO->getFullProjectById($project->getIdProject());
+        $results[] = $fullProject;
+
+        $imageDAO = new ImageDAO();
+        $images = $imageDAO->getImagesByProjectId($idProject);
+        $project->setImages($images);
+
+        $fileDAO = new FileDAO();
+        $files = $fileDAO->getFilesByProjectId($idProject);
+        $project->setFiles($files);
+
+        $hashtagDAO = new HashtagProjectDAO();
+        $hashtags = $hashtagDAO->getByProjectId($idProject);
+        $project->setHashtags($hashtags);
+
+        $likeDAO = new LikeDAO();
+        $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
+        $project->setLikeCount($likeCount);
+
+        $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
+        $project->setLikeStatus($likeStatus);
+
+        $commentDAO = new CommentDAO();
+        $comments = $commentDAO->getCommentsByProjectId($idProject);
+        $project->setComments($comments);
+      }
     }
 
     self::setViewParam('results', $results);
@@ -748,6 +774,5 @@ class ProjectController extends Controller
     self::setViewParam('term', $term);
 
     $this->render('/project/search');
-}
-
+  }
 }

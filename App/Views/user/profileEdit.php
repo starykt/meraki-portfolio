@@ -83,6 +83,7 @@
         <?php foreach ($viewVar['educations'] as $education) : ?>
             <div>
                 <h3>Instituição: <?= $education->getFormation() ?></h3>
+                <a href="http://<?php echo APP_HOST; ?>/user/dropEducation/<?= $education->getIdEducation() ?>">Deletar</a>
             </div>
             <hr>
         <?php endforeach; ?>

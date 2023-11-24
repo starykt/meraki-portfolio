@@ -15,27 +15,27 @@ class Project
 	private array $images;
 	private array $hashtags;
 	private $likeCount;
-
 	private $likeStatus;
-
 	private array $comments;
-
 	private $creatorUser;
 	private int $likesCount;
 	private $mostLikedProjects;
 	private $details;
 	private $saveStatus;
 
-	private $user; // Propriedade para armazenar o objeto User associado ao projeto
+	private $user;
+	private int $commentCount;
 
-	// ... Outras propriedades e métodos ...
+	private int $saveCount;
 
-	public function getUser() {
-			return $this->user;
+	public function getUser()
+	{
+		return $this->user;
 	}
 
-	public function setUser(User $user) {
-			$this->user = $user;
+	public function setUser(User $user)
+	{
+		$this->user = $user;
 	}
 
 	public function setSaveStatus($saveStatus)
@@ -50,17 +50,17 @@ class Project
 
 	public function setDetails($details)
 	{
-			$this->details = $details;
+		$this->details = $details;
 	}
 
 	public function getDetails()
 	{
-			return $this->details;
+		return $this->details;
 	}
 
 	public function setMostLikedProjects(array $mostLikedProjects)
 	{
-			$this->mostLikedProjects = $mostLikedProjects;
+		$this->mostLikedProjects = $mostLikedProjects;
 	}
 
 	/**
@@ -68,7 +68,7 @@ class Project
 	 */
 	public function getLikesCount(): int
 	{
-			return $this->likesCount;
+		return $this->likesCount;
 	}
 
 	/**
@@ -77,18 +77,18 @@ class Project
 	 */
 	public function setLikesCount(int $likesCount): self
 	{
-			$this->likesCount = $likesCount;
-			return $this;
+		$this->likesCount = $likesCount;
+		return $this;
 	}
 
 	public function getComments(): array
 	{
-			return $this->comments;
+		return $this->comments;
 	}
 
 	public function setComments(array $comments): void
 	{
-			$this->comments = $comments;
+		$this->comments = $comments;
 	}
 
 	public function setLikeStatus($likeStatus)
@@ -119,6 +119,32 @@ class Project
 	public function getLikeCount()
 	{
 		return $this->likeCount;
+	}
+
+	
+	public function getCommentCount()
+	{
+		return $this->commentCount;
+	}
+
+
+	public function setCommentCount(int $commentCount)
+	{
+		$this->commentCount = $commentCount;
+		return $this;
+	}
+
+
+	public function getSaveCount()
+	{
+		return $this->saveCount;
+	}
+
+
+	public function setSaveCount(int $SaveCount)
+	{
+		$this->saveCount = $SaveCount;
+		return $this;
 	}
 
 	public function setHashtags(array $hashtags): self

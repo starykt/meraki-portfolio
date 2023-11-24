@@ -16,6 +16,13 @@ Level: <?= $viewVar['user']->getLevel() ?><br>
 XP: <?= $viewVar['user']->getXp() ?><br>
 Resumo: <?= $viewVar['user']->getResume() ?><br>
 Local: <?= $viewVar['user']->getLocation() ?><br>
+<h2>Educações:</h2>
+        <?php foreach ($viewVar['educations'] as $education) : ?>
+            <div>
+                <p>Instituição: <?= $education->getFormation() ?></p>
+            </div>
+            <hr>
+        <?php endforeach; ?>
 <h2>Prêmios do Usuário</h2>
         <ul>
             <?php foreach ($viewVar['userAwards'] as $award) : ?>

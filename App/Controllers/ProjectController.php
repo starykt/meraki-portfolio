@@ -15,6 +15,7 @@ use App\Models\DAO\NotificationDAO;
 use App\Models\DAO\ProjectDAO;
 use App\Models\DAO\ReportDAO;
 use App\Models\DAO\SaveProjectDAO;
+use App\Models\DAO\ToolDAO;
 use App\Models\DAO\UserDAO;
 use App\Models\Entidades\Comment;
 use App\Models\Entidades\File;
@@ -56,7 +57,16 @@ class ProjectController extends Controller
       $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
       $project->setLikeCount($likeCount);
 
+<<<<<<< HEAD
       $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
+=======
+
+
+      $likeCount = $likeDAO->getLikeCountByArticleId($project->getIdProject());
+      $project->setLikeCount($likeCount);
+
+      $likeStatus = $likeDAO->getLikeStatus($project->getIdProject(), $_SESSION['idUser']);
+>>>>>>> 732c851978f49fa9aac87f12b6083d7129da83ce
       $project->setLikeStatus($likeStatus);
 
       $saveDAO = new SaveProjectDAO();
@@ -116,9 +126,16 @@ class ProjectController extends Controller
       $saveStatus = $saveDAO->getSaveStatus($idProject, $_SESSION['idUser']);
       $project->setSaveStatus($saveStatus);
 
+      $SaveCount = $saveDAO->getSavedCountByArticleId($idProject);
+      $project->setSaveCount($SaveCount);
+
       $commentDAO = new CommentDAO();
       $comments = $commentDAO->getCommentsByProjectId($idProject);
       $project->setComments($comments);
+
+      $commentCount = $commentDAO->getCommentCountByArticleId($project->getIdProject());
+      $project->setCommentCount($commentCount);
+
 
       $projectsToDisplay[] = $project;
     }
@@ -716,10 +733,60 @@ class ProjectController extends Controller
     $this->render('/project/mostRecentSavedProjects');
   }
 
-  public function listNotifications() {
+  public function listNotifications()
+  {
     $notificationsDAO = new NotificationDAO();
-    $notifications= $notificationsDAO->getNotificationsByUserId($_SESSION['idUser']);
+    $notifications = $notificationsDAO->getNotificationsByUserId($_SESSION['idUser']);
     self::setViewParam('notifications', $notifications);
     $this->render('/project/listNotifications');
-}
+  }
+
+  public function search()
+  {
+    $term = $_GET['term'] ?? '';
+    $type = $_GET['type'] ?? '';
+    $results = [];
+
+    if ($type === 'user') {
+      $userDAO = new UserDAO();
+      $results = $userDAO->searchUsers($term);
+    } elseif ($type === 'project') {
+      $projectDAO = new ProjectDAO();
+      $projects = $projectDAO->searchProjects($term);
+      foreach ($projects as $project) {
+        $idProject= $project->getIdProject();
+        $fullProject = $projectDAO->getFullProjectById($project->getIdProject());
+        $results[] = $fullProject;
+
+        $imageDAO = new ImageDAO();
+        $images = $imageDAO->getImagesByProjectId($idProject);
+        $project->setImages($images);
+
+        $fileDAO = new FileDAO();
+        $files = $fileDAO->getFilesByProjectId($idProject);
+        $project->setFiles($files);
+
+        $hashtagDAO = new HashtagProjectDAO();
+        $hashtags = $hashtagDAO->getByProjectId($idProject);
+        $project->setHashtags($hashtags);
+
+        $likeDAO = new LikeDAO();
+        $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
+        $project->setLikeCount($likeCount);
+
+        $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
+        $project->setLikeStatus($likeStatus);
+
+        $commentDAO = new CommentDAO();
+        $comments = $commentDAO->getCommentsByProjectId($idProject);
+        $project->setComments($comments);
+      }
+    }
+
+    self::setViewParam('results', $results);
+    self::setViewParam('type', $type);
+    self::setViewParam('term', $term);
+
+    $this->render('/project/search');
+  }
 }

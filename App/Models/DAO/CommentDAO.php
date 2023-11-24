@@ -17,7 +17,21 @@ class CommentDAO extends BaseDAO
         return $resultado->fetchAll(\PDO::FETCH_CLASS, Comment::class);
     }
 
-
+    public function getCommentCountByArticleId($idProject)
+    {
+        $resultado = $this->select(
+            "SELECT COUNT(*) as CommentCount FROM Comments WHERE idProject = " . $idProject
+        );
+    
+        $dataSet = $resultado->fetch();
+    
+        if ($dataSet) {
+            return $dataSet['CommentCount'];
+        }
+    
+        return 0;
+    }
+    
     public function save(Comment $comment)
     {
         try {

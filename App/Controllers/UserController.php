@@ -38,7 +38,8 @@ class UserController extends Controller
     $commentCount = $commentDAO->getCommentCountByUserId($idUser);
     $like = $likeDAO->getLikeCountByUserId($idUser);
     $saveCount = $saveProjectDAO->getSavedProjectsCountByUserId($idUser);
-
+    $educationDAO = new EducationDAO();
+    $education = $educationDAO->getByUserId($_SESSION['idUser']);
     $tools = [];
     $userToolDAO = new UserToolDAO();
     $userTools = $userToolDAO->getByUserId($idUser);
@@ -84,6 +85,7 @@ class UserController extends Controller
 
     $awardDAO = new AwardDAO();
     $userAwards = $awardDAO->getUserAwards($idUser);
+    $this->setViewParam('educations', $education);
     $this->setViewParam('userAwards', $userAwards);
     $this->setViewParam('userTools', $tools);
     $this->setViewParam('commentCount', $commentCount);
@@ -109,7 +111,8 @@ class UserController extends Controller
     $commentCount = $commentDAO->getCommentCountByUserId($idUser);
     $like = $likeDAO->getLikeCountByUserId($idUser);
     $saveCount = $saveProjectDAO->getSavedProjectsCountByUserId($idUser);
-
+    $educationDAO = new EducationDAO();
+    $education = $educationDAO->getByUserId($idUser);
     $tools = [];
     $userToolDAO = new UserToolDAO();
     $userTools = $userToolDAO->getByUserId($idUser);
@@ -154,6 +157,7 @@ class UserController extends Controller
     }
     $awardDAO = new AwardDAO();
     $userAwards = $awardDAO->getUserAwards($idUser);
+    $this->setViewParam('educations', $education);
     $this->setViewParam('userAwards', $userAwards);
     $this->setViewParam('userTools', $tools);
     $this->setViewParam('commentCount', $commentCount);
@@ -320,30 +324,30 @@ class UserController extends Controller
 
   public function saveEducation()
   {
-      $educationDAO = new EducationDAO();
-      $existingEducations = $educationDAO->getByUserId($_SESSION["idUser"]);
-  
-      if (count($existingEducations) == 3) {
-          echo "Você atingiu o limite máximo de 3 educações.";
-          return;
-      }
+    $educationDAO = new EducationDAO();
+    $existingEducations = $educationDAO->getByUserId($_SESSION["idUser"]);
 
-      $education = new Education();
-      $education->setFormation($_POST["formation"]);
-      $education->setIdUser($_SESSION["idUser"]);
-  
-      $educationDAO->save($education);
-  
-      $this->redirect('/user/profileEdit');
+    if (count($existingEducations) == 3) {
+      echo "Você atingiu o limite máximo de 3 educações.";
+      return;
+    }
+
+    $education = new Education();
+    $education->setFormation($_POST["formation"]);
+    $education->setIdUser($_SESSION["idUser"]);
+
+    $educationDAO->save($education);
+
+    $this->redirect('/user/profileEdit');
   }
-  
+
 
 
   public function dropEducation($params)
   {
     $education = $params[0];
     $educationDAO = new EducationDAO();
-    $educationDAO->save($education);
+    $educationDAO->drop($education);
     $this->redirect('/user/profileEdit');
   }
   public function reportNivel()

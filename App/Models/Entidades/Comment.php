@@ -11,6 +11,7 @@ class Comment
   private User $user;
   private Project $project;
   private string $dateCreate;
+  private int $commentCount;
 
   public function __construct()
   {
@@ -99,4 +100,5 @@ class Comment
     $this->idComment = $idComment;
     return $this;
   }
+
 }

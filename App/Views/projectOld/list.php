@@ -71,6 +71,7 @@
                 <span class="heart" <?php if (isset($project) && $project->getSaveStatus()) { ?> style="color:red;" <?php } else { ?> style="background-color:none;" <?php } ?>>
                     &#128190;
                 </span>
+                <span class="like-count"><?= $project->getSaveCount(); ?></span>
             </button>
             <br>
         </form>
@@ -82,6 +83,7 @@
             </div>
         </form>
     </div>
+    <span class="like-count"><?= $project->getCommentCount(); ?></span>
     <?php foreach ($project->getComments() as $comment) {
         $user = $comment->getUser(); ?>
         <div class="comment">

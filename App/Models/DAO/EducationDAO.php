@@ -30,16 +30,17 @@ class EducationDAO extends BaseDAO
             $education = new Education();
             $education->setIdUser($row['idUser']);
             $education->setFormation($row['formation']);
+            $education->setIdEducation($row['idEducation']);
             $educations[] = $education;
         }
 
         return $educations;
     }
 
-    public function drop(int $idUser)
+    public function drop(int $idEducation)
 {
     try {
-        return $this->delete('Educations', "idUser = $idUser");
+        return $this->delete('Educations', "idEducation = $idEducation");
     } catch (\Exception $e) {
         throw new \Exception("Error dropping education records. " . $e->getMessage(), 500);
     }

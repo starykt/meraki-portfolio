@@ -363,20 +363,28 @@ class UserDAO extends BaseDAO
     public function searchUsers($term)
     {
         $term = '%' . $term . '%';
-        $sql = "SELECT * FROM Users WHERE CONCAT(nickname, ' #', tag) LIKE '$term'";
+        $sql = "SELECT DISTINCT u.*
+                FROM Users u
+                LEFT JOIN Users_Tools ut ON u.idUser = ut.idUser
+                LEFT JOIN Tools t ON ut.idTool = t.idTool
+                WHERE CONCAT(u.nickname, ' #', u.tag) LIKE '$term' OR t.caption LIKE '$term'";
+        
         $result = $this->select($sql);
-
+        
         $users = [];
-
+        
         foreach ($result as $userData) {
             $user = new User();
             $user->setIdUser($userData['idUser']);
             $user->setNickname($userData['nickname']);
             $user->setTag($userData['tag']);
             $user->setAvatar($userData['avatar']);
+        
             $users[] = $user;
         }
-
+        
         return $users;
     }
+    
+    
 }

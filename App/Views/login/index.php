@@ -36,7 +36,9 @@
 						<img src="">
 					</div>
 				</div>
+				<a style="color:white;" href="http://<?= APP_HOST ?>/login/recovery">
 				<div class="forgot-password">Forgot password?</div>
+			</a>
 				<button class="btn-login" type="submit" class="">Login</button>
 			</form>
 			<div class="register-link">

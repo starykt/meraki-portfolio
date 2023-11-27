@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Tempo de geração: 21-Nov-2023 às 22:36
+-- Tempo de geração: 27-Nov-2023 às 18:28
 -- Versão do servidor: 8.0.21
 -- versão do PHP: 8.2.11
 
@@ -125,9 +125,7 @@ CREATE TABLE `Educations` (
 --
 
 INSERT INTO `Educations` (`idEducation`, `formation`, `idUser`) VALUES
-(1, ' fffffffffff', 1),
-(2, 'rapaz', 1),
-(3, 'rapaz', 1);
+(13, 'coisa', 1);
 
 -- --------------------------------------------------------
 
@@ -410,7 +408,9 @@ INSERT INTO `Notifications` (`idNotification`, `idUser`, `notification`) VALUES
 (2, 1, 'You just won a challenge! Check your profile for the new prize!'),
 (3, 1, 'Someone liked your new project!'),
 (4, 1, 'It looks like people are saving your project!'),
-(5, 1, 'People are commenting on your new project!');
+(5, 1, 'People are commenting on your new project!'),
+(6, 1, 'It looks like people are saving your project!'),
+(7, 3, 'It looks like people are saving your project!');
 
 -- --------------------------------------------------------
 
@@ -493,7 +493,30 @@ INSERT INTO `Save_Projects` (`idSave`, `idProject`, `idUser`) VALUES
 (9, 6, 3),
 (10, 8, 3),
 (11, 13, 11),
-(14, 26, 1);
+(15, 26, 1),
+(16, 8, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `Tokens`
+--
+
+CREATE TABLE `Tokens` (
+  `idToken` int NOT NULL,
+  `idUser` int DEFAULT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Extraindo dados da tabela `Tokens`
+--
+
+INSERT INTO `Tokens` (`idToken`, `idUser`, `token`, `createdAt`) VALUES
+(18, 13, 'b316d4dad86aabebb731e2fd229e48e7110ad5f00da9f1db6a4a8f82f9d37266', '2023-11-27 02:21:16'),
+(25, 1, '41af921f61247debe112d023375b82f4bb3644bc2170740769032e381db60da5', '2023-11-27 18:24:55'),
+(26, 1, 'a6c5534d8156d2188badfd0ee1c751a10d8e5c0c12b24a940e3bf93cf3f325f7', '2023-11-27 18:25:58');
 
 -- --------------------------------------------------------
 
@@ -543,10 +566,10 @@ CREATE TABLE `Users` (
 --
 
 INSERT INTO `Users` (`idUser`, `tag`, `nickname`, `email`, `password`, `avatar`, `level`, `xp`, `resume`, `admin`, `createdAt`, `location`, `status`) VALUES
-(1, 3182, 'nick', 'nicolealvesraimundo@gmail.com', '$2y$10$olQTF4mSKWX6.sEx8hOWy.BgAq.DTZLlJiIZ8T/f5rZfwetcx1Ij.', 'avatar-id1.jpg', 100, 3660, 'alibabaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaa', 1, '2023-08-26 11:48:25', 'Itapevi, Sp', NULL),
-(2, 6149, 'amor', 'amor@gmail.com', '$2y$10$ptSxKR8Ld8SQiWUahYOE/OCWWhAUFtS94wRsh5iaQPmiciA/vHg4u', 'cat.jpg', 87, -15, NULL, 1, '2023-10-30 23:02:58', NULL, NULL),
-(3, 1240, 'luis', 'luis@gmail.com', '$2y$10$7/P0zds4rLb9SIqb1uXNcOX9srVUyvHVhNy/aH5itMQ22MGVYxxPe', 'avatar-id3.jpg', 3, 0, 'meu resuminho', 1, '2023-11-02 20:51:28', '', NULL),
-(5, 1303, 'teste', 'teste@gmail.com', '$2y$10$HQWesWLoaOz84gfHeiC4iOPuMx5KK0HcpBPmAeB6wWU3Y0kTNjBzO', 'cat.jpg', 4, -25, 'kkkkkkkkkkk', 1, '2023-11-03 01:34:14', 'bbkkkkkkkkkkkk', NULL),
+(1, 3182, 'nick', 'nicolealvesraimundo@gmail.com', '$2y$10$ToTnvIFwy1uJ0xXAzZkeYe3kDpxoLbzbz.zcvJfqdd21Nxd5UwCEe', 'avatar-id1.jpg', 100, 3660, 'beibebeibe do biruleibe', 1, '2023-08-26 11:48:25', 'Itapevi, Sp', NULL),
+(2, 6149, 'amor', 'amor@gmail.com', '$2y$10$ptSxKR8Ld8SQiWUahYOE/OCWWhAUFtS94wRsh5iaQPmiciA/vHg4u', 'cat.jpg', 87, 0, NULL, 1, '2023-10-30 23:02:58', NULL, NULL),
+(3, 1240, 'luis', 'luis@gmail.com', '$2y$10$7/P0zds4rLb9SIqb1uXNcOX9srVUyvHVhNy/aH5itMQ22MGVYxxPe', 'avatar-id3.jpg', 3, 20, 'meu resuminho', 1, '2023-11-02 20:51:28', '', NULL),
+(5, 1303, 'teste', 'teste@gmail.com', '$2y$10$HQWesWLoaOz84gfHeiC4iOPuMx5KK0HcpBPmAeB6wWU3Y0kTNjBzO', 'cat.jpg', 4, 25, 'kkkkkkkkkkk', 1, '2023-11-03 01:34:14', 'bbkkkkkkkkkkkk', NULL),
 (7, 4120, 'teste3', 'Lety@gmail.com', '$2y$10$4cijvcz5FpViNEi5l4eu7OBlZhNm0DjkCfu99euZOlOfpe4v1wQRG', 'cat.jpg', 3, 10, NULL, 1, '2023-11-06 14:03:55', NULL, NULL),
 (11, 9506, 'teste2', 'nick@gmail.com', '$2y$10$0MZUPUV3JkxVV8cnFTETluH1c3RL6gY5hVOaFHDliBvrEp7ud1k0y', 'cat.jpg', 5, 0, NULL, 0, '2023-11-06 14:14:32', NULL, NULL),
 (12, 3180, 'aaaaaaaaaaaaaa', 'aaaaaaaaa@fghvjj', '$2y$10$lnXq0Yooji6INBEq3pD0Me4WQcWSUu0QigkI/gyiLlWbFVC2cU4gO', 'cat.jpg', 20, 0, NULL, 1, '2023-11-06 14:20:12', NULL, 'banned'),
@@ -569,7 +592,8 @@ CREATE TABLE `Users_Tools` (
 
 INSERT INTO `Users_Tools` (`idUser`, `idTool`) VALUES
 (1, 2),
-(1, 4);
+(1, 4),
+(3, 4);
 
 -- --------------------------------------------------------
 
@@ -721,6 +745,13 @@ ALTER TABLE `Save_Projects`
   ADD KEY `idUser` (`idUser`);
 
 --
+-- Índices para tabela `Tokens`
+--
+ALTER TABLE `Tokens`
+  ADD PRIMARY KEY (`idToken`),
+  ADD KEY `idUser` (`idUser`);
+
+--
 -- Índices para tabela `Tools`
 --
 ALTER TABLE `Tools`
@@ -773,7 +804,7 @@ ALTER TABLE `Comments`
 -- AUTO_INCREMENT de tabela `Educations`
 --
 ALTER TABLE `Educations`
-  MODIFY `idEducation` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `idEducation` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de tabela `Favorites`
@@ -815,7 +846,7 @@ ALTER TABLE `Messages`
 -- AUTO_INCREMENT de tabela `Notifications`
 --
 ALTER TABLE `Notifications`
-  MODIFY `idNotification` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idNotification` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de tabela `Projects`
@@ -833,7 +864,13 @@ ALTER TABLE `Report`
 -- AUTO_INCREMENT de tabela `Save_Projects`
 --
 ALTER TABLE `Save_Projects`
-  MODIFY `idSave` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `idSave` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT de tabela `Tokens`
+--
+ALTER TABLE `Tokens`
+  MODIFY `idToken` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de tabela `Tools`
@@ -950,6 +987,12 @@ ALTER TABLE `Report`
 ALTER TABLE `Save_Projects`
   ADD CONSTRAINT `Save_Projects_ibfk_1` FOREIGN KEY (`idProject`) REFERENCES `Projects` (`idProject`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `Save_Projects_ibfk_2` FOREIGN KEY (`idUser`) REFERENCES `Users` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `Tokens`
+--
+ALTER TABLE `Tokens`
+  ADD CONSTRAINT `Tokens_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `Users` (`idUser`);
 
 --
 -- Limitadores para a tabela `Users_Tools`

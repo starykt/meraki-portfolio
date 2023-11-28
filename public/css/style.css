@@ -65,10 +65,11 @@
 .modal-container {
   min-width: fit-content;
   padding: 40px;
+  overflow-y: auto;
   max-width: 800px;
-  max-height: fit-content;
   border-radius: 100px;
   background: #212121;
+  max-height: fit-content;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 

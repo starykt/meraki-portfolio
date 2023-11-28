@@ -37,6 +37,9 @@ class ProjectController extends Controller
     $projectDAO = new ProjectDAO();
     $projectsToDisplay = [];
 
+    $hashtagDAO = new HashtagDAO();
+    $hashtag = $hashtagDAO->list();
+
     foreach ($savedProjects as $savedProject) {
       $idProject = $savedProject->getIdProject();
       $project = $projectDAO->getById($idProject);
@@ -78,6 +81,7 @@ class ProjectController extends Controller
       $projectsToDisplay[] = $project;
     }
 
+    self::setViewParam('listHashtag', $hashtag);
     self::setViewParam('listProject', $projectsToDisplay);
     self::setViewParam('user', $userDAO->getById($_SESSION['idUser']));
 

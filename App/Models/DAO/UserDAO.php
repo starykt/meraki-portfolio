@@ -107,10 +107,13 @@ class UserDAO extends BaseDAO
         }
     }
 
-    public function verify(string $email, string $password)
+    public function verify(string $identifier, string $password)
     {
         try {
-            $query = $this->select("SELECT * FROM Users WHERE email = '$email'");
+            $isEmail = filter_var($identifier, FILTER_VALIDATE_EMAIL) !== false;
+            $condition = $isEmail ? "email" : "CONCAT(nickname, '#', tag)";
+
+            $query = $this->select("SELECT * FROM Users WHERE $condition = '$identifier'");
             $userData = $query->fetch();
 
             if (!$userData) {
@@ -142,6 +145,144 @@ class UserDAO extends BaseDAO
             throw new \Exception("Erro no acesso aos dados.", 500);
         }
     }
+
+    public function getUserByEmailOrUsername($emailOrUsername) {
+        if (filter_var($emailOrUsername, FILTER_VALIDATE_EMAIL)) {
+            return $this->getUserByEmail($emailOrUsername);
+        } else {
+            return $this->getUserByNicknameAndTag($emailOrUsername);
+        }
+    }
+
+    private function getUserByEmail($email) {
+        try {
+            $sql = "SELECT * FROM Users WHERE email = '$email'";
+            $query = $this->select($sql);
+    
+            if ($userData = $query->fetch()) {
+                return $this->createUserFromData($userData);
+            }
+            return null;
+        } catch (\Exception $e) {
+            throw new \Exception("Erro no acesso aos dados. " . $e->getMessage(), 500);
+        }
+    }
+    public function updatePasswordByToken($token, $newPassword)
+    {
+        try {
+            if (!$this->validateTokenInDatabase($token)) {
+                throw new Exception("Token inválido.", 400);
+            }
+            $idUser = $this->getUserIdByToken($token);
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+            $params = [
+                ':password' => $hashedPassword,
+                ':idUser' => $idUser,
+            ];
+    
+            $this->update('Users', 'password = :password', $params, 'idUser = :idUser');
+            $this->deleteToken($idUser, $token);
+        } catch (Exception $e) {
+            throw new Exception("Erro ao atualizar a senha. " . $e->getMessage(), 500);
+        }
+    }
+    
+
+    private function getUserIdByToken($token)
+    {
+        try {
+            $sql = "SELECT idUser FROM Tokens WHERE token = '$token'";
+            $result = $this->select($sql);
+            
+            if (!$result) {
+                throw new Exception("Token não encontrado.", 404);
+            }
+    
+            $userData = $result->fetch();
+            if (!$userData) {
+                throw new Exception("Token não encontrado.", 404);
+            }
+            return $userData['idUser'];
+        } catch (Exception $e) {
+            throw new Exception("Erro ao obter o ID do usuário pelo token. " . $e->getMessage(), 500);
+        }
+    }
+    
+    
+    public function validateTokenInDatabase($token)
+    {
+        $sql = "SELECT * FROM Tokens WHERE token = '$token'";
+        $result = $this->select($sql);
+
+        return !empty($result);
+    }
+    public function createToken($idUser, $token)
+    {
+        try {
+            $params = [
+                ':idUser' => $idUser,
+                ':token' => $token,
+            ];
+
+            return $this->insert('Tokens', ':idUser, :token', $params);
+        } catch (\Exception $e) {
+            throw new \Exception("Error creating token. " . $e->getMessage(), 500);
+        }
+    }
+
+    public function verifyToken($idUser, $token)
+    {
+        try {
+            $params = [
+                ':idUser' => $idUser,
+                ':token' => $token,
+            ];
+
+            $result = $this->select("SELECT * FROM Tokens WHERE idUser = :idUser AND token = :token", $params);
+
+            return !empty($result);
+        } catch (\Exception $e) {
+            throw new \Exception("Error verifying token. " . $e->getMessage(), 500);
+        }
+    }
+
+    public function deleteToken($idUser, $token)
+    {
+        try {
+            return $this->delete('Tokens', "idUser = '$idUser' AND token = '$token'");
+        } catch (\Exception $e) {
+            throw new \Exception("Erro ao excluir a token. " . $e->getMessage(), 500);
+        }
+    }
+    
+    private function getUserByNicknameAndTag($nicknameAndTag) {
+        list($nickname, $tag) = explode('#', $nicknameAndTag);
+
+        $sql = "SELECT * FROM Users WHERE nickname = '$nickname' AND tag = '$tag'";
+        $result = $this->select($sql);
+
+        if ($result) {
+            $userData = reset($result);
+            return $this->createUserFromData($userData);
+        }
+
+        return null;
+    }
+
+    private function createUserFromData($userData) {
+        if (is_array($userData)) {
+            $user = new User();
+            $user->setIdUser($userData['idUser']);
+            $user->setNickname($userData['nickname']);
+            $user->setTag($userData['tag']);
+            $user->setEmail($userData['email']);
+            $user->setPassword($userData['password']);
+            return $user;
+        }
+    
+        return null;
+    }
+    
 
     public function getUsersByLikes()
     {
@@ -363,7 +504,12 @@ class UserDAO extends BaseDAO
     public function searchUsers($term)
     {
         $term = '%' . $term . '%';
-        $sql = "SELECT * FROM Users WHERE CONCAT(nickname, ' #', tag) LIKE '$term'";
+        $sql = "SELECT DISTINCT u.*
+                FROM Users u
+                LEFT JOIN Users_Tools ut ON u.idUser = ut.idUser
+                LEFT JOIN Tools t ON ut.idTool = t.idTool
+                WHERE CONCAT(u.nickname, ' #', u.tag) LIKE '$term' OR t.caption LIKE '$term'";
+
         $result = $this->select($sql);
 
         $users = [];
@@ -374,6 +520,7 @@ class UserDAO extends BaseDAO
             $user->setNickname($userData['nickname']);
             $user->setTag($userData['tag']);
             $user->setAvatar($userData['avatar']);
+
             $users[] = $user;
         }
 

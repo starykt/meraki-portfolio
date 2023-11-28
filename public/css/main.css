@@ -107,6 +107,10 @@ header .homeOption img {
 @media (min-width: 1200px) and (max-width: 1919px) {
   .bottom-wave {
     bottom: -30px;
-    margin-left: 0px;
+    margin-left: 0;
+  }
+
+  .bottom-wave img{
+    width: 110vw;
   }
 }

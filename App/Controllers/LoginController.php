@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Lib\Sessao;
 use App\Models\DAO\UserDAO;
+use App\Models\Email\EmailSender;
 use App\Models\Entidades\User;
 
 class LoginController extends Controller
@@ -76,26 +77,25 @@ class LoginController extends Controller
 
   public function setRandomAvatar(UserDAO $userDao, $userId)
   {
-      $dir = 'public/images/users';
-      $allowedImages = [
-          'cat.jpg', 'cogumelomario.jpg', 'cuphead.jpg', 'cupeahed2.jpg',
-          'enderman.jpg', 'mortalkombat.jpg', 'pacman.jpg', 'pikachu.jpg',
-          'psyduck.jpg', 'sonic2.jpg', 'thewitcher.jpg', 'undertale.jpg',
-          'zelda.jpg', 'amongus.jpg'
-      ];
-  
-      $randomImage = $allowedImages[array_rand($allowedImages)];
-  
-      $filePath = $dir . '/' . $randomImage;
-  
-      if (file_exists($filePath)) {
-          $userDao->updateAvatar($userId, $randomImage);
-          return $randomImage;
-      } else {
-          return false;
-      }
+    $dir = 'public/images/users';
+    $allowedImages = [
+      'cat.jpg', 'cogumelomario.jpg', 'cuphead.jpg', 'cupeahed2.jpg',
+      'enderman.jpg', 'mortalkombat.jpg', 'pacman.jpg', 'pikachu.jpg',
+      'psyduck.jpg', 'sonic2.jpg', 'thewitcher.jpg', 'undertale.jpg',
+      'zelda.jpg', 'amongus.jpg'
+    ];
+
+    $randomImage = $allowedImages[array_rand($allowedImages)];
+
+    $filePath = $dir . '/' . $randomImage;
+
+    if (file_exists($filePath)) {
+      $userDao->updateAvatar($userId, $randomImage);
+      return $randomImage;
+    } else {
+      return false;
+    }
   }
-  
 
   public function logout()
   {
@@ -109,14 +109,91 @@ class LoginController extends Controller
     $this->redirect('/login');
   }
 
+  public function recovery()
+  {
+    Sessao::limpaFormulario();
+    Sessao::limpaMensagem();
+    Sessao::limpaErro();
+    $this->render('/login/recovery');
+  }
+  
+  public function sucess()
+  {
+    Sessao::limpaFormulario();
+    Sessao::limpaMensagem();
+    Sessao::limpaErro();
+    $this->render('/login/sucess');
+  }
+  public function error()
+  {
+    Sessao::limpaFormulario();
+    Sessao::limpaMensagem();
+    Sessao::limpaErro();
+    $this->render('/login/error');
+  }
+  public function reset()
+  {
+      try {
+          $token = $_GET['token'] ?? null;
+          $userDAO= new UserDAO();
+          $tokenValido = $userDAO->validateTokenInDatabase($token);
+
+          if (!$tokenValido) {
+              throw new \Exception("Token inválido.", 400);
+          }
+
+          $this->render('/login/reset');
+      } catch (\Exception $e) {
+          echo "Erro: " . $e->getMessage();
+      }
+  }
+
+  public function processResetPassword()
+  {
+      try {
+          $token = $_POST['token'];
+          $userDAO = new UserDAO();
+          $newPassword = $_POST['newPassword'] ?? null;
+          $tokenValido = $userDAO->validateTokenInDatabase($token);
+          if (!$tokenValido) {
+              throw new \Exception("Token inválido.", 400);
+          }
+          $userDAO->updatePasswordByToken($token, $newPassword);
+          $this->redirect('/login');
+      } catch (\Exception $e) {
+          echo "Erro: " . $e->getMessage();
+      }
+    }
+  public function processRecovery()
+  {
+    $usernameOrEmail = $_POST['usernameOrEmail'];
+
+    $userDAO = new UserDAO();
+    $user = $userDAO->getUserByEmailOrUsername($usernameOrEmail);
+
+    if ($user) {
+      $token = bin2hex(random_bytes(32));
+      $userDAO->createToken($user->getIdUser(), $token);
+      try {
+        require_once __DIR__ . '/../Models/Entidades/EmailSender.php';
+        $email = new EmailSender();
+        $email->sendRecoveryEmail($user->getEmail(), $token);
+        $this->redirect('/login/sucess');
+      } catch (\Exception $e) {
+        $this->redirect('/login/error');
+      }
+    } else {
+      $this->redirect('/login/error');
+    }
+  }
+
   public function validation()
   {
-
-    $email = $_POST['email'];
+    $identifier = $_POST['email'];
     $password = $_POST['password'];
     Sessao::gravaFormulario($_POST);
 
-    if (empty(trim($email)) && empty(trim($password))) {
+    if (empty(trim($identifier)) && empty(trim($password))) {
       Sessao::gravaErro("Faltou digitar usuário e/ou senha!");
       $this->redirect('/login');
       return;
@@ -124,7 +201,7 @@ class LoginController extends Controller
 
     $userDAO = new UserDAO();
 
-    $idUser = $userDAO->verify($email, $password);
+    $idUser = $userDAO->verify($identifier, $password);
 
     if ($idUser == 0) {
       Sessao::gravaErro("Usuário ou senha incorretos. Tente novamente!");

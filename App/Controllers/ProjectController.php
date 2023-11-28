@@ -741,50 +741,54 @@ class ProjectController extends Controller
 
   public function search()
   {
-    $term = $_GET['term'] ?? '';
-    $type = $_GET['type'] ?? '';
-    $results = [];
+      $term = $_GET['term'] ?? '';
+      $type = $_GET['type'] ?? '';
+      $results = [];
+  
+      if ($type === 'user') {
+          $userDAO = new UserDAO();
+          $results = $userDAO->searchUsers($term);
+      } elseif ($type === 'project') {
+          $projectDAO = new ProjectDAO();
+          $imageDAO = new ImageDAO();
+          $fileDAO = new FileDAO();
+          $hashtagDAO = new HashtagProjectDAO();
+          $likeDAO = new LikeDAO();
+          $commentDAO = new CommentDAO();
+  
+          $projects = $projectDAO->searchProjects($term);
+  
+          foreach ($projects as $project) {
+              $idProject = $project->getIdProject();
 
-    if ($type === 'user') {
-      $userDAO = new UserDAO();
-      $results = $userDAO->searchUsers($term);
-    } elseif ($type === 'project') {
-      $projectDAO = new ProjectDAO();
-      $projects = $projectDAO->searchProjects($term);
-      foreach ($projects as $project) {
-        $idProject= $project->getIdProject();
-        $fullProject = $projectDAO->getFullProjectById($project->getIdProject());
-        $results[] = $fullProject;
+              $fullProject = $projectDAO->getFullProjectById($idProject);
+              $images = $imageDAO->getImagesByProjectId($idProject);
+              $fullProject->setImages($images);
+  
+              $files = $fileDAO->getFilesByProjectId($idProject);
+              $fullProject->setFiles($files);
+  
+              $hashtags = $hashtagDAO->getByProjectId($idProject);
+              $fullProject->setHashtags($hashtags);
+  
+              $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
+              $fullProject->setLikeCount($likeCount);
 
-        $imageDAO = new ImageDAO();
-        $images = $imageDAO->getImagesByProjectId($idProject);
-        $project->setImages($images);
+              $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
+              $fullProject->setLikeStatus($likeStatus);
+  
+              $comments = $commentDAO->getCommentsByProjectId($idProject);
+              $fullProject->setComments($comments);
 
-        $fileDAO = new FileDAO();
-        $files = $fileDAO->getFilesByProjectId($idProject);
-        $project->setFiles($files);
-
-        $hashtagDAO = new HashtagProjectDAO();
-        $hashtags = $hashtagDAO->getByProjectId($idProject);
-        $project->setHashtags($hashtags);
-
-        $likeDAO = new LikeDAO();
-        $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
-        $project->setLikeCount($likeCount);
-
-        $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
-        $project->setLikeStatus($likeStatus);
-
-        $commentDAO = new CommentDAO();
-        $comments = $commentDAO->getCommentsByProjectId($idProject);
-        $project->setComments($comments);
+              $results[] = $fullProject;
+          }
       }
-    }
-
-    self::setViewParam('results', $results);
-    self::setViewParam('type', $type);
-    self::setViewParam('term', $term);
-
-    $this->render('/project/search');
+  
+      self::setViewParam('results', $results);
+      self::setViewParam('type', $type);
+      self::setViewParam('term', $term);
+  
+      $this->render('/project/search');
   }
+  
 }

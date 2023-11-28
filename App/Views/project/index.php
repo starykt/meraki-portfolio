@@ -193,6 +193,8 @@
 
 
 
+
+
                 <a href="http://<?php echo APP_HOST; ?>/project/saveProjectFavorite/<?= $project->getIdProject(); ?>">
                   <button class="button blue favorite">
                     <img src="<?php echo $project->getSaveStatus() ? '/public/images/icons/blueSaveIcon.png' : '/public/images/icons/whiteSaveIcon.png'; ?>" style="<?php echo $project->getSaveStatus() ? 'height: 30px; width: 30px;' : 'height: 35px; width: 35px;' ?>" />
@@ -200,6 +202,11 @@
                   </button>
                 </a>
                 <img src="/public/images/icons/warningIcon.png" style=" height: 50px; width: 50px;" class="warning-button" />
+                <a href="http://<?= APP_HOST ?>/project/delete?idProject=<?= $project->getIdProject() ?>">
+                  <button class="button blue favorite">
+                    <img src="/public/images/icons/trashIcon.png" style="height: 40px; width: 40px;" />
+                  </button>
+                </a>
               </div>
               <div class="hashtags">
                 <?php if ($project->hasHashtags()) { ?>

@@ -201,12 +201,12 @@
                     <span class="count"><?= $project->getSaveCount(); ?></span>
                   </button>
                 </a>
-                <img src="/public/images/icons/warningIcon.png" style=" height: 50px; width: 50px;" class="warning-button" />
                 <a href="http://<?= APP_HOST ?>/project/delete?idProject=<?= $project->getIdProject() ?>">
                   <button class="button blue favorite">
                     <img src="/public/images/icons/trashIcon.png" style="height: 40px; width: 40px;" />
                   </button>
                 </a>
+                <img src="/public/images/icons/warningIcon.png" style=" height: 50px; width: 50px;" class="warning-button" />
               </div>
               <div class="hashtags">
                 <?php if ($project->hasHashtags()) { ?>

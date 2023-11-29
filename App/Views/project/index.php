@@ -284,15 +284,23 @@
               </div>
               
               <div id="#complaint<?= $project->getIdProject(); ?>" class="modal-background-complain" style="display: none;">
-                <form class="new-form" action="http://<?php echo APP_HOST; ?>/project/saveReport/<?= $project->getIdProject() ?>">
+                <form class="new-form" action="http://<?php echo APP_HOST; ?>/project/saveReport/<?= $project->getIdProject() ?>" method="POST">
                   <div class="modal-container-complain">
                     <div class="title">
                       <p>Wish make a complain about the post of "<?= $project->getUser()->getNickname() ?>#<?= $project->getUser()->getTag() ?>" ?</p>
                       <img src="/public/images/icons/warningIcon.png" style=" height: 50px; width: 50px;" />
                     </div>
                     <div class="label-complain">
-                      <input type="text" placeholder="Have fun and write your ideia here." id="description" name="description" maxlength="400" required>
+                      <textarea type="text" placeholder="Write the problem here" id="report" name="report" rows="4" cols="50" maxlength="400" required></textarea>
                     </div>
+                  </div>
+                  <div class="button-options">
+                    <button type="submit" class="send-button">
+                      SEND
+                    </button>
+                    <button type="button" class="cancel-button" onclick="closeModalComplain(<?= $project->getIdProject() ?>)">
+                      CANCEL
+                    </button>
                   </div>
                 </form>
               </div>
@@ -342,7 +350,7 @@
   }
 
   function closeModalComplain(idproject) {
-    document.getElementById("#complain" + idproject).style.display = "none";
+    document.getElementById("#complaint" + idproject).style.display = "none";
   }
 
   new MultiSelectTag('idHashtags')  // id

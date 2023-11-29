@@ -17,21 +17,21 @@ aside {
 section {
   width: 100%;
   display: grid;
-  padding: 0px 30px;
-  margin-left: -60px;
+  padding: 0px 0px;
   margin-top: 200px;
   justify-content: center;
 }
 
 .card-new-post {
-  position: relative;
-  border-radius: 100px;
   width: 45%;
-  background-color: #d9d9d9;
   height: 120px;
   display: flex;
-  align-items: center;
   padding: 0px 20px;
+  margin-left: 100px;
+  position: relative;
+  align-items: center;
+  border-radius: 100px;
+  background-color: #d9d9d9;
 }
 
 .text-card {
@@ -76,12 +76,14 @@ section {
 }
 
 article {
+  right: 2px;
   margin-top: 40px;
+  position: relative;
   border-top: 2px solid #fff;
 }
 
 .wrapper-chat {
-  padding: 89px
+  padding: 85px
 }
 
 .message {
@@ -89,7 +91,6 @@ article {
   margin-bottom: 15px;
   position: relative;
   gap: 50px;
-  margin-left: -75px;
 }
 
 .user-avatar {

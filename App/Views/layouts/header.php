@@ -16,9 +16,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-  <header class="header-bar">
+  <a href="http://<?= APP_HOST ?>/project">
+    <header class="header-bar">
+      <div class="homeOption">
+        <img src="/public/images/homeIcon.svg" />
+      </div>
+  </a>
     <img src="/public/images/headerWave.svg" class="wave" />
-    <div class="homeOption">
-      <img src="/public/images/homeIcon.svg" />
-    </div>
   </header>

@@ -17,14 +17,15 @@ header .wave {
 }
 
 header .homeOption {
-  top: 7px;
-  left: -95px;
+  top: 12px;
+  right: 15px;
   z-index: 9999;
-  position: relative;
+  position: fixed;
 }
 
 header .homeOption img {
-  width: 45px
+  width: 45px;
+  z-index: 9999;
 }
 
 .full-content-wrapper {

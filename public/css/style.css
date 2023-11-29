@@ -1,52 +1,111 @@
 .menu-icon {
-  position: fixed;
   top: 20px;
   left: 30px;
   cursor: pointer;
-  z-index: 999;
+  position: absolute;
+  z-index: 9999;
 }
 
-.menu-icon img {
-  width: 32px;
-  position: relative;
+.menu-icon .logo-menu {
   top: -7px;
-  right: 14px;
+  width: 80px;
+  height: 54px;
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: 60px;
+  background-image: url("../images/logo.png");
 }
 
 .sidebar {
-  position: fixed;
   top: 0;
-  left: -180px;
-  width: 180px;
-  height: 100%;
+  z-index: 4000;
+  width: 100px;
+  height: 100vh;
+  position: absolute;
+  border-right: 2px solid #fff;
   background-color: #1f1f1f;
-  transition: left 0.3s ease;
-  z-index: 998;
 }
 
 .sidebar ul {
   list-style: none;
+  position: absolute;
   padding: 0;
-  margin-top: 50px;
+  margin-top: 60px;
+  margin-left: 20px;
   /* Espaçamento adicionado na parte superior das opções de menu */
 }
 
 .sidebar li {
-  padding: 10px 20px;
+  width: 50px;
+  height: 50px;
+  padding: 10px;
+  display: flex;
+  border-radius: 900px;
+}
+
+.sidebar li img {
+  width: 40px;
+  height: 40px;
+}
+
+.sidebar li img:hover {
+  filter: drop-shadow(2px 3px rgba(15, 197, 221, 0.651));
 }
 
 .sidebar li a {
   text-decoration: none;
   color: #fff;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
 }
 
-.sidebar li a:hover {
-  background-color: #333;
+.sidebar .expandable {
+  display: flex;
+  position: relative;
 }
 
-.sidebar.show {
-  left: 0;
+.sidebar .expandable ul {
+  margin: 0;
+  left: 85px;
+  display: grid;
+  padding-top: 8px;
+  margin-top: -8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar .expandable ul li {
+  width: 340px;
+  height: 20px;
+  border: none;
+  display: flex;
+  border-radius: 40px;
+  margin-bottom: 10px;
+  align-items: center;
+  background: #1E1E1E;
+  justify-content: center;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.sidebar .expandable ul li a {
+  width: 100%;
+  display: flex;
+  font-size: 28px;
+  font-weight: 700;
+  margin-left: 20px;
+  font-family: 'Inter';
+  justify-content: flex-start;
+}
+
+.more-itens {
+  width: 429px;
+  height: fit-content;
+  border-radius: 30px;
+  padding: 5px 5px 5px 10px;
+  background: rgba(217, 217, 217, 0.80);
 }
 
 .modal-bg {
@@ -60,6 +119,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.sidebar button {
+  top: -8px;
+  left: -8px;
+  width: 80px;
+  border: none;
+  background: none;
+  position: relative;
 }
 
 .modal-container {

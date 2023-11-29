@@ -10,10 +10,6 @@ button {
   display: grid;
   grid-template-columns: 100px 1fr;
   background-color: #212121;
-  /* background-image: url("background.svg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: top center; */
 }
 
 aside {
@@ -61,7 +57,7 @@ aside {
 }
 
 .award {
-  border-radius: 100px;
+border-radius: 100px;
 background: rgba(187, 122, 243, 0.50);
 padding: 16px;
 display: flex;

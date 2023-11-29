@@ -33,7 +33,7 @@
             <li><a href="#">New tools</a></li>
             <li><a href="#">User Fight</a></li>
             <li><a href="#">Complaints</a></li>
-            <li><a href="#">New hashtags</a></li>
+            <li><a href="http://<?php echo APP_HOST; ?>/hashtag">New hashtags</a></li>
           </ul>
         </li>
       </button>

@@ -136,6 +136,7 @@
   overflow-y: auto;
   max-width: 800px;
   border-radius: 100px;
+  margin-top: 20px;
   background: #212121;
   max-height: fit-content;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);

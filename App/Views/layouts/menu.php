@@ -24,7 +24,7 @@
       <li><a href="#"><img src="/public/images/menu/notificationIcon.png" /></a></li>
       <li><a href="#"><img src="/public/images/menu/chatIcon.png" /></a></li>
       <li><a href="#"><img src="/public/images/menu/saveIcon.png" /></a></li>
-      <li><a href="#"><img src="/public/images/menu/accountIcon.png" /></a></li>
+      <li><a href="http://<?= APP_HOST ?>/user"><img src="/public/images/menu/accountIcon.png" /></a></li>
       <li><a href="http://<?= APP_HOST ?>/login/logout"><img src="/public/images/menu/logoutIcon.png" /></a></li>
       <button onclick="showMoreOptions()">
         <li class="expandable"><a href="#"><img src="/public/images/menu/expandIcon.png" /></a>

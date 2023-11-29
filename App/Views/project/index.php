@@ -202,7 +202,6 @@
                                 <span class="count"><?= $project->getSaveCount(); ?></span>
                               </button>
                             </a>
-                            <img src="/public/images/icons/warningIcon.png" style=" height: 50px; width: 50px;" class="warning-button" />
                           </div>
                           <div class="hashtags">
                             <?php if ($project->hasHashtags()) { ?>
@@ -279,8 +278,25 @@
                     </button>
                   </a>
                 <?php } ?>
-                <img src="/public/images/icons/warningIcon.png" style=" height: 50px; width: 50px;" class="warning-button" />
+                <div class="warning-wrapper" onclick="openModalComplain(<?= $project->getIdProject() ?>)">
+                  <img src="/public/images/icons/warningIcon.png" style=" height: 50px; width: 50px;" class="warning-button" />
+                </div>
               </div>
+              
+              <div id="#complaint<?= $project->getIdProject(); ?>" class="modal-background-complain" style="display: none;">
+                <form class="new-form" action="http://<?php echo APP_HOST; ?>/project/saveReport/<?= $project->getIdProject() ?>">
+                  <div class="modal-container-complain">
+                    <div class="title">
+                      <p>Wish make a complain about the post of "<?= $project->getUser()->getNickname() ?>#<?= $project->getUser()->getTag() ?>" ?</p>
+                      <img src="/public/images/icons/warningIcon.png" style=" height: 50px; width: 50px;" />
+                    </div>
+                    <div class="label-complain">
+                      <input type="text" placeholder="Have fun and write your ideia here." id="description" name="description" maxlength="400" required>
+                    </div>
+                  </div>
+                </form>
+              </div>
+               
               <div class="hashtags">
                 <?php if ($project->hasHashtags()) { ?>
                   <?php foreach ($project->getHashtags() as $hashtagProject) { ?>
@@ -320,6 +336,14 @@
   document.querySelector('.addingFiles').addEventListener('click', function () {
       document.querySelector('#files').click();
   });
+
+  function openModalComplain(idproject) {
+    document.getElementById("#complaint" + idproject).style.display = "flex";
+  }
+
+  function closeModalComplain(idproject) {
+    document.getElementById("#complain" + idproject).style.display = "none";
+  }
 
   new MultiSelectTag('idHashtags')  // id
 

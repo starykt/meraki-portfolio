@@ -1,6 +1,6 @@
 <link href="http://<?php echo APP_HOST; ?>/public/css/landing-page.css" rel="stylesheet">
 <body>
-  <div class="wrapper">
+  <div class="full-content-wrapper">
     <img class="logo-img" src="http://<?php echo APP_HOST; ?>/public/images/meraki.png">
     <div class="logo">
     <div class="big-circle">

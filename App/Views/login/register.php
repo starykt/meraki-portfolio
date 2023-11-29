@@ -1,7 +1,7 @@
 <link href="http://<?php echo APP_HOST; ?>/public/css/new-user-page.css" rel="stylesheet">
 <body>
   <div class="top-bar"></div>
-  <div class="wrapper">
+  <div class="full-content-wrapper">
     <div class="signup-form">
       <?php
         if ($Sessao::retornaErro()) { ?>

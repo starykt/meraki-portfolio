@@ -14,7 +14,7 @@
     </div>
 
   <div id="#newPostWrapper" class="modal-background" style="display: none;">
-    <form class="new-form">
+    <form class="new-form" action="http://<?php echo APP_HOST; ?>/project/save" method="POST" enctype="multipart/form-data">
       <div class="wrapper-options">
         <button class="button-close-2" onclick="closeModalNewProject()">
           <div class="close-modal-new-post">
@@ -24,10 +24,12 @@
           </div>
         </button>
         <div class="render-button-modal">
-        <div class="purple-button-render">
-              <p>RENDER</p>
+          <button type="submit">
+            <div class="purple-button-render">
+                  <p>RENDER</p>
+                </div>
             </div>
-        </div>
+          </button>
       </div>
       <div class="all-options">
         <div class="modal-container-new-post">
@@ -36,10 +38,10 @@
           </div>
           <div class="inputs-project">
             <div class="label-title">
-              <input type="text" placeholder="Here for your title :)" name="text" id="text" maxlength="35" required>
+              <input type="text" placeholder="Here for your title :)" id="title" name="title" maxlength="35" required>
             </div><br>
             <div class="label-description">
-              <input type="text" placeholder="Have fun and write your ideia here." name="text" id="text" maxlength="400" required>
+              <input type="text" placeholder="Have fun and write your ideia here." id="description" name="description" maxlength="400" required>
             </div>
           </div>
           <div class="new-file-project">
@@ -61,12 +63,10 @@
           <div class="title-hashtag">
             <p>HASHTAGS</p>
           </div>
-          <select class="selectButton" name="idHashtags[]" id="idHashtags" multiple required>
-            <div class="options">
+          <select class="selectButton" name="idHashtags[]" id="idHashtags" multiple>
               <?php foreach ($viewVar['listHashtag'] as $hashtag) { ?>
                 <option value="<?= $hashtag->getIdHashtag() ?>"><?= $hashtag->getHashtag() ?></option>
               <?php } ?>
-            </div>
           </select>
         </div>
       </div>
@@ -320,4 +320,7 @@
   document.querySelector('.addingFiles').addEventListener('click', function () {
       document.querySelector('#files').click();
   });
+
+  new MultiSelectTag('idHashtags')  // id
+
 </script>

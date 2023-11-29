@@ -9,7 +9,7 @@
 	</div>
 
 	<div class="top-bar"></div>
-	<div class="wrapper">
+	<div class="full-content-wrapper">
 	<?php
    if ($Sessao::retornaErro()) { ?>
      <div class="alert alert-warning" role="alert">

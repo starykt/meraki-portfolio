@@ -27,7 +27,7 @@ header .homeOption img {
   width: 45px
 }
 
-.wrapper {
+.full-content-wrapper {
   width: 100vw;
   height: 100vh;
   position: fixed;

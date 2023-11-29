@@ -11,7 +11,7 @@
 <body>
     <div class="top-bar"></div>
     <div class="login-form">
-        <div class="wrapper">
+        <div class="full-content-wrapper">
             <h1>Redefine password</h1>
             <form action="http://<?= APP_HOST ?>/login/processResetPassword" method="post">
                 <div class="input-purple">

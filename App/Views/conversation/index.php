@@ -1,190 +1,154 @@
-<br><br><br><br><br><br><br><br><br><br>
-<style>
-    .img-user-message-sent {
-        width: 32px;
-        height: 32px;
-        border-radius: 360px;
-        float: right;
-    }
-    .img-user-message-received {
-        width: 32px;
-        height: 32px;
-        border-radius: 360px;
-        float: left;
-    }
-    textarea {
-        width: 100%;
-        padding: 10px;
-        box-sizing: border-box;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        resize: vertical;
-        /* Permite redimensionamento vertical */
-        font-family: Arial, sans-serif;
-        font-size: 14px;
-        line-height: 1.5;
-    }
+<!DOCTYPE html>
+<html lang="en">
 
-    button {
-        background-color: purple;
-        color: #fff;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-    }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="\public\css\style-chat.css" />
 
-    .chat-container {
-        padding-left: 5%;
-        padding-right: 5%;
-        margin: 20px auto;
-        overflow: hidden;
-    }
+</head>
 
-    .message {
-        clear: both;
-        margin-bottom: 10px;
-        overflow: hidden;
-    }
+<body>
+    <div class="container">
+        <p style="color: #000;
+            font-family: Inter;
+            margin-top:20px;
+            font-size: 32px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            z-index:4;
+            padding-left: 100px;"> <?= $viewVar['userRecipient']->getNickname() ?>#<?= $viewVar['userRecipient']->getTag() ?></p>
+        <div class="chat-container"></div>
+        <div class="textarea-wrapper">
+            <textarea id="mensagem" placeholder="..."></textarea>
+            <div class="button-container">
+                <button onclick="sentMessage(<?= $viewVar['userRecipient']->getIdUser() ?>)">
+                    <img src="\public\images\playButton.png" alt="Ícone do botão">
+                </button>
+            </div>
+        </div>
+    </div>
 
-    .message p {
-        padding: 10px;
-        border-radius: 5px;
-        max-width: 70%;
-        margin: 5px;
-        word-wrap: break-word;
-    }
+    <script src="/public/js/socket.io.min.js"></script>
 
-    .sent {
-        float: right;
-        background-color: purple;
-        color: #fff;
-    }
+    </div>
+    <script>
+        var URL = "http://localhost:3000";
+        var socket = io(URL);
 
-    .received {
-        float: left;
-        background-color: #ddd;
-    }
-</style>
-<p style="color: white;">Você está conversando com: <?= $viewVar['userRecipient']->getNickname() ?>#<?= $viewVar['userRecipient']->getTag() ?></p>
-<div class="chat-container">
-
-</div>
-<textarea id="mensagem"></textarea>
-<button onclick="sentMessage(<?= $viewVar['userRecipient']->getIdUser() ?>)">Enviar mensagem</button>
-
-
-
-<script src="/public/js/socket.io.min.js" ></script>
-<script>
-    var URL = "http://localhost:3000";
-    var socket = io(URL);
-
-    let sessionID = {
-        idUser: '<?= $viewVar['userLogged']->getIdUser() ?>',
-        nickname: '<?= $viewVar['userLogged']->getNickname() ?>'
-    };
-
-    if (sessionID) {
-        socket.auth = {
-            sessionID
+        let sessionID = {
+            idUser: '<?= $viewVar['userLogged']->getIdUser() ?>',
+            nickname: '<?= $viewVar['userLogged']->getNickname() ?>'
         };
-        socket.connect();
-    }
 
-    socket.on("receivedMessage", (data) => {
-        if (data.to.toString() == '<?= $viewVar['userLogged']->getIdUser() ?>') {
-            console.log("Recebi a msg")
-            var audio = new Audio('http://localhost:8000/public/audios/popup_message.mp3');
-            audio.play();
-            getMessagesToChat()
+        if (sessionID) {
+            socket.auth = {
+                sessionID
+            };
+            socket.connect();
         }
-    });
 
-    function callAPISendMessage(message, idUser_Recipent) {
-
-        // Objeto com os dados a serem enviados no corpo da requisição
-        const data = {
-            message: message,
-            idUser_Recipent: idUser_Recipent
-        };
-
-        // Configuração da requisição
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            dataType: 'JSON',
-            body: JSON.stringify(data)
-        };
-
-        // Fazendo a requisição usando fetch
-        fetch('http://localhost:8000/conversation/sendMessage/', requestOptions)
-            .then(response => {
-                if (response.ok) {
-                    return response.text(); // Parseia a resposta JSON caso a requisição seja bem-sucedida
-                }
-                throw new Error('Erro ao enviar a mensagem'); // Lança um erro caso a resposta não seja bem-sucedida
-            })
-            .then(data => {
-                console.log('Mensagem enviada com sucesso:', data); // Lida com os dados da resposta
+        socket.on("receivedMessage", (data) => {
+            if (data.to.toString() == '<?= $viewVar['userLogged']->getIdUser() ?>') {
+                console.log("Recebi a msg")
+                var audio = new Audio('http://localhost:8000/public/audios/popup_message.mp3');
+                audio.play();
                 getMessagesToChat()
-                socket.emit("sentMessage", idUser_Recipent);
-            })
-            .catch(error => {
-                console.error('Erro:', error); // Lida com erros de requisição
-            });
-
-    }
-
-    function sentMessage(idEnviado) {
-        const message = document.getElementById('mensagem').value;
-        callAPISendMessage(message, idEnviado)
-        
-        document.getElementById('mensagem').value = "";
-
-    }
-
-    async function getMessagesToChat() {
-        const conversationId = '<?= $viewVar['userRecipient']->getIdUser() ?>';
-
-        try {
-            const response = await fetch(`http://localhost:8000/conversation/chat/${conversationId}`);
-
-            if (!response.ok) {
-                throw new Error(`Erro na requisição: ${response.status} - ${response.statusText}`);
             }
-
-            const messages = await response.json();
-            displayMessages(messages);
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    function displayMessages(messages) {
-        const userLogged = <?= $viewVar['userLogged']->getIdUser() ?>
-        // Obtém o elemento chat-container
-        var chatContainer = document.querySelector(".chat-container");
-
-        // Limpa o conteúdo atual do chat-container
-        chatContainer.innerHTML = "";
-
-        // Itera sobre as mensagens e adiciona cada uma ao chat-container
-        messages.forEach(function(message) {
-            var messageElement = document.createElement("div");
-            messageElement.className = "message " + (message.sender.idUser === userLogged ? "sent" : "received");
-            let content = ""
-            content += `<img src='http://<?php echo APP_HOST; ?>/public/images/users/${message.sender.avatar}' class='img-user-message-${ message.sender.idUser === userLogged ? "sent" : "received"}'>`
-            content += "<p>" + message.message + "</p>";
-            messageElement.innerHTML = content;
-            chatContainer.appendChild(messageElement);
         });
-    }
 
-    // Exemplo de uso: substitua 'ID_PASSADO' pelo ID da conversa desejada
-    getMessagesToChat();
-</script>
+        function callAPISendMessage(message, idUser_Recipent) {
+            const data = {
+                message: message,
+                idUser_Recipent: idUser_Recipent
+            };
+
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                dataType: 'JSON',
+                body: JSON.stringify(data)
+            };
+
+            fetch('http://localhost:8000/conversation/sendMessage/', requestOptions)
+                .then(response => {
+                    if (response.ok) {
+                        return response.text(); 
+                    }
+                    throw new Error('Erro ao enviar a mensagem'); 
+                })
+                .then(data => {
+                    console.log('Mensagem enviada com sucesso:', data); 
+                    getMessagesToChat()
+                    socket.emit("sentMessage", idUser_Recipent);
+                })
+                .catch(error => {
+                    console.error('Erro:', error); 
+                });
+
+        }
+
+        function sentMessage(idEnviado) {
+            const message = document.getElementById('mensagem').value;
+            callAPISendMessage(message, idEnviado)
+
+            document.getElementById('mensagem').value = "";
+
+        }
+
+        async function getMessagesToChat() {
+            const conversationId = '<?= $viewVar['userRecipient']->getIdUser() ?>';
+
+            try {
+                const response = await fetch(`http://localhost:8000/conversation/chat/${conversationId}`);
+
+                if (!response.ok) {
+                    throw new Error(`Erro na requisição: ${response.status} - ${response.statusText}`);
+                }
+
+                const messages = await response.json();
+                displayMessages(messages);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function displayMessages(messages) {
+            const userLogged = <?= $viewVar['userLogged']->getIdUser() ?>;
+            var chatContainer = document.querySelector(".chat-container");
+            chatContainer.innerHTML = "";
+            messages.forEach(function(message) {
+                var messageElement = document.createElement("div");
+                messageElement.className = "message " + (message.sender.idUser === userLogged ? "sent" : "received");
+                let content = "";
+
+                if (message.sender.idUser !== userLogged) {
+                    content += `<img src='http://<?php echo APP_HOST; ?>/public/images/users/${message.sender.avatar}' class='img-user-message-received'>`;
+                }
+
+                content += "<p>" + message.message + "</p>";
+
+                if (message.sender.idUser === userLogged) {
+                    content += `<img src='http://<?php echo APP_HOST; ?>/public/images/users/${message.sender.avatar}' class='img-user-message-sent'>`;
+                }
+
+                messageElement.innerHTML = content;
+                chatContainer.appendChild(messageElement);
+            });
+        }
+
+
+        function scrollToBottom() {
+            var chatContainer = document.querySelector(".chat-container");
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        getMessagesToChat();
+        scrollToBottom(); 
+    </script>

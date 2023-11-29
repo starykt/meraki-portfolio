@@ -4,6 +4,7 @@
   cursor: pointer;
   position: absolute;
   z-index: 9999;
+  position: fixed;
 }
 
 .menu-icon .logo-menu {
@@ -24,6 +25,7 @@
   position: absolute;
   border-right: 2px solid #fff;
   background-color: #1f1f1f;
+  position: fixed;
 }
 
 .sidebar ul {

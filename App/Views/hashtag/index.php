@@ -80,7 +80,7 @@
 
     </div>
     <img src="\public\images\nyancat.gif" alt="GIF Description" style="width:1095px; height: 431px;
-flex-shrink: 0;">
+flex-shrink: 0; z-index:4001; position:relative;">
     <script>
         function openModalDelete(id) {
             document.getElementById('deleteModal_' + id).style.display = 'flex';

@@ -184,13 +184,13 @@ aside {
 .header-best-project img {
   width: 128px;
   height: 128px;
-  bottom: -15px;
-  position: absolute;
+  bottom: -25px;
+  position: relative;
 }
 
 .header-best-project h2 {
   top: 38px;
-  left: 155px;
+  left: 32px;
   font-family: Inter;
   position: relative;
 }
@@ -208,6 +208,7 @@ aside {
 .wrapper-chat {
   display: grid;
   padding: 10px;
+  color: #212121;
   justify-content: center;
 }
 
@@ -242,7 +243,7 @@ aside {
 }
 
 .text-bubble-project {
-  width: 860px;
+  width: 805px;
   padding: 10px 55px 35px 10px;
   background: rgba(217, 217, 217, 0.85);
   border-radius: 80px;
@@ -255,7 +256,7 @@ aside {
 .text-bubble-project header {
   display: flex;
   margin-right: 28px;
-  color: #ffffff;
+  color: #212121;
   font-family: Inter;
   font-size: 26px;
   font-weight: bold;
@@ -269,17 +270,17 @@ aside {
 }
 
 .title {
-  color: #ffffff;
+  color: #212121;
   font-size: 28px;
   font-weight: 700;
-  margin: 22px 0 0 18px;
   font-style: normal;
   font-family: Inter;
+  margin: 35px 0 0 8px;
   justify-content: flex-start;
 }
 
 .description-post {
-  color: #ffffff;
+  color: #212121;
   font-size: 22px;
   font-weight: 700;
   font-family: Inter;
@@ -369,8 +370,8 @@ aside {
 }
 
 .modal-background .button-close {
-  z-index: 2;
-  left: 1045px;
+  z-index: 4;
+  left: 925px;
   border: none;
   bottom: -15px;
   display: flex;
@@ -414,7 +415,7 @@ aside {
   bottom: 0;
   right: 40px;
   display: flex;
-  color: #ffffff;
+  color: #212121;
   font-size: 20px;
   margin-top: 35px;
   font-weight: 400;

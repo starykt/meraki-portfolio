@@ -256,7 +256,7 @@
     document.getElementById("#modalComment" + idproject).style.display = "flex";
   }
 
-  function closeModalComplain(idproject) {
-    document.getElementById("#complaint" + idproject).style.display = "none";
+  function closeModalComment(idproject) {
+    document.getElementById("#modalComment" + idproject).style.display = "none";
   }
 </script>

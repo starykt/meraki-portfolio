@@ -79,9 +79,9 @@
         </div>
         <img src="\public\images\icons\warningIcon.png" class="image" alt="Warning Icon">
         <div class="delete-modal-buttons">
-        ' ?>
-                        <a href="http://<?php echo APP_HOST; ?>/hashtag/deleteHashtag?idHashtag=<?= $hashtag->getIdHashtag() ?>">
-                    <?php echo '
+        
+                        <a href="http://' . APP_HOST . '/hashtag/deleteHashtag?idHashtag='. $hashtag->getIdHashtag() . '" style="color:transparent;">
+                    
                         <button class="delete-modal-yes">YES</button>
                     </a>
             

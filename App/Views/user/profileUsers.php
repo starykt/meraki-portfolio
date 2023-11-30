@@ -64,9 +64,6 @@
               <img src="/public/images/icons/whiteSaveIcon.png" style="height: 30px; width: 30px" alt="" />
               <span class="count-for-project"><?= $viewVar['saveCount'] ?></span>
             </button>
-            <button type="button" class="button blue favorite" style="background-color: #2a8194">
-              <img src="/public/images/icons/penIcon.png" style="height: 30px; width: 30px" alt="" />
-            </button>
           </div>
         </div>
       </div>
@@ -184,9 +181,9 @@
                           <div class="user-avatar-comment">
                             <a href="http://<?= APP_HOST ?>/user/profileUsers/<?= $comment->getUser()->getIdUser() ?>">
                               <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $comment->getUser()->getAvatar() ?>"></img>
-                            </a> 
-                            </div>
-                            <div class=" comment-text">
+                            </a>
+                          </div>
+                          <div class=" comment-text">
                             <p><?= $user->getAvatar(); ?></p>
                           </div>
                           <?php
@@ -238,6 +235,41 @@
                   </button>
                 </a>
               <?php } ?>
+
+                <div class="warning-wrapper" onclick="openModalComplain(<?= $project->getIdProject() ?>)">
+                  <img src="/public/images/icons/warningIcon.png" style=" height: 50px; width: 50px;" class="warning-button" />
+                </div>
+
+
+              <div id="#complaint<?= $project->getIdProject() ?>" class="modal-background-complain" style="display: none;">
+                <form class="new-form" action="http://<?php echo APP_HOST; ?>/project/saveReport/<?= $project->getIdProject() ?>" method="POST">
+                  <div class="modal-container-complain">
+                    <div class="title">
+                      <p>Wish make a complain about the post of "<?= $viewVar['user']->getNickname() ?>#<?= $viewVar['user']->getTag() ?>" ?</p>
+                      <img src="/public/images/icons/warningIcon.png" style=" height: 50px; width: 50px;" />
+                    </div>
+                    <div class="label-complain">
+                      <textarea type="text" placeholder="Write the problem here" id="report" name="report" rows="4" cols="50" maxlength="400" required></textarea>
+                    </div>
+                  </div>
+                  <div class="button-options">
+                    <button type="submit" class="send-button">
+                      SEND
+                    </button>
+                    <button type="button" class="cancel-button" onclick="closeModalComplain(<?= $project->getIdProject() ?>)">
+                      CANCEL
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+
+
+
+
+
+
+
             </div>
 
             <div class="hashtags">
@@ -250,8 +282,7 @@
           </div>
         <?php endforeach; ?>
       </div>
-  </div>
-  </section>
+    </section>
   </div>
 </body>
 
@@ -262,5 +293,13 @@
 
   function closeModalComment(idproject) {
     document.getElementById("#modalComment" + idproject).style.display = "none";
+  }
+
+  function openModalComplain(idproject) {
+    document.getElementById("#complaint" + idproject).style.display = "flex";
+  }
+
+  function closeModalComplain(idproject) {
+    document.getElementById("#complaint" + idproject).style.display = "none";
   }
 </script>

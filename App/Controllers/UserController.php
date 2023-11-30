@@ -77,10 +77,15 @@ class UserController extends Controller
       $saveDAO = new SaveProjectDAO();
       $saveStatus = $saveDAO->getSaveStatus($project->getIdProject(), $_SESSION['idUser']);
       $project->setSaveStatus($saveStatus);
+      $SaveCount = $saveDAO->getSavedCountByArticleId($project->getIdProject());
+      $project->setSaveCount($SaveCount);
 
       $commentDAO = new CommentDAO();
       $comments = $commentDAO->getCommentsByProjectId($project->getIdProject());
       $project->setComments($comments);
+
+      $commentCount = $commentDAO->getCommentCountByArticleId($project->getIdProject());
+      $project->setCommentCount($commentCount);
     }
 
     $awardDAO = new AwardDAO();

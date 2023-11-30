@@ -791,16 +791,13 @@ input:focus {
 }
 
 .modal-background-complain .title p {
-  left: 22px;
   color: #FFF;
   font-size: 30px;
   font-weight: 700;
   font-family: Inter;
-  position: relative;
 }
 
 .modal-background-complain .title img {
-  right: 60px;
   position: relative;
 }
 

@@ -51,39 +51,59 @@
 
                     // ---------------------Modal de Edição --------------------------
                     echo '<div id="editModal_' . $hashtag->getIdHashtag() . '" class="modal">
-                            <div class="modal-content">
-                                <span class="close" onclick="closeModalEdit(' . $hashtag->getIdHashtag() . ')">&times;</span>
-                                <h2>Edit Hashtag</h2>
-                                <!-- Conteúdo do modal de edição aqui -->
-                                <p>Conteúdo do modal de edição para a hashtag ' . $hashtag->getHashtag() . '</p>
-                            </div>
+                    <div class="modal-content-edit">
+                        <div class="edit-modal-title">Rename hashtag</div>
+                        <div class="edit-modal-input-container">
+                            <input type="text" value="#' . $hashtag->getHashtag() . '" id="hashtag" name="hashtag" readonly class="edit-modal-input">
                         </div>
+                        
+                        <form action="http://' . APP_HOST . '/hashtag/editHashtag?idHashtag=' . $hashtag->getIdHashtag() . '" method="POST">
+                            <input type="text" id="hashtag" name="hashtag" class="edit-field" placeholder="#INSERTNEW" required>
+                            
+                            <div class="edit-modal-buttons">
+                                <button type="submit" class="edit-modal-yes">YES</button>
+                            </form>
+                            
+                            <button class="edit-modal-no" onclick="closeModalEdit(' . $hashtag->getIdHashtag() . ')">NO</button>
+                        </div>
+                    </div>
+                </div>
+            
+            
 
                         <div id="deleteModal_' . $hashtag->getIdHashtag() . '" class="modal">
-                        <div class="modal-content" style="width: 890px; height: 250px; flex-shrink: 0; border-radius: 40px; background: #1E1E1E;">
-                            <span class="close" onclick="closeModalDelete(' . $hashtag->getIdHashtag() . ')">&times;</span>
-                            <h2 style="color: #FFF; font-family: Inter; font-size: 42px; font-style: normal; font-weight: 700; line-height: normal;">Delete this hashtag?</h2>
-                            <p style="color: #FFF; font-family: Inter; font-size: 32px; font-style: normal; font-weight: 700; line-height: normal;">
-                                <input type="text" value="' . $hashtag->getHashtag() . '" id="hashtag" name="hashtag" readonly>
-                            </p>
-                            <div>
-                                <button style="width: 115px; height: 43px; flex-shrink: 0;" onclick="deleteHashtag(' . $hashtag->getIdHashtag() . ')">Yes</button>
-                                <button style="width: 115px; height: 43px; border-radius: 50px; background: rgba(50, 165, 178, 0.80); box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); flex-shrink: 0;" onclick="closeModalDelete(' . $hashtag->getIdHashtag() . ')">No</button>
-                            </div>
+                        <div class="modal-content">
+        <div class="delete-modal-title">Delete this hashtag?</div>
+        <div class="delete-modal-input-container">
+            <input type="text" value="#' . $hashtag->getHashtag() . '" id="hashtag" name="hashtag" readonly class="delete-modal-input">
+        </div>
+        <img src="\public\images\icons\warningIcon.png" class="image" alt="Warning Icon">
+        <div class="delete-modal-buttons">
+        ' ?>
+                        <a href="http://<?php echo APP_HOST; ?>/hashtag/deleteHashtag?idHashtag=<?= $hashtag->getIdHashtag() ?>">
+                    <?php echo '
+                        <button class="delete-modal-yes">YES</button>
+                    </a>
+            
+            <button class="delete-modal-no" onclick="closeModalDelete('. $hashtag->getIdHashtag() .')">NO</button>
+        </div>
                         </div>
-                    </div>';
+                    </div>
+
+                    ';
                 }
                 echo '</div>';
             }
-            ?>
+                    ?>
         </div>
 
     </div>
     <img src="\public\images\nyancat.gif" alt="GIF Description" style="width:1095px; height: 431px;
-flex-shrink: 0; z-index:4001; position:relative;">
+flex-shrink: 0; z-index:4001; position:relative; ">
     <script>
         function openModalDelete(id) {
             document.getElementById('deleteModal_' + id).style.display = 'flex';
+            modal.classList.add('active');
             document.getElementById('blurLayer').classList.add('blurred');
         }
 
@@ -94,6 +114,7 @@ flex-shrink: 0; z-index:4001; position:relative;">
 
         function openModalEdit(id) {
             document.getElementById('editModal_' + id).style.display = 'flex';
+            modal.classList.add('active');
             document.getElementById('blurLayer').classList.add('blurred');
         }
 

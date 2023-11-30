@@ -456,7 +456,7 @@ aside {
 .one-comment a {
   top: 0px;
   right: 0;
-  position: absolute;
+  position: relative;
 }
 
 .user-avatar-comment {

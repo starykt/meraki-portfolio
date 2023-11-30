@@ -4,7 +4,9 @@
   <section>
     <div class="card-new-post">
       <div class="avatar">
-        <img class="user-icon" src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>" />
+        <a href="http://<?= APP_HOST ?>/user/profile">
+          <img class="user-icon" src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>" />
+      </a>
       </div>
 
       <p class="text-card">Its me... Mario?</p>
@@ -219,7 +221,9 @@
                         <div class="line">
                           <div class="one-comment">
                             <div class="user-avatar-comment">
-                              <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $comment->getUser()->getAvatar() ?>"></img>
+                              <a href="http://<?= APP_HOST ?>/user/profileUsers/<?= $comment->getUser()->getIdUser() ?>">
+                                <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $comment->getUser()->getAvatar() ?>"></img>
+                              </a>
                             </div>
                             <div class="comment-text">
                               <p><?= $comment->getText() ?></p>
@@ -242,7 +246,9 @@
                       ?>
                       <div class="new-comment">
                         <div class="user-avatar-comment">
-                          <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>"></img>
+                          <a href="http://<?= APP_HOST ?>/user/profile">
+                            <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>"></img>
+                          </a>
                         </div>
                         <form method="post" action="http://<?php echo APP_HOST; ?>/project/comment/<?= $project->getIdProject() ?>">
                           <div class="new-comment-text">

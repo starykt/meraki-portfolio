@@ -378,7 +378,7 @@ article {
 .one-comment a {
   top: 0px;
   right: 0;
-  position: absolute;
+  position: relative;
 }
 .delete-button img {
   width: 20px;

@@ -1,4 +1,4 @@
-<link href="http://<?php echo APP_HOST; ?>/public/css/my-profile.css" rel="stylesheet">
+<link href="http://<?php echo APP_HOST; ?>/public/css/profiles.css" rel="stylesheet">
 
 <body>
   <div class="container">
@@ -52,17 +52,17 @@
           </div>
 
           <div class="buttons">
-            <button class="button like" style="background-color: #2a8194; cursor: default;" type="button">
+            <button class="button-project like" style="background-color: #2a8194; cursor: default;" type="button">
               <img src="/public/images/icons/whiteLikeIcon.png" style="height: 30px; width: 30px" alt="likes" />
-              <span class="count">100</span>
+              <span class="count-for-project"><?= $viewVar['like'] ?></span>
             </button>
-            <button class="button blue message-button" style="background-color: #2a8194; cursor: default;" type="button">
+            <button class="button-project blue message-button" style="background-color: #2a8194; cursor: default;" type="button">
               <img src="/public/images/icons/whiteCommentIcon.png" style="height: 35px; width: 35px;" alt="comments" />
-              <span class="count">100</span>
+              <span class="count-for-project"><?= $viewVar['commentCount'] ?></span>
             </button>
-            <button class="button blue favorite" style="background-color: #2a8194; cursor: default;" type="button">
+            <button class="button-project blue favorite" style="background-color: #2a8194; cursor: default;" type="button">
               <img src="/public/images/icons/whiteSaveIcon.png" style="height: 30px; width: 30px" alt="" />
-              <span class="count">100</span>
+              <span class="count-for-project"><?= $viewVar['saveCount'] ?></span>
             </button>
             <button type="button" class="button blue favorite" style="background-color: #2a8194">
               <img src="/public/images/icons/penIcon.png" style="height: 30px; width: 30px" alt="" />
@@ -114,7 +114,7 @@
               <!-- COMMENTS HERE STARTS -->
               <button class="button-project blue message-button" onclick="openModalComment(<?= $project->getIdProject() ?>)">
                 <img src="/public/images/icons/whiteCommentIcon.png" style="height: 40px; width: 40px" />
-                <span class="count-for-project"><?php echo $project->getLikesCount(); ?></span>
+                <span class="count-for-project"><?php echo $project->getCommentCount(); ?></span>
               </button>
 
               <div id="#modalComment<?= $project->getIdProject() ?>" class="modal-background" style="display: none;">
@@ -182,7 +182,9 @@
                       <div class="line">
                         <div class="one-comment">
                           <div class="user-avatar-comment">
-                            <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $comment->getUser()->getAvatar() ?>"></img>
+                            <a href="http://<?= APP_HOST ?>/user/profileUsers/<?= $comment->getUser()->getIdUser() ?>">
+                              <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $comment->getUser()->getAvatar() ?>"></img>
+                            </a> 
                             </div>
                             <div class=" comment-text">
                             <p><?= $user->getAvatar(); ?></p>
@@ -201,7 +203,9 @@
                     <?php } ?>
                     <div class="new-comment">
                       <div class="user-avatar-comment">
-                        <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>"></img>
+                        <a href="http://<?= APP_HOST ?>/user/profile">
+                          <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>"></img>
+                        </a>
                       </div>
                       <form method="post" action="http://<?php echo APP_HOST; ?>/project/comment/<?= $project->getIdProject() ?>">
                         <div class="new-comment-text">

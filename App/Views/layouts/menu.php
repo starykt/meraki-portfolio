@@ -21,7 +21,25 @@
   <nav class="sidebar" id="sidebar">
     <ul>
       <li><a href="#"><img src="/public/images/menu/searchIcon.png" /></a></li>
-      <li><a href="#"><img src="/public/images/menu/notificationIcon.png" /></a></li>
+      <li><a href="http://<?php echo APP_HOST; ?>/project/listNotifications"><img src="/public/images/menu/notificationIcon.png" /></a>
+        <?php if(!empty($viewVar['notifications'])): ?>
+          <div class="modal-background">
+            <div class="notifications">
+              <?php foreach ($viewVar['notifications'] as $notification) { ?>
+                <div class="full-notification">
+                  <div class="one-notification-background"></div>
+                  <div class="one-notification">
+                    <img src="/public/images/icons/levelUpIcon.png" />
+                    <p>
+                      <?= $notification->getNotification() ?>
+                    </p>
+                  </div>
+                </div>
+              <?php } ?>
+            </div>
+          </div>
+        <?php endif; ?>
+      </li>
       <li><a href="http://<?php echo APP_HOST; ?>/conversation/conversations"><img src="/public/images/menu/chatIcon.png" /></a></li>
       <li><a href="#"><img src="/public/images/menu/saveIcon.png" /></a></li>
       <li><a href="http://<?= APP_HOST ?>/user/profile"><img src="/public/images/menu/accountIcon.png" /></a></li>

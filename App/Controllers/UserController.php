@@ -26,6 +26,7 @@ class UserController extends Controller
   public function profile()
   {
     $this->auth();
+    
     $userDao = new UserDAO();
     $user = $userDao->getById($_SESSION['idUser']);
     $this->setViewParam('user', $user);
@@ -90,6 +91,10 @@ class UserController extends Controller
 
     $awardDAO = new AwardDAO();
     $userAwards = $awardDAO->getUserAwards($idUser);
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
     $this->setViewParam('educations', $education);
     $this->setViewParam('userAwards', $userAwards);
     $this->setViewParam('userTools', $tools);
@@ -167,6 +172,10 @@ class UserController extends Controller
     }
     $awardDAO = new AwardDAO();
     $userAwards = $awardDAO->getUserAwards($idUser);
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
     $this->setViewParam('educations', $education);
     $this->setViewParam('userAwards', $userAwards);
     $this->setViewParam('userTools', $tools);
@@ -192,6 +201,10 @@ class UserController extends Controller
     $this->auth();
     $userDao = new UserDAO();
     $user = $userDao->list();
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
     $this->setViewParam('users', $user);
     $this->render('/user/listUsers');
     Sessao::limpaMensagem();
@@ -240,6 +253,10 @@ class UserController extends Controller
     }
 
     if ($user) {
+      $loggedInUser = $_SESSION['idUser'];
+      $userDao = new UserDAO();
+      $userLoggedin = $userDao->getById($loggedInUser);
+      $this->setViewParam('userLoggedin', $userLoggedin);
       $this->setViewParam('educations', $education);
       $this->setViewParam('user', $user);
       $this->setViewParam('tools', $tools);
@@ -375,7 +392,10 @@ class UserController extends Controller
         break;
       }
     }
-
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
     $this->setViewParam('topUsers', $topUsers);
     $this->setViewParam('userPosition', $position);
     $this->setViewParam('loggedInUser', $loggedInUserObject);
@@ -407,6 +427,10 @@ class UserController extends Controller
     $this->setViewParam('userPosition', $position);
     $this->setViewParam('loggedInUser', $loggedInUserObject);
     $this->setViewParam('loggedInUserLikes', $loggedInUserLikes);
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
     $this->render('/user/reportLike');
   }
   public function reportAward()
@@ -428,7 +452,10 @@ class UserController extends Controller
 
     $loggedInUserObject = $userDao->getById($loggedInUser);
     $loggedInUserAwards = $awardDao->getAwardCountByUserId($loggedInUser);
-
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
     $this->setViewParam('topUsers', $topUsers);
     $this->setViewParam('userPosition', $position);
     $this->setViewParam('loggedInUser', $loggedInUserObject);

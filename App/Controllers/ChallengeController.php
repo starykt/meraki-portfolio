@@ -41,7 +41,10 @@ class ChallengeController extends Controller
             }
 
             $this->endChallenge($challengesFinally);
-
+            $loggedInUser = $_SESSION['idUser'];
+            $userDao = new UserDAO();
+            $userLoggedin = $userDao->getById($loggedInUser);
+            $this->setViewParam('userLoggedin', $userLoggedin);
             $this->setViewParam('user', $user);
             $this->setViewParam('usersList', $usersList);
             $this->setViewParam('awardsList', $awardsList);
@@ -102,7 +105,10 @@ class ChallengeController extends Controller
         $hashtagDAO = new HashtagDAO();
         $hashtags = $hashtagDAO->list();
         $this->setViewParam('hashtags', $hashtags);
-
+        $loggedInUser = $_SESSION['idUser'];
+        $userDao = new UserDAO();
+        $userLoggedin = $userDao->getById($loggedInUser);
+        $this->setViewParam('userLoggedin', $userLoggedin);
         $this->render('/challenge/register');
     }
 
@@ -159,7 +165,10 @@ class ChallengeController extends Controller
                 Sessao::gravaErro("Erro ao enviar o novo caminho da imagem do prêmio.");
             }
         }
-
+        $loggedInUser = $_SESSION['idUser'];
+        $userDao = new UserDAO();
+        $userLoggedin = $userDao->getById($loggedInUser);
+        $this->setViewParam('userLoggedin', $userLoggedin);
         $hashtag = new Hashtag();
         $hashtag->setHashtag($_POST['hashtag']);
         $hashtagDAO = new HashtagDAO();
@@ -187,7 +196,10 @@ class ChallengeController extends Controller
             $this->setViewParam('challenge', $challenge);
             $this->setViewParam('award', $award);
             $this->setViewParam('hashtag', $hashtag);
-
+            $loggedInUser = $_SESSION['idUser'];
+            $userDao = new UserDAO();
+            $userLoggedin = $userDao->getById($loggedInUser);
+            $this->setViewParam('userLoggedin', $userLoggedin);
             $this->render('/challenge/alter');
         } catch (\Exception $e) {
             echo "Erro: " . $e->getMessage();

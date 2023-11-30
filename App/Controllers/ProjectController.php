@@ -80,7 +80,10 @@ class ProjectController extends Controller
 
       $projectsToDisplay[] = $project;
     }
-
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
     self::setViewParam('listHashtag', $hashtag);
     self::setViewParam('listProject', $projectsToDisplay);
     self::setViewParam('user', $userDAO->getById($_SESSION['idUser']));
@@ -141,7 +144,10 @@ class ProjectController extends Controller
 
       $projectsToDisplay[] = $project;
     }
-
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
     self::setViewParam('listProject', $projectsToDisplay);
     self::setViewParam('user', $userDAO->getById($_SESSION['idUser']));
 
@@ -730,7 +736,10 @@ class ProjectController extends Controller
     usort($projectsToDisplay, function ($a, $b) {
       return $b->getCreated_At() <=> $a->getCreated_At();
     });
-
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
     self::setViewParam('savedProjects', $projectsToDisplay);
     $this->render('/project/mostRecentSavedProjects');
   }
@@ -739,60 +748,66 @@ class ProjectController extends Controller
   {
     $notificationsDAO = new NotificationDAO();
     $notifications = $notificationsDAO->getNotificationsByUserId($_SESSION['idUser']);
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
     self::setViewParam('notifications', $notifications);
     $this->render('/project/listNotifications');
   }
 
   public function search()
   {
-      $term = $_GET['term'] ?? '';
-      $type = $_GET['type'] ?? '';
-      $results = [];
-  
-      if ($type === 'user') {
-          $userDAO = new UserDAO();
-          $results = $userDAO->searchUsers($term);
-      } elseif ($type === 'project') {
-          $projectDAO = new ProjectDAO();
-          $imageDAO = new ImageDAO();
-          $fileDAO = new FileDAO();
-          $hashtagDAO = new HashtagProjectDAO();
-          $likeDAO = new LikeDAO();
-          $commentDAO = new CommentDAO();
-  
-          $projects = $projectDAO->searchProjects($term);
-  
-          foreach ($projects as $project) {
-              $idProject = $project->getIdProject();
+    $term = $_GET['term'] ?? '';
+    $type = $_GET['type'] ?? '';
+    $results = [];
 
-              $fullProject = $projectDAO->getFullProjectById($idProject);
-              $images = $imageDAO->getImagesByProjectId($idProject);
-              $fullProject->setImages($images);
-  
-              $files = $fileDAO->getFilesByProjectId($idProject);
-              $fullProject->setFiles($files);
-  
-              $hashtags = $hashtagDAO->getByProjectId($idProject);
-              $fullProject->setHashtags($hashtags);
-  
-              $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
-              $fullProject->setLikeCount($likeCount);
+    if ($type === 'user') {
+      $userDAO = new UserDAO();
+      $results = $userDAO->searchUsers($term);
+    } elseif ($type === 'project') {
+      $projectDAO = new ProjectDAO();
+      $imageDAO = new ImageDAO();
+      $fileDAO = new FileDAO();
+      $hashtagDAO = new HashtagProjectDAO();
+      $likeDAO = new LikeDAO();
+      $commentDAO = new CommentDAO();
 
-              $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
-              $fullProject->setLikeStatus($likeStatus);
-  
-              $comments = $commentDAO->getCommentsByProjectId($idProject);
-              $fullProject->setComments($comments);
+      $projects = $projectDAO->searchProjects($term);
 
-              $results[] = $fullProject;
-          }
+      foreach ($projects as $project) {
+        $idProject = $project->getIdProject();
+
+        $fullProject = $projectDAO->getFullProjectById($idProject);
+        $images = $imageDAO->getImagesByProjectId($idProject);
+        $fullProject->setImages($images);
+
+        $files = $fileDAO->getFilesByProjectId($idProject);
+        $fullProject->setFiles($files);
+
+        $hashtags = $hashtagDAO->getByProjectId($idProject);
+        $fullProject->setHashtags($hashtags);
+
+        $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
+        $fullProject->setLikeCount($likeCount);
+
+        $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
+        $fullProject->setLikeStatus($likeStatus);
+
+        $comments = $commentDAO->getCommentsByProjectId($idProject);
+        $fullProject->setComments($comments);
+
+        $results[] = $fullProject;
       }
-  
-      self::setViewParam('results', $results);
-      self::setViewParam('type', $type);
-      self::setViewParam('term', $term);
-  
-      $this->render('/project/search');
+    }
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
+    self::setViewParam('results', $results);
+    self::setViewParam('type', $type);
+    self::setViewParam('term', $term);
+
+    $this->render('/project/search');
   }
-  
 }

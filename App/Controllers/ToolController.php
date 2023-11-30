@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Lib\Sessao;
 use App\Lib\Upload;
 use App\Models\DAO\ToolDAO;
+use App\Models\DAO\UserDAO;
 use App\Models\Entidades\Tool;
 use Exception;
 
@@ -14,12 +15,22 @@ class ToolController extends Controller
   {
     $toolDao = new ToolDAO();
     $tools = $toolDao->list();
+
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
     $this->setViewParam('tools', $tools);
     $this->render('/tool/index');
   }
 
   public function register()
   {
+        
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
     $this->render('/tool/register');
   }
 

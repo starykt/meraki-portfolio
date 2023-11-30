@@ -15,6 +15,10 @@ class HashtagController extends Controller
         $hashtagDAO = new HashtagDAO();
         $hashtag = $hashtagDAO->list();
         self::setViewParam('listHashtag', $hashtag);
+        $loggedInUser = $_SESSION['idUser'];
+        $userDao = new UserDAO();
+        $userLoggedin = $userDao->getById($loggedInUser);
+        $this->setViewParam('userLoggedin', $userLoggedin);
         Sessao::limpaMensagem();
         Sessao::limpaErro();
         $this->render('/hashtag/index');

@@ -138,7 +138,9 @@
 
                 messageElement.innerHTML = content;
                 chatContainer.appendChild(messageElement);
+                scrollToBottom(); 
             });
+           
         }
 
 

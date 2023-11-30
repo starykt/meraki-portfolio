@@ -22,7 +22,7 @@
     <ul>
       <li><a href="#"><img src="/public/images/menu/searchIcon.png" /></a></li>
       <li><a href="#"><img src="/public/images/menu/notificationIcon.png" /></a></li>
-      <li><a href="#"><img src="/public/images/menu/chatIcon.png" /></a></li>
+      <li><a href="http://<?php echo APP_HOST; ?>/conversation/conversations"><img src="/public/images/menu/chatIcon.png" /></a></li>
       <li><a href="#"><img src="/public/images/menu/saveIcon.png" /></a></li>
       <li><a href="http://<?= APP_HOST ?>/user/profile"><img src="/public/images/menu/accountIcon.png" /></a></li>
       <li><a href="http://<?= APP_HOST ?>/login/logout"><img src="/public/images/menu/logoutIcon.png" /></a></li>

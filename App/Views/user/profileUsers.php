@@ -1,133 +1,305 @@
-<?php if ($Sessao::retornaErro()) { ?>
-    <div class="alert alert-warning" role="alert">
-        <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <?php foreach ($Sessao::retornaErro() as $key => $mensagem) {
-            echo "<b>" . $mensagem . "</b><br>";
-        } ?>
-    </div>
-<?php } ?>
+<link href="http://<?php echo APP_HOST; ?>/public/css/profiles.css" rel="stylesheet">
 
-<img id="avatarImage" style="margin-top: 300px;" src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>" width="200px" height="200px"><br>
+<body>
+  <div class="container">
+    <aside>
+    </aside>
 
-
-Nickname: <?= $viewVar['user']->getNickname() ?>#<?= $viewVar['user']->getTag() ?> <br>
-Email: <?= $viewVar['user']->getEmail() ?><br>
-Level: <?= $viewVar['user']->getLevel() ?><br>
-XP: <?= $viewVar['user']->getXp() ?><br>
-Resumo: <?= $viewVar['user']->getResume() ?><br>
-Local: <?= $viewVar['user']->getLocation() ?><br>
-<h2>Educações:</h2>
-        <?php foreach ($viewVar['educations'] as $education) : ?>
-            <div>
-                <p>Instituição: <?= $education->getFormation() ?></p>
+    <section>
+      <div class="align-container">
+        <div class="profile-container">
+          <div class="wrapper-profile">
+            <div class="first-line">
+              <p class="nickname"><?= $viewVar['user']->getNickname() ?>#<?= $viewVar['user']->getTag() ?></p>
+              <img src="/public/images/icons/quotationMark.png" style="height: 32px; width: 32px" alt="quotation" />
             </div>
-            <hr>
-        <?php endforeach; ?>
-<h2>Prêmios do Usuário</h2>
-        <ul>
+            <div class="profile-message">
+              <button class="button like" style="background-color: #2a8194; cursor: default;" type="button">
+                <img src="/public/images/icons/chatIcon.png" style="height: 30px; width: 30px" alt="likes" />
+              </button>
+              <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>""
+                  alt=" profileAvatar" class="avatar-profile" />
+              <footer>
+                <span><?= $viewVar['user']->getLocation() ?>.</span>
+                <span>since <?= $viewVar['user']->getCreatedAt()->format('Y') ?></span>
+              </footer>
+            </div>
+
             <?php foreach ($viewVar['userAwards'] as $award) : ?>
-                <li><?= $award->getDescription(); ?></li>
-                <img src="http://<?php echo APP_HOST; ?>/public/images/awards/<?= $award->getImagePath() ?>" width="20px" height="20px"><br>
+
+              <div class="award">
+                <span><?= $award->getDescription(); ?></span>
+                <img src="http://<?php echo APP_HOST; ?>/public/images/awards/<?= $award->getImagePath() ?>" style="height: 45px; width: 45px;  border-radius: 10px;" alt="" />
+              </div>
             <?php endforeach; ?>
-        </ul>
-Admin? <?php if ($viewVar['user']->getAdmin() == true) { ?>
-    Administrador
-<?php } ?> <br>
-Perfil criado em: <?= $viewVar['user']->getCreatedAt()->format('Y-m-d H:i:s') ?><br>
-<br>
-ferramentas: 
-<?php foreach ($viewVar['userTools'] as $tool): ?>
-    <div>
-        <h3>Ferramenta: <?= $tool->getCaption() ?></h3>
-        <p>Icon: <?= $tool->getIcon() ?></p>
-    </div>
-<?php endforeach; ?>
+          </div>
 
+          <div class="wrapper-info">
+            <p>
+              <?= $viewVar['user']->getResume() ?>
+            </p>
 
-<h3>Comentários: <?= $viewVar['commentCount'] ?></h3>
+            <strong>Academic background and featured courses.</strong>
+            <?php foreach ($viewVar['educations'] as $education) : ?>
+              <span><?= $education->getFormation() ?>.</span>
+            <?php endforeach; ?>
 
-<h3>Total de Curtidas: <?= $viewVar['like'] ?></h3>
-
-<h3>Total de projetos Salvos: <?= $viewVar['saveCount'] ?></h3>
-
-<h1>Projetos Mais Curtidos</h1>
-
-<ul>
-    <?php foreach ($viewVar['projects'] as $project) : ?>
-        <li>
-            <br>
-            <strong>Título: </strong><?php echo $project->getTitle(); ?>
-            <br>
-            <strong>Descrição: </strong><?php echo $project->getDescription(); ?>
-            <br>
-            <strong>Data de Criação: </strong><?php echo $project->getCreated_At()->format('Y-m-d H:i:s'); ?>
-            <br>
-            <strong>Número de Curtidas: </strong><?php echo $project->getLikesCount(); ?>
-            <br>
-
-
-            <?php if ($project->hasImages()) { ?>
-                <?php foreach ($project->getImages() as $image) { ?>
-                    <img src="http://<?php echo APP_HOST; ?>/public/images/projects/<?= $image->getImage() ?>" width="200px" height="200px" alt="Imagem do projeto">
-                <?php } ?>
-            <?php } ?>
-
-            <?php if ($project->hasFiles()) { ?>
-                <div class="project-files">
-                    <?php foreach ($project->getFiles() as $file) { ?>
-                        <a href="http://<?php echo APP_HOST; ?>/public/files/projects/<?= $file->getFile() ?>" download><?= $file->getFile() ?></a><br>
-                    <?php } ?>
-                </div>
-            <?php } ?>
-
-            <?php if ($project->hasHashtags()) { ?>
-                <div class="project-hashtags">
-                    <?php foreach ($project->getHashtags() as $hashtagProject) { ?>
-                        <span>#<?= $hashtagProject->getHashtag()->getHashtag() ?></span>
-                    <?php } ?>
-                </div>
-            <?php } ?>
-        </li>
-        <form method="POST" action="http://<?php echo APP_HOST; ?>/project/like/<?= $project->getIdProject(); ?>">
-            <button id="likeButton" type="submit" name="likeButton" class="like-button" onclick="likeButtonClick(this);">
-                <span class="heart" <?php if (isset($project) && $project->getLikeStatus()) { ?> style="color:#FF57B2;" <?php } else { ?> style="background-color:none;" <?php } ?>>
-                    &#10084;
-                </span>
-                <span class="like-count"><?= $project->getLikeCount(); ?></span>
-            </button>
-            <br>
-        </form>
-
-        <form method="POST" action="http://<?php echo APP_HOST; ?>/project/saveProjectFavorite/<?= $project->getIdProject(); ?>">
-            <button id="likeButton" type="submit" name="likeButton" class="like-button" onclick="likeButtonClick(this);">
-                <span class="heart" <?php if (isset($project) && $project->getSaveStatus()) { ?> style="color:red;" <?php } else { ?> style="background-color:none;" <?php } ?>>
-                    &#128190;
-                </span>
-            </button>
-            <br>
-        </form>
-
-        <form class="newCommentsForm" action="http://<?php echo APP_HOST; ?>/project/comment/<?= $project->getIdProject() ?>" method="post" id="form_cadastro">
-            <textarea cols="70" rows="5" name="text" id="text" value="<?php echo $Sessao::retornaValorFormulario('text'); ?>" required></textarea>
-            <div class="newCommentsFormFooter">
-                <button type="submit" class="buttonSubmit">Comentar</button>
+            <div class="certificado">
+              <?php foreach ($viewVar['userTools'] as $tool) : ?>
+                <img src="http://<?php echo APP_HOST; ?>/public/images/tools/<?= $tool->getIcon() ?>" alt="<?= $tool->getCaption() ?>" />
+              <?php endforeach; ?>
             </div>
-        </form>
+          </div>
+
+          <div class="buttons">
+            <button class="button-project like" style="background-color: #2a8194; cursor: default;" type="button">
+              <img src="/public/images/icons/whiteLikeIcon.png" style="height: 30px; width: 30px" alt="likes" />
+              <span class="count-for-project"><?= $viewVar['like'] ?></span>
+            </button>
+            <button class="button-project blue message-button" style="background-color: #2a8194; cursor: default;" type="button">
+              <img src="/public/images/icons/whiteCommentIcon.png" style="height: 35px; width: 35px;" alt="comments" />
+              <span class="count-for-project"><?= $viewVar['commentCount'] ?></span>
+            </button>
+            <button class="button-project blue favorite" style="background-color: #2a8194; cursor: default;" type="button">
+              <img src="/public/images/icons/whiteSaveIcon.png" style="height: 30px; width: 30px" alt="" />
+              <span class="count-for-project"><?= $viewVar['saveCount'] ?></span>
+            </button>
+          </div>
         </div>
-        <?php foreach ($project->getComments() as $comment) {
-            $user = $comment->getUser(); ?>
-            <div class="comment">
-                Comentado por: <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $user->getAvatar(); ?>" width="50px" height="50px" alt="Foto de Perfil">
-                <?= $comment->getUser()->getNickname() ?> #<?= $user->getTag() ?> <br>
-                <strong><?= $comment->getText() ?></strong> <br>
-                <?= $comment->getDateCreate()->format('d-m-Y H:i:s') ?> <br>
-                <form action="http://<?php echo APP_HOST; ?>/project/deleteComment/<?= $comment->getIdComment() ?>" method="post" id="form_cadastro">
-                    <button type="submit" class="buttonSubmit">Excluir</button>
-            </div>
-            </form>
-            </div> <br>
-        <?php } ?>
+      </div>
 
-        </form>
-    <?php endforeach; ?>
-</ul>
+      <div class="header-best-project">
+        <img src="/public/images/icons/mainStarIcon.png" alt="" />
+        <h2>BEST PROJECTS</h2>
+      </div>
+
+      <div class="wrapper-chat">
+        <?php foreach ($viewVar['projects'] as $project) : ?>
+          <div class="text-bubble-project">
+            <p class="title">
+              <?php echo $project->getTitle(); ?>
+            </p>
+            <p class="description-post">
+              <?php echo $project->getDescription(); ?>
+            </p>
+            <div class="files">
+              <?php if ($project->hasFiles()) { ?>
+                <div class="project-files">
+                  <?php foreach ($project->getFiles() as $file) { ?>
+                    <a href="http://<?php echo APP_HOST; ?>/public/files/projects/<?= $file->getFile() ?>" download>Download a file here (Carefull, this link hasn't been checked)</a><br>
+                  <?php } ?>
+                </div>
+                <br>
+              <?php } ?>
+            </div>
+
+            <div class="images">
+              <?php if ($project->hasImages()) { ?>
+                <?php foreach ($project->getImages() as $image) { ?>
+                  <img class="one-image" src="http://<?php echo APP_HOST; ?>/public/images/projects/<?= $image->getImage() ?>" width="200px" height="200px" alt="Imagem do projeto">
+                <?php } ?>
+              <?php } ?>
+            </div>
+
+            <div class="buttons-for-project">
+              <a href="http://<?php echo APP_HOST; ?>/project/like/<?= $project->getIdProject() ?>">
+                <button class="button-project like">
+                  <img src="<?php echo $project->getLikeStatus() ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; ?>" style="height: 30px; width: 30px" />
+                  <span class="count-for-project"><?php echo $project->getLikesCount(); ?></span>
+                </button>
+              </a>
+              <!-- COMMENTS HERE STARTS -->
+              <button class="button-project blue message-button" onclick="openModalComment(<?= $project->getIdProject() ?>)">
+                <img src="/public/images/icons/whiteCommentIcon.png" style="height: 40px; width: 40px" />
+                <span class="count-for-project"><?php echo $project->getCommentCount(); ?></span>
+              </button>
+
+              <div id="#modalComment<?= $project->getIdProject() ?>" class="modal-background" style="display: none;">
+                <button class="button-close" onclick="closeModalComment(<?= $project->getIdProject() ?>)">
+                  <div class="close-modal">
+                    <img src="/public/images/icons/deleteIcon.png"></img>
+                  </div>
+                </button>
+                <div class="modal-container">
+                  <div class="wrapper-chat-modal">
+                    <div class="message-modal">
+                      <div class="text-bubble-project">
+                        <p class="title">
+                          <?php echo $project->getTitle(); ?>
+                        </p>
+                        <p class="description-post">
+                          <?php echo $project->getDescription(); ?>
+                        </p>
+                        <div class="files">
+                          <?php if ($project->hasFiles()) { ?>
+                            <div class="project-files">
+                              <?php foreach ($project->getFiles() as $file) { ?>
+                                <a href="http://<?php echo APP_HOST; ?>/public/files/projects/<?= $file->getFile() ?>" download>Download a file here (Carefull, this link hasn't been checked)</a><br>
+                              <?php } ?>
+                            </div>
+                            <br>
+                          <?php } ?>
+                        </div>
+
+                        <div class="images">
+                          <?php if ($project->hasImages()) { ?>
+                            <?php foreach ($project->getImages() as $image) { ?>
+                              <img class="one-image" src="http://<?php echo APP_HOST; ?>/public/images/projects/<?= $image->getImage() ?>" width="200px" height="200px" alt="Imagem do projeto">
+                            <?php } ?>
+                          <?php } ?>
+                        </div>
+
+                        <div class="buttons-for-project">
+                          <a href="http://<?php echo APP_HOST; ?>/project/like/<?= $project->getIdProject() ?>">
+                            <button class="button-project like">
+                              <img src="<?php echo $project->getLikeStatus() ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; ?>" style="height: 30px; width: 30px" />
+                              <span class="count-for-project"><?= $project->getLikeCount(); ?></span>
+                            </button>
+                          </a>
+                          <a href="http://<?php echo APP_HOST; ?>/project/saveProjectFavorite/<?= $project->getIdProject(); ?>">
+                            <button class="button-project blue favorite">
+                              <img src="<?php echo $project->getSaveStatus() ? '/public/images/icons/blueSaveIcon.png' : '/public/images/icons/whiteSaveIcon.png'; ?>" style="<?php echo $project->getSaveStatus() ? 'height: 30px; width: 30px;' : 'height: 35px; width: 35px;' ?>" />
+                              <span class="count-for-project"><?= $project->getSaveCount(); ?></span>
+                            </button>
+                          </a>
+                        </div>
+                        <div class="hashtags">
+                          <?php if ($project->hasHashtags()) { ?>
+                            <?php foreach ($project->getHashtags() as $hashtagProject) { ?>
+                              <span style="margin: 10px 30px 0 0;">#<?= $hashtagProject->getHashtag()->getHashtag() ?></span>
+                            <?php } ?>
+                          <?php } ?>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="comments">
+                    <?php foreach ($project->getComments() as $comment) {
+                      $user = $comment->getUser(); ?>
+                      <div class="line">
+                        <div class="one-comment">
+                          <div class="user-avatar-comment">
+                            <a href="http://<?= APP_HOST ?>/user/profileUsers/<?= $comment->getUser()->getIdUser() ?>">
+                              <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $comment->getUser()->getAvatar() ?>"></img>
+                            </a>
+                          </div>
+                          <div class=" comment-text">
+                            <p><?= $user->getAvatar(); ?></p>
+                          </div>
+                          <?php
+                          if ($user->getIdUser() == $_SESSION["idUser"] || $viewVar['user']->getAdmin() == true  ||  $project->getUser()->getIdUser() == $_SESSION["idUser"]) {
+                          ?>
+                            <a href="http://<?php echo APP_HOST; ?>/project/deleteComment/<?= $comment->getIdComment() ?>/<?= $project->getIdProject(); ?>">
+                              <div class="delete-button">
+                                <img src="/public/images/icons/deleteIcon.png" alt="Delete Icon">
+                              </div>
+                            </a>
+                          <?php } ?>
+                        </div>
+                      </div>
+                    <?php } ?>
+                    <div class="new-comment">
+                      <div class="user-avatar-comment">
+                        <a href="http://<?= APP_HOST ?>/user/profile">
+                          <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>"></img>
+                        </a>
+                      </div>
+                      <form method="post" action="http://<?php echo APP_HOST; ?>/project/comment/<?= $project->getIdProject() ?>">
+                        <div class="new-comment-text">
+                          <input type="text" placeholder="Make here a comment :)" name="text" id="text" maxlength="50" required>
+                        </div>
+                        <button type="submit">
+                          <img src="/public/images/playButton.png"></img>
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+              <a href="http://<?php echo APP_HOST; ?>/project/saveProjectFavorite/<?= $project->getIdProject(); ?>">
+                <button class="button-project blue favorite">
+                  <img src="<?php echo $project->getSaveStatus() ? '/public/images/icons/blueSaveIcon.png' : '/public/images/icons/whiteSaveIcon.png'; ?>" style="<?php echo $project->getSaveStatus() ? 'height: 30px; width: 30px;' : 'height: 35px; width: 35px;' ?>" />
+                  <span class="count-for-project"><?= $project->getSaveCount(); ?></span>
+                </button>
+              </a>
+              <?php
+              if ($viewVar['user']->getIdUser() == $_SESSION["idUser"] || $viewVar['user']->getAdmin() == true) {
+              ?>
+                <a href="http://<?= APP_HOST ?>/project/delete?idProject=<?= $project->getIdProject() ?>">
+                  <button class="button-project blue favorite">
+                    <img src="/public/images/icons/trashIcon.png" style="height: 40px; width: 40px;" />
+                  </button>
+                </a>
+              <?php } ?>
+
+                <div class="warning-wrapper" onclick="openModalComplain(<?= $project->getIdProject() ?>)">
+                  <img src="/public/images/icons/warningIcon.png" style=" height: 50px; width: 50px;" class="warning-button" />
+                </div>
+
+
+              <div id="#complaint<?= $project->getIdProject() ?>" class="modal-background-complain" style="display: none;">
+                <form class="new-form" action="http://<?php echo APP_HOST; ?>/project/saveReport/<?= $project->getIdProject() ?>" method="POST">
+                  <div class="modal-container-complain">
+                    <div class="title">
+                      <p>Wish make a complain about the post of "<?= $viewVar['user']->getNickname() ?>#<?= $viewVar['user']->getTag() ?>" ?</p>
+                      <img src="/public/images/icons/warningIcon.png" style=" height: 50px; width: 50px;" />
+                    </div>
+                    <div class="label-complain">
+                      <textarea type="text" placeholder="Write the problem here" id="report" name="report" rows="4" cols="50" maxlength="400" required></textarea>
+                    </div>
+                  </div>
+                  <div class="button-options">
+                    <button type="submit" class="send-button">
+                      SEND
+                    </button>
+                    <button type="button" class="cancel-button" onclick="closeModalComplain(<?= $project->getIdProject() ?>)">
+                      CANCEL
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+
+
+
+
+
+
+
+            </div>
+
+            <div class="hashtags">
+              <?php if ($project->hasHashtags()) { ?>
+                <?php foreach ($project->getHashtags() as $hashtagProject) { ?>
+                  <span style="margin: 10px 30px 0 0;">#<?= $hashtagProject->getHashtag()->getHashtag() ?></span>
+                <?php } ?>
+              <?php } ?>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+    </section>
+  </div>
+</body>
+
+<script>
+  function openModalComment(idproject) {
+    document.getElementById("#modalComment" + idproject).style.display = "flex";
+  }
+
+  function closeModalComment(idproject) {
+    document.getElementById("#modalComment" + idproject).style.display = "none";
+  }
+
+  function openModalComplain(idproject) {
+    document.getElementById("#complaint" + idproject).style.display = "flex";
+  }
+
+  function closeModalComplain(idproject) {
+    document.getElementById("#complaint" + idproject).style.display = "none";
+  }
+</script>

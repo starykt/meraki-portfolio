@@ -21,7 +21,10 @@ class AdminController extends Controller
   public function index()
   {
     $this->auth();
-
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
     $userDao = new UserDAO();
     $user = $userDao->list();
     $this->setViewParam('users', $user);
@@ -32,6 +35,10 @@ class AdminController extends Controller
 
   public function ban($params)
   {
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
     $userDao = new UserDAO();
     $userId = $params[0];
     $user = $userDao->getById($userId);
@@ -43,7 +50,10 @@ class AdminController extends Controller
   public function listReports()
   {
     $this->auth();
-
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
     $reportDAO = new ReportDAO();
     $reports = $reportDAO->getAllReportsWithProjects();
     $userDAO = new UserDAO();
@@ -98,11 +108,14 @@ class AdminController extends Controller
     $this->auth();
     $projectId = $params[0];
     $userXP = new User();
-
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
     $projectDAO = new ProjectDAO();
     $project = $projectDAO->getById($projectId);
     try {
-      
+
       $notification = new Notification();
       $notification->setNotification('Your project has been deleted as it does not comply with community guidelines.');
       $user = new User();
@@ -123,6 +136,10 @@ class AdminController extends Controller
 
   public function deleteReport($params)
   {
+    $loggedInUser = $_SESSION['idUser'];
+    $userDao = new UserDAO();
+    $userLoggedin = $userDao->getById($loggedInUser);
+    $this->setViewParam('userLoggedin', $userLoggedin);
     $this->auth();
     $reportDAO = new ReportDAO();
     $idReport = $params[0];

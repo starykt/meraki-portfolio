@@ -15,6 +15,7 @@ const io = require("socket.io")(httpServer, {
 });
 
 io.on("connection", function (socket) {
+  console.log(socket)
   const auth = socket.handshake.auth
   if (auth != undefined && auth != null && auth != NaN) {
     let session_id = auth;

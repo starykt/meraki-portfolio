@@ -12,15 +12,18 @@ class HashtagController extends Controller
     public function index()
     {
         $this->auth();
-        $hashtagDAO = new HashtagDAO(); 
+        $hashtagDAO = new HashtagDAO();
         $hashtag = $hashtagDAO->list();
         self::setViewParam('listHashtag', $hashtag);
+        $loggedInUser = $_SESSION['idUser'];
+        $userDao = new UserDAO();
+        $userLoggedin = $userDao->getById($loggedInUser);
+        $this->setViewParam('userLoggedin', $userLoggedin);
         Sessao::limpaMensagem();
         Sessao::limpaErro();
         $this->render('/hashtag/index');
-        
     }
-    
+
     public function register()
     {
         $this->render('/hashtag/register');
@@ -28,18 +31,37 @@ class HashtagController extends Controller
         Sessao::limpaErro();
     }
 
-    public function save(){
+    public function save()
+    {
         $hashtag = new Hashtag();
         $hashtag->setHashtag($_POST['hashtag']);
         $hashtagDAO = new HashtagDAO();
         $hashtagDAO->save($hashtag);
-        
-        $this->redirect('/hashtag/index'); 
+
+        $this->redirect('/hashtag/index');
     }
 
-    public function alter()
+    public function deleteHashtag()
     {
-        $this->render('/hashtag/alter');
+        $this->auth();
+
+        $hashtagId = (int)$_GET['idHashtag'];
+
+        $hashtagDAO = new HashtagDAO();
+        $hashtagDAO->drop($hashtagId);
+        Sessao::gravaMensagem("Hashtag removida com sucesso.");
+
+        $this->redirect('/hashtag/index');
+    }
+
+    public function editHashtag()
+    {
+        $hashtag = new Hashtag();
+        $hashtag->setIdHashtag((int)$_GET['idHashtag']);
+        $hashtag->setHashtag($_POST["hashtag"]);
+        $hashtagDAO = new HashtagDAO();
+        $hashtagDAO->alter($hashtag);
+        $this->redirect('/hashtag/index');
         Sessao::limpaMensagem();
         Sessao::limpaErro();
     }
@@ -51,4 +73,3 @@ class HashtagController extends Controller
         Sessao::limpaErro();
     }
 }
-

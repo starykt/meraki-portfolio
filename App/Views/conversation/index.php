@@ -15,12 +15,10 @@
     <div class="container">
         <p style="color: #000;
             font-family: Inter;
-            margin-top:20px;
             font-size: 32px;
             font-style: normal;
-            font-weight: 700;
             line-height: normal;
-            z-index:4;
+            z-index:3;
             padding-left: 100px;"> <?= $viewVar['userRecipient']->getNickname() ?>#<?= $viewVar['userRecipient']->getTag() ?></p>
         <div class="chat-container"></div>
         <div class="textarea-wrapper">
@@ -140,7 +138,9 @@
 
                 messageElement.innerHTML = content;
                 chatContainer.appendChild(messageElement);
+                scrollToBottom(); 
             });
+           
         }
 
 

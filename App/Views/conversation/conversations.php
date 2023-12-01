@@ -1,46 +1,30 @@
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+<link rel="stylesheet" href="\public\css\conversation-list.css" />
 <body>
-    <h1>Conversas</h1>
-
-    <?php if (empty($viewVar['conversations'])) : ?>
-        <p>Nenhuma conversa disponível.</p>
-    <?php else : ?>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Usuário</th>
-                    <th>Avatar</th>
-                    <th>Última Mensagem</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($viewVar['conversations'] as $conversation) : ?>
-                        <td><a href="http://<?php echo APP_HOST; ?>/conversation/index/<?= $conversation['user']->getIdUser() ?>"><?= $conversation['user']->getNickname() ?></a></td>
-                        <td><img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $conversation['user']->getAvatar() ?>" alt="Avatar" width="50px" height="50px"></td>
-                        <td>
+    <div class="container-wrapper">
+        <?php if (empty($viewVar['conversations'])) : ?>
+            <div class="user-info">
+            <div class="text-info">
+            <p style="background-color:slategray"></p>Nenhuma conversa disponível.</p>
+        </div>
+        </div>
+        <?php else : ?>
+            <?php foreach ($viewVar['conversations'] as $conversation) : ?>
+                <a href="http://<?php echo APP_HOST; ?>/conversation/index/<?= $conversation['user']->getIdUser() ?>" class="conversation-container">
+                    <div class="user-info">
+                        <img class="avatar" src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $conversation['user']->getAvatar() ?>" alt="Avatar">
+                        <div class="text-info">
                             <?php if (isset($conversation['lastMessage']) && $conversation['lastMessage']) : ?>
-                                <strong>Mensagem:</strong> <?= $conversation['lastMessage'] ?><br>
-                                <strong>Enviado em:</strong> <?= date('d/m/Y H:i:s', strtotime($conversation['lastSentAt'])) ?>
+                                <?= $conversation['lastMessage'] ?><br>
                             <?php else : ?>
-                                <p>Nenhuma mensagem disponível.</p>
+                                <p class="no-message">Nenhuma mensagem disponível.</p>
                             <?php endif; ?>
-                        </td>
-                    </tr>
-                    </a>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="user-name">
+                        <?= $conversation['user']->getNickname() ?> #<?= $conversation['user']->getTag() ?>
+                    </div>
+                </a>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
 </body>

@@ -134,7 +134,7 @@ input {
     justify-items: center;
   }
 
-  .wrapper {
+  .full-content-wrapper {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -174,7 +174,7 @@ input {
     justify-items: center;
   }
 
-  .wrapper {
+  .full-content-wrapper {
     display: flex;
     align-items: center;
     justify-content: flex-start;

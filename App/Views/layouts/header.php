@@ -9,14 +9,18 @@
   <link href="http://<?php echo APP_HOST; ?>/public/css/main.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
   <link href='https://fonts.googleapis.com/css?family=K2D' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+  <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
   <title><?php echo TITLE; ?></title>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-  <header class="header-bar">
+  <a href="http://<?= APP_HOST ?>/project">
+    <header class="header-bar">
+      <div class="homeOption">
+        <img src="/public/images/homeIcon.svg" />
+      </div>
+  </a>
     <img src="/public/images/headerWave.svg" class="wave" />
-    <div class="homeOption">
-      <img src="/public/images/homeIcon.svg" />
-    </div>
   </header>

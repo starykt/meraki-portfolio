@@ -19,40 +19,38 @@ class ConversationDAO extends BaseDAO
     {
         try {
             $sql = "
-                SELECT M1.userId, M1.sent_at as last_sent_at, M1.message
-                FROM (
-                    SELECT DISTINCT senderId as userId, sent_at, message
-                    FROM Messages
-                    WHERE senderId <> $userId
-    
-                    UNION
-    
-                    SELECT DISTINCT receiverId as userId, sent_at, message
-                    FROM Messages
-                    WHERE receiverId <> $userId
-                ) AS M1
-                INNER JOIN (
-                    SELECT userId, MAX(sent_at) as max_sent_at
-                    FROM (
-                        SELECT DISTINCT senderId as userId, sent_at
-                        FROM Messages
-                        WHERE senderId <> $userId
-    
-                        UNION
-    
-                        SELECT DISTINCT receiverId as userId, sent_at
-                        FROM Messages
-                        WHERE receiverId <> $userId
-                    ) AS M2
-                    GROUP BY userId
-                ) AS MaxMsg ON M1.userId = MaxMsg.userId AND M1.sent_at = MaxMsg.max_sent_at
-                ORDER BY last_sent_at DESC
-            ";
-    
+            SELECT 
+    subquery.userId,
+    subquery.last_sent_at,
+    Messages.message
+FROM (
+    SELECT
+        CASE
+            WHEN senderId <> $userId THEN senderId
+            ELSE receiverId
+        END as userId,
+        MAX(sent_at) as last_sent_at
+    FROM Messages
+    WHERE senderId = $userId OR receiverId = $userId
+    GROUP BY
+        CASE
+            WHEN senderId <> $userId THEN senderId
+            ELSE receiverId
+        END
+) AS subquery
+JOIN Messages ON (
+    (subquery.userId = Messages.senderId AND $userId = Messages.receiverId)
+    OR
+    (subquery.userId = Messages.receiverId AND $userId = Messages.senderId)
+) AND subquery.last_sent_at = Messages.sent_at
+ORDER BY subquery.last_sent_at DESC;
+     
+";
+
             $result = $this->select($sql);
-    
+
             $conversations = [];
-    
+
             foreach ($result as $row) {
                 $userDAO = new UserDAO();
                 $user = $userDAO->getById($row['userId']);
@@ -62,13 +60,13 @@ class ConversationDAO extends BaseDAO
                     'lastMessage' => $row['message'],
                 ];
             }
-    
+
             return $conversations;
         } catch (\Exception $e) {
             throw new \Exception("Erro ao obter as conversas do usuário. " . $e->getMessage(), 500);
         }
     }
-    
+
 
     public function getLastMessage($userId1, $userId2)
     {

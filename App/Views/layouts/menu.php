@@ -12,24 +12,67 @@
 </head>
 
 <body>
-  <div class="menu-icon" onclick="toggleSidebar()">
-    <img src="/public/images/menuIcon.png" />
+  <div class="menu-icon">
+    <a href="http://<?= APP_HOST ?>/project">
+      <div class="logo-menu">
+      </div>
+    </a>
   </div>
   <nav class="sidebar" id="sidebar">
     <ul>
-      <li><a href="#"><img src="/public/images/" /></a></li>
-      <li><a href="#"><img src="/public/images/" /></a></li>
-      <li><a href="#"><img src="/public/images/" /></a></li>
-      <li><a href="#"><img src="/public/images/" /></a></li>
-      <li><a href="#"><img src="/public/images/" /></a></li>
-      <li><a href="http://<?= APP_HOST ?>/login/logout"><img src="/public/images/" /></a></li>
+      <li><a href="#"><img src="/public/images/menu/searchIcon.png" /></a></li>
+      <li><a href="http://<?php echo APP_HOST; ?>/project/listNotifications"><img src="/public/images/menu/notificationIcon.png" /></a>
+        <?php if(!empty($viewVar['notifications'])): ?>
+          <div class="modal-background">
+            <div class="notifications">
+              <?php foreach ($viewVar['notifications'] as $notification) { ?>
+                <div class="full-notification">
+                  <div class="one-notification-background"></div>
+                  <div class="one-notification">
+                    <img src="/public/images/icons/levelUpIcon.png" />
+                    <p>
+                      <?= $notification->getNotification() ?>
+                    </p>
+                  </div>
+                </div>
+              <?php } ?>
+            </div>
+          </div>
+        <?php endif; ?>
+      </li>
+      <li><a href="http://<?php echo APP_HOST; ?>/conversation/conversations"><img src="/public/images/menu/chatIcon.png" /></a></li>
+      <li><a href="#"><img src="/public/images/menu/saveIcon.png" /></a></li>
+      <li><a href="http://<?= APP_HOST ?>/user/profile"><img src="/public/images/menu/accountIcon.png" /></a></li>
+      <li><a href="http://<?= APP_HOST ?>/login/logout"><img src="/public/images/menu/logoutIcon.png" /></a></li>
+     <?php if ($viewVar['userLoggedin']->getAdmin() == true) { ?>
+      <button onclick="showMoreOptions()">
+        <li class="expandable"><a href="#"><img src="/public/images/menu/expandIcon.png" /></a>
+          <ul class="more-itens" id="more-options" style="display: none;">
+            <li><a href="#">Challenges</a></li>
+            <li><a href="http://<?php echo APP_HOST; ?>/tool">New tools</a></li>
+            <li><a href="#">User Fight</a></li>
+            <li><a href="#">Complaints</a></li>
+            <li><a href="http://<?php echo APP_HOST; ?>/hashtag">New hashtags</a></li>
+          </ul>
+        </li>
+      </button>
+<?php } ?>
     </ul>
   </nav>
 
   <script>
-    function toggleSidebar() {
-      var sidebar = document.getElementById("sidebar");
-      sidebar.classList.toggle("show");
+    var displayState = false;
+    function showMoreOptions() {
+      var moreOptions = document.getElementById("more-options");
+      
+      if (displayState) {
+        moreOptions.style.display = "none";
+      } else {
+        moreOptions.style.display = "grid";
+      }
+
+      displayState = !displayState;
     }
+
   </script>
 </body>

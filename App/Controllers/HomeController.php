@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Lib\Sessao;
+use App\Models\DAO\UserDAO;
 
 class HomeController extends Controller
 {
@@ -15,7 +16,7 @@ class HomeController extends Controller
 
     public function initial()
     {
-        $this->render('/project/feed');
+        $this->render('/project/index');
         Sessao::limpaMensagem();
         Sessao::limpaErro();
     }

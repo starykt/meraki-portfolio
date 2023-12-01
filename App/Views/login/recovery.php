@@ -4,7 +4,7 @@
 <body>
 <div class="top-bar"></div>
         <div class="login-form">
-            <div class="wrapper">
+            <div class="full-content-wrapper">
                 <div class="signup-form">
                     <form action="http://<?= APP_HOST ?>/login/processRecovery" method="post">
                         <h3 class="sign-in">Choose your registered email to recover your password</h3>

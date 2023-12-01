@@ -17,13 +17,86 @@ body {
 }
 
 .modal-content {
-  background-color: #fff;
+  max-width: 890px;
+  height: 200px;
+  flex-shrink: 0;
+  border-radius: 40px;
+  background: #1E1E1E;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
   padding: 20px;
-  border-radius: 10px;
-  position: relative;
-  z-index: 1;
-  max-width: 80%;
 }
+
+.delete-modal-title {
+  height: 63px;
+  flex-shrink: 0;
+  color: #FFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 42px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+}
+
+.delete-modal-input-container {
+  justify-content: center;
+}
+
+.delete-modal-input {
+  border-radius: 50px;
+  background: #32A5B2;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  width: 70%;
+  max-width: 365px;
+  height: 48px;
+  flex-shrink: 0;
+  border: none;
+  padding: 10px;
+  color: #FFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 32px;
+  margin-bottom: 240px;
+  cursor: default;
+  text-align: center !important;
+}
+
+
+
+.delete-modal-buttons {
+  justify-content: space-around;
+}
+
+.delete-modal-yes,
+.delete-modal-no {
+  border-radius: 50px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  width: 115px;
+  height: 43px;
+  flex-shrink: 0;
+  border: none;
+  color: #FFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: rgba(255, 0, 0, 0.80);
+}
+
+.delete-modal-no {
+  background-color: rgba(50, 165, 178, 0.80);
+}
+
+
+.image {
+  width: 80px;
+  height: 80px;
+  margin-top: -380px;
+  margin-left: 700px;
+  margin-bottom: 70px;
+}
+
 
 .close {
   position: absolute;
@@ -46,10 +119,12 @@ body {
   flex-direction: column;
   align-items: center;
   border-radius: 20px;
-  width: 475px;
+  width: fit-content;
+  min-width: 475px;
   flex-shrink: 0;
   background-color: #D9D9D9;
   margin: 10px;
+  margin-left: 80px;
 }
 
 .not-a-player-button {
@@ -65,7 +140,6 @@ body {
   cursor: pointer;
   border: 1px solid white;
   margin-bottom: 20px;
-  /* Ajuste conforme necessário */
 }
 
 .not-a-player-button:hover {
@@ -80,8 +154,8 @@ body {
   border-radius: 50px;
   background: #32A5B2;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  width: 327px;
-  height: 65px;
+  flex: 1; 
+  min-width: 320px;
   flex-shrink: 0;
   display: flex;
   flex-direction: row;
@@ -96,10 +170,14 @@ body {
   text-align: center;
 }
 
+
 .card-content {
+  height: fit-content;
   display: flex;
   align-items: center;
   width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .icon {
@@ -194,19 +272,115 @@ body {
   width: 100%;
   height: 100%;
   background: rgba(128, 128, 128, 0.5);
-  /* Cor cinza com transparência */
   z-index: 1;
   display: none;
 }
 
 .blurred {
   backdrop-filter: blur(5px);
-  /* Ajuste o valor de desfoque conforme necessário */
 }
 
-/* Restante do seu CSS permanece o mesmo */
 
 
+.edit-modal-title {
+  width: 430px;
+  height: 60px;
+  flex-shrink: 0;
+  color: #FFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 42px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.edit-modal-input-container {
+  justify-content: center;
+}
+
+.edit-modal-input-container {
+  justify-content: center;
+}
+
+.edit-modal-input {
+  color: #111111;
+  font-family: 'Inter', sans-serif;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border-radius: 50px;
+  background: #FFF;
+  cursor: default;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  width: 365px;
+  height: 40.32px;
+  flex-shrink: 0;
+  border: none;
+  padding: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+
+}
+
+.edit-field {
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border-radius: 50px;
+  background: #32A5B2;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  width: 365px;
+  height: 40.32px;
+  flex-shrink: 0;
+  border: none;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.edit-field::placeholder {
+  text-align: center;
+  color: #FFF;
+}
+
+.edit-modal-buttons {
+  justify-content: space-around;
+}
+
+.edit-modal-yes,
+.edit-modal-no {
+  color: #FFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border-radius: 50px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  width: 115px;
+  height: 43px;
+  flex-shrink: 0;
+  border: none;
+  cursor: pointer;
+  background-color: rgba(181, 96, 255, 0.70);
+}
+
+
+.modal-content-edit {
+  width: 890px;
+  height: 299px;
+  flex-shrink: 0;
+  border-radius: 40px;
+  background: #1E1E1E;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 20px;
+}
 
 #hashtag-input::placeholder {
   color: #FFF;

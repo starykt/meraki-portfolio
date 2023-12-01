@@ -57,13 +57,11 @@
                 />
                 <span class="count">100</span>
               </button>
-              <button class="button red warning">
                 <img
                   src="./menu-icon/atencao.png"
                   style="height: 50px; width: 50px"
                   alt=""
                 />
-              </button>
             </div>
           </div>
         </div>

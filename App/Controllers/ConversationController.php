@@ -91,5 +91,6 @@ class ConversationController extends Controller
 
     $messageDAO = new MessageDAO();
     $messageDAO->save($message);
+    echo "OK";
   }
 }

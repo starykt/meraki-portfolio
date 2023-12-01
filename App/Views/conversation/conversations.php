@@ -2,7 +2,11 @@
 <body>
     <div class="container-wrapper">
         <?php if (empty($viewVar['conversations'])) : ?>
-            <p>Nenhuma conversa disponível.</p>
+            <div class="user-info">
+            <div class="text-info">
+            <p style="background-color:slategray"></p>Nenhuma conversa disponível.</p>
+        </div>
+        </div>
         <?php else : ?>
             <?php foreach ($viewVar['conversations'] as $conversation) : ?>
                 <a href="http://<?php echo APP_HOST; ?>/conversation/index/<?= $conversation['user']->getIdUser() ?>" class="conversation-container">

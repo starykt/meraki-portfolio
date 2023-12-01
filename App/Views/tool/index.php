@@ -21,11 +21,13 @@
         <div class="row">
           <?php for ($j = $i; $j < $i + 3 && $j < count($tools); $j++) : ?>
             <div class="tool-container">
-              <button class="button-close" onclick="http://<?php echo APP_HOST; ?>/tool/alter/<?= $tools[$j]->getIdTool() ?>">
+              <a href="http://<?php echo APP_HOST; ?>/tool/drop/<?= $tools[$j]->getIdTool() ?>">
+              <button class="button-close">
                 <div class="delete-tool-button">
                   <img src="/public/images/icons/deleteIcon.png"></img>
                 </div>
               </button>
+          </a>
               <div class="tool-item">
                 <div class="wrapper-tool-caption">
                   <div class="tool-caption" style="background-color: <?= $tools[$j]->getColor() ?>;">

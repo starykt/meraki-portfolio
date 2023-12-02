@@ -27,6 +27,7 @@
 .user-info {
   display: flex;
   align-items: center;
+  margin-left: 26px;
 }
 
 a {

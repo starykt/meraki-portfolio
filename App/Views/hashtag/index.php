@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="\public\css\style-hashtag.css" />
-</head>
+<link rel="stylesheet" href="\public\css\style-hashtag.css" />
 
 <body>
     <div id="blurLayer" class="blur-layer"></div>
@@ -37,7 +30,7 @@
                             <div class="icon">
                                 <div class="icon-content">
                                     <button class="edit-button" onclick="openModalEdit(' . $hashtag->getIdHashtag() . ')">
-                                        <img class="edit-icon" src="\public\images\ferramenta-lapis.png" alt="Ícone">
+                                        <img class="edit-icon" src="\public\images\icons\penIcon.png" alt="Ícone">
                                     </button>                  
                                 </div>
                             </div>   

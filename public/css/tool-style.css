@@ -100,8 +100,6 @@ body {
     width: 358px;
     height: 60px;
     flex-shrink: 0;
-    margin-left: 31px;
-    padding-left: 24px;
   }
 
   .tool-form input[type="color"] {
@@ -118,7 +116,8 @@ body {
   .tool-create-button {
     border-radius: 50px;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    margin-left: 200px;
+    position: absolute;
+    right: 20px;
     min-width: 300px;
     height: 62px;
     border: none;
@@ -178,9 +177,9 @@ body {
   }
 
   .tool-image {
-    width: 140px;
-    height: 140px;
+    width: 170px;
     margin-top: 20px;
+    height: fit-content;
   }
 
   .edit-content {
@@ -249,8 +248,8 @@ body {
   }
 
   .modal-input {
-    width: 300.84px;
-    height: 60.078px;
+    width: 350px;
+    height: 60px;
     flex-shrink: 0;
     border-radius: 50px;
     background: #32A5B2;
@@ -361,12 +360,9 @@ body {
   }
 
   .white-overlay {
-    width: 358px;
-    height: 80px;
-    padding-left: 24px;
-    margin-left: 31px;
-    padding-left: 24px;
+    width: 392px;
     border-radius: 50px;
+    margin-left: 31px;
     background: rgba(217, 217, 217, 0.80);
   }
 
@@ -438,6 +434,34 @@ body {
     border-radius: 0;
   }
 
-  #fileInputContainer input[type='file']::-webkit-file-upload-button {
+  #fileImageContainer input[type='file']::-webkit-file-upload-button {
+    display: none;
+  }
+
+  #fileImageContainer {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+    width: 50%;
+  }
+
+  #fileImageContainer img {
+    margin-right: 10px;
+    width: 80px;
+    height: 80px;
+  }
+
+  #fileImageContainer input[type='file'] {
+    width: 340px;
+    height: 100px;
+    color: #FFFFFF;
+    margin-left: 92px;
+    position: absolute;
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  #fileImageContainer input[type='file']::-webkit-file-upload-button {
     display: none;
   }

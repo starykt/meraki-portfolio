@@ -397,15 +397,14 @@ article {
 }
 
 .modal-background .button-close {
+  top: 6%;
   z-index: 2;
-  left: 1045px;
+  right: 18%;
   border: none;
-  bottom: -15px;
-  display: flex;
+  position: fixed;
   cursor: pointer;
   background: none;
   width: fit-content;
-  position: relative;
   height: fit-content;
 }
 

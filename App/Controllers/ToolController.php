@@ -38,7 +38,7 @@ class ToolController extends Controller
   public function save()
   {
     try {
-      if ($_FILES['icon']['error'] !== UPLOAD_ERR_OK) {
+      if ($_FILES['image']['error'] !== UPLOAD_ERR_OK) {
         throw new Exception("Erro durante o upload do ícone.");
       }
 
@@ -53,7 +53,7 @@ class ToolController extends Controller
       $toolDAO = new ToolDAO();
       $toolId = $toolDAO->save($tool);
 
-      $objUpload = new Upload($_FILES['icon']);
+      $objUpload = new Upload($_FILES['image']);
       $objUpload->setName('icon-id' . $toolId);
       $dir = 'public/images/tools';
       $success = $objUpload->upload($dir);
@@ -121,7 +121,7 @@ class ToolController extends Controller
           $this->redirect('/tool');
       } catch (Exception $e) {
           Sessao::gravaErro("Erro ao atualizar a ferramenta. " . $e->getMessage());
-          $this->redirect('/tool/editar/' . $idTool);
+          $this->redirect('/tool');
       }
   }
   

@@ -4,13 +4,13 @@
   <div class="container">
     <div class="tool-form-container">
       <form action="http://<?= APP_HOST ?>/tool/save" method="post" enctype="multipart/form-data" class="tool-form">
-        <input type="text" id="caption" name="caption" placeholder="Name" required>
+        <input type="text" id="caption" name="caption" placeholder="Name" required style="margin-left:32px;">
         <input type="color" id="color" name="color" required>
-        <div class="tool-icon" onclick="document.getElementById('icon').click();">
-          <img src="/public/images/icons/upImageIcon.png" alt="Escolher Imagem">
+        <div id="fileImageContainer">
+          <input type="file" id="image" name="image" accept="image/*" multiple>
+            <img src="/public/images/icons/upImageIcon.png"></img>
+          </input>
         </div>
-        <input type="file" id="icon" name="icon" accept="image/*" style="display: none;" onchange="displayImage(this)">
-        <img id="selectedImage" style="max-width: 40px; max-height: 40px; margin-left:50px; margin-bottom: 10px; display: none;"></img>
         <button type="submit" class="tool-create-button">CREATE TOOL</button>
       </form>
     </div>
@@ -52,19 +52,15 @@
                     <div class="form-container">
                       <div class="inputs-modal">
                         <div class="white-overlay">
-                          <input type="text" value="<?= $tools[$j]->getCaption() ?>" class="modal-input" style="cursor: default; text-align: center; margin: 0;
-                            padding: 0; padding-left: 24px;
-                            margin-left: -26px;
-                            height: 80px;
-                            width: 359px;" disabled>
+                          <input type="text" value="<?= $tools[$j]->getCaption() ?>" class="modal-input" style="cursor: default; text-align: center; margin: 0;" disabled />
                         </div>
-                        <input type="text" id="caption" placeholder="New name here." name="caption" class="modal-input" style="cursor: text;" required>
+                        <input type="text" id="caption" placeholder="New name here." value="<?= $tools[$j]->getCaption() ?>" name="caption" class="modal-input" style="cursor: text;" required>
                       </div>
                       <label for="color">Select new color: </label>
                       <input type="color" id="color" name="color" value="<?= $tools[$j]->getColor() ?>" class="modal-input" style="margin-left:20px; width:200px;" required>
                     </div>
                     <div class="form-container-2">
-                      <div id="fileInputContainer" onclick="document.getElementById('icon').click();">
+                      <div id="fileInputContainer">
                         <input type="file" id="icon" name="icon" accept="image/*" multiple>
                         <img src="/public/images/icons/upImageIcon.png"></img>
                         </input>

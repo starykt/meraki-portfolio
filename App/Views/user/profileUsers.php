@@ -115,12 +115,12 @@
               </button>
 
               <div id="#modalComment<?= $project->getIdProject() ?>" class="modal-background" style="display: none;">
-                <button class="button-close" onclick="closeModalComment(<?= $project->getIdProject() ?>)">
-                  <div class="close-modal">
-                    <img src="/public/images/icons/deleteIcon.png"></img>
-                  </div>
-                </button>
                 <div class="modal-container">
+                  <button class="button-close" onclick="closeModalComment(<?= $project->getIdProject() ?>)">
+                    <div class="close-modal">
+                      <img src="/public/images/icons/deleteIcon.png"></img>
+                    </div>
+                  </button>
                   <div class="wrapper-chat-modal">
                     <div class="message-modal">
                       <div class="text-bubble-project">

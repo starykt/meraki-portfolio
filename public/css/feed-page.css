@@ -397,9 +397,9 @@ article {
 }
 
 .modal-background .button-close {
-  top: 6%;
+  top: 4.5%;
   z-index: 2;
-  right: 18%;
+  right: 21%;
   border: none;
   position: fixed;
   cursor: pointer;

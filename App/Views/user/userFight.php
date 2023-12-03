@@ -29,7 +29,7 @@
 
                 <img src="http://<?= APP_HOST ?>/public/images/users/<?= $viewVar['topUsersByLikes'][2]->getAvatar() ?>" class="user-icon" style="height: 90px; width: 90px;" alt="" />
 
-                <img src="/public/images/userFight/position3.png" alt="" style="position: absolute; left: -20px; top: 10px; width: 80px; height: 80px;" />
+                <img src="/public/images/userFight/position3.png" alt="" style="position: absolute; left: -20px; top: 35px; width: 80px; height: 80px;" />
               </div>
               <div class="bar" style="height: 300px;"></div>
               <div class="user-name">

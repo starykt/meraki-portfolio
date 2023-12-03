@@ -31,7 +31,7 @@
       <button onclick="showMoreOptions()">
         <li class="expandable"><a href="#"><img src="/public/images/menu/expandIcon.png" /></a>
           <ul class="more-itens" id="more-options" style="display: none;">
-            <li><a href="#">Challenges</a></li>
+            <li><a href="http://<?php echo APP_HOST; ?>/challenge/index">Challenges</a></li>
             <li><a href="http://<?= APP_HOST ?>/user/userFight">User Fight</a></li>
             <?php if ($viewVar['userLoggedin']->getAdmin() == true) { ?>
               <li><a href="http://<?php echo APP_HOST; ?>/tool">New tools</a></li>

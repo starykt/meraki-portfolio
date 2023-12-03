@@ -551,8 +551,13 @@ class ProjectController extends Controller
       $notificationDAO = new NotificationDAO();
       $notificationDAO->save($notification);
     }
-
-    $this->redirect('/project/index');
+    $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
+    header('Content-Type: application/json');
+    echo json_encode([
+        'likeStatus' => $likeStatus,
+        'likeCount' => $likeCount,
+    ]);
+    exit;
   }
 
   public function saveProjectFavorite($params)

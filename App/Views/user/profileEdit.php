@@ -29,7 +29,7 @@
 <br>
 
 
-<form method="post" action="http://<?php echo APP_HOST; ?>/user/update" enctype="multipart/form-data">
+<form method="post" style="margin-left: 500px" action="http://<?php echo APP_HOST; ?>/user/update" enctype="multipart/form-data">
     <div>
         <label for="nickname">Nickname:</label>
         <input type="text" id="nickname" name="nickname" value="<?= $viewVar['user']->getNickname() ?>" required><br>
@@ -49,35 +49,37 @@
         <div>
             <label for="formation">Educação:</label>
             <input type="text" id="formation" name="formation">
-            <button id="saveEducation">+</button>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script>
-    $(document).ready(function() {
-        $("#saveEducation").click(function(event) {
-            event.preventDefault(); // Evita o comportamento padrão do botão submit
+            $(document).ready(function() {
+                $("#formation").keypress(function(event) {
+                    if (event.which === 13) {
+                        event.preventDefault();
 
-            var formationValue = $("#formation").val();
+                        var formationValue = $("#formation").val();
 
-            $.ajax({
-                type: "POST",
-                url: "http://<?php echo APP_HOST; ?>/user/saveEducation",
-                data: {
-                    formation: formationValue
-                },
-                success: function(response) {
-                    console.log(response);
-                    $("#formation").val('');
-                    location.reload(); 
-                },
-                error: function(error) {
-                    console.error(error);
-                }
+                        $.ajax({
+                            type: "POST",
+                            url: "http://<?php echo APP_HOST; ?>/user/saveEducation",
+                            data: {
+                                formation: formationValue
+                            },
+                            success: function(response) {
+                                console.log(response);
+                                $("#formation").val('');
+                                location.reload();
+                            },
+                            error: function(error) {
+                                console.error(error);
+                            }
+                        });
+                    }
+                });
             });
-        });
-    });
-</script>
+        </script>
+
 
         <h2>Educações:</h2>
         <?php foreach ($viewVar['educations'] as $education) : ?>

@@ -112,9 +112,9 @@
                                             </div>
 
                                             <div class="buttons">
-                                                <button id="likeButton<?= $project->getIdProject(); ?>" class="button like" onclick="handleLike(<?= $project->getIdProject(); ?>)">
-                                                    <img src="<?php echo $project->getLikeStatus() ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; ?>" style="height: 30px; width: 30px" />
-                                                    <span class="count"><?= $project->getLikeCount(); ?></span>
+                                                <button id="likeButton2<?= $project->getIdProject(); ?>" class="button like" onclick="handleLike(<?= $project->getIdProject(); ?>)">
+                                                    <img id="likeIcon2<?= $project->getIdProject(); ?>" src="<?php echo $project->getLikeStatus() ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; ?>" style="height: 30px; width: 30px" />
+                                                    <span id="likeCount2<?= $project->getIdProject(); ?>" class="count"><?= $project->getLikeCount(); ?></span>
                                                 </button>
                                                 <a href="http://<?php echo APP_HOST; ?>/project/saveProjectFavorite/<?= $project->getIdProject(); ?>">
                                                     <button class="button blue favorite">
@@ -277,7 +277,7 @@
         document.getElementById("#complaint" + idproject).style.display = "none";
     }
 
-    new MultiSelectTag('idHashtags') 
+    new MultiSelectTag('idHashtags')
 
     function handleLike(projectId) {
         $.ajax({
@@ -297,7 +297,13 @@
         const likeIcon = document.getElementById('likeIcon' + projectId);
         const likeCountElement = document.getElementById('likeCount' + projectId);
 
+        const likeIcon2 = document.getElementById('likeIcon2' + projectId);
+        const likeCountElement2 = document.getElementById('likeCount2' + projectId);
+
         likeIcon.src = likeStatus ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png';
         likeCountElement.textContent = likeCount;
+
+        likeIcon2.src = likeStatus ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; // Corrigido
+        likeCountElement2.textContent = likeCount;
     }
 </script>

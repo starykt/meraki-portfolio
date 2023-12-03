@@ -49,6 +49,8 @@ class UserDAO extends BaseDAO
                 $user->setNickname($data['nickname']);
                 $user->setAvatar($data['avatar']);
                 $user->setStatus($data['status']);
+                $user->setTag($data['tag']);
+                $user->setAdmin($data['admin']);
                 $listUser[] = $user;
             }
         }

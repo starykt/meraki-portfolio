@@ -1,0 +1,144 @@
+
+  .overlay-container {
+    position: relative;
+    margin-top: 200px;
+  }
+
+  .user-container {
+    display: flex;
+    width: 1192.957px;
+    min-height: 150px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: rgba(217, 217, 217, 0.80);
+    margin-bottom: 10px;
+    margin-left: 200px;
+    margin-top: 50px;
+  }
+
+  .user-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    width: 130px;
+  }
+
+  .user-avatar {
+    width: 101.108px;
+    height: 97.414px;
+    flex-shrink: 0;
+    border-radius: 200px;
+    box-shadow: 5px 5px 4px 0px rgba(0, 0, 0, 0.25);
+  }
+
+  .user-info {
+    width: 421.304px;
+    height: 78.333px;
+    flex-shrink: 0;
+    color: #000;
+    font-family: Inter;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-left: 15px;
+  }
+
+  .ban-form {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    padding-right: 50px;
+  }
+
+  .ban-button {
+    width: 300px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: 30px;
+    background: #894DBC;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 36px;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .info-container {
+    width: 220px;
+    min-height: 157px;
+    flex-shrink: 0;
+    border-radius: 50px;
+    background: rgba(217, 217, 217, 0.80);
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-left: 1180px;
+    margin-top: 20px;
+    font-weight: 700;
+  }
+
+  .icon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-right: 20px; 
+    padding-left: 20px; 
+  }
+
+  .icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 5px;
+  }
+
+  .legend {
+    font-family: Inter;
+    font-size: 16px;
+    color: #000;
+  }
+  .users-container {
+    width: 332.188px;
+    height: 85.333px;
+    flex-shrink: 0;
+    border-radius: 50px;
+    background: #894DBC;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 200px;
+    margin-bottom: 20px;
+    padding: 10px;
+  }
+
+  .users-text {
+    width: 175px;
+    height: 54px;
+    flex-shrink: 0;
+    color: #FFF;
+    font-family: Inter;
+    font-size: 46px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    padding-left: 32px;
+  }
+
+  .users-icon {
+    width: 55px;
+    height: 56px;
+    flex-shrink: 0;
+    padding-right: 30px;
+  }
+
+

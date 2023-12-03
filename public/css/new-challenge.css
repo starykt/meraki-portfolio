@@ -134,6 +134,10 @@ input::placeholder {
   width: 50%;
 }
 
+.name-part textarea {
+  font-family: 'Inter';
+}
+
 .date-main {
   display: flex;
   margin-right: 35px;

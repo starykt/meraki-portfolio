@@ -681,6 +681,8 @@ class ProjectController extends Controller
       $comments = $commentDAO->getCommentsByProjectId($idProject);
       $project->setComments($comments);
 
+      $commentCount = $commentDAO->getCommentCountByArticleId($project->getIdProject());
+      $project->setCommentCount($commentCount);
       $projectsToDisplay[] = $project;
     }
     self::setViewParam('savedProjects', $projectsToDisplay);
@@ -726,9 +728,19 @@ class ProjectController extends Controller
       $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
       $project->setLikeStatus($likeStatus);
 
+      $saveDAO = new SaveProjectDAO();
+      $saveStatus = $saveDAO->getSaveStatus($idProject, $_SESSION['idUser']);
+      $project->setSaveStatus($saveStatus);
+
+      $SaveCount = $saveDAO->getSavedCountByArticleId($idProject);
+      $project->setSaveCount($SaveCount);
+
       $commentDAO = new CommentDAO();
       $comments = $commentDAO->getCommentsByProjectId($idProject);
       $project->setComments($comments);
+
+      $commentCount = $commentDAO->getCommentCountByArticleId($project->getIdProject());
+      $project->setCommentCount($commentCount);
 
       $projectsToDisplay[] = $project;
     }
@@ -740,6 +752,7 @@ class ProjectController extends Controller
     $userDao = new UserDAO();
     $userLoggedin = $userDao->getById($loggedInUser);
     $this->setViewParam('userLoggedin', $userLoggedin);
+    self::setViewParam('user', $userDao->getById($_SESSION['idUser']));
     self::setViewParam('savedProjects', $projectsToDisplay);
     $this->render('/project/mostRecentSavedProjects');
   }
@@ -751,9 +764,33 @@ class ProjectController extends Controller
     $loggedInUser = $_SESSION['idUser'];
     $userDao = new UserDAO();
     $userLoggedin = $userDao->getById($loggedInUser);
+
     $this->setViewParam('userLoggedin', $userLoggedin);
-    self::setViewParam('notifications', $notifications);
+    $notificationsWithIcons = [];
+
+    foreach ($notifications as $notification) {
+      $icon = $this->getIconForNotification($notification);
+      $notificationsWithIcons[] = [
+        'notification' => $notification->getNotification(),
+        'icon' => $icon,
+      ];
+    }
+
+    $this->setViewParam('notifications', $notificationsWithIcons);
     $this->render('/project/listNotifications');
+  }
+
+  private function getIconForNotification($notification)
+  {
+    if (strpos($notification->getNotification(), 'People are commenting on your new project!') !== false) {
+      return '/public/images/icons/whiteCommentIcon.png';
+    } elseif (strpos($notification->getNotification(), 'It looks like people are saving your project!') !== false) {
+      return '\public\images\icons\blueSaveIcon.png';
+    } elseif (strpos($notification->getNotification(), 'Someone liked your new project!') !== false) {
+      return '/public/images/icons/blueLikeIcon.png';
+    } else {
+      return '/public/images/icons/winChallengeIcon.png';
+    }
   }
 
   public function search()

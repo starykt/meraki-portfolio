@@ -12,6 +12,8 @@
             <div class="first-line">
               <p class="nickname"><?= $viewVar['user']->getNickname() ?>#<?= $viewVar['user']->getTag() ?></p>
               <img src="/public/images/icons/quotationMark.png" style="height: 32px; width: 32px" alt="quotation" />
+              <img class="level-icon" src="/public/images/icons/levelStarIcon.png" />
+              <p class="level-number"><?= $viewVar['user']->getLevel() ?></p>
             </div>
             <div class="profile-message">
               <button class="button like" style="background-color: #2a8194; cursor: default;" type="button">

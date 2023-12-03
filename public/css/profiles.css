@@ -24,7 +24,7 @@ aside {
 .profile-container {
   border-radius: 20px;
   background: rgba(217, 217, 217, 0.8);
-  max-width: 70%;
+  max-width: 65%;
   padding: 30px;
   margin-left: 40px;
   display: grid;
@@ -55,6 +55,25 @@ aside {
 
 .profile-container .wrapper-profile .first-line {
   display: flex;
+}
+
+.profile-container .first-line .level-icon {
+  right: 35px;
+  width: 75px;
+  position: absolute;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.profile-container .first-line .level-number {
+  top: 20px;
+  right: 8px;
+  width: 75px;
+  color: #FFF;
+  font-size: 28px;
+  font-weight: 700;
+  font-family: Inter;
+  position: absolute;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .wrapper-profile footer {
@@ -673,3 +692,317 @@ aside {
   background-color: #F00000;
 }
 
+/* Starts the edit profile modal */
+
+.modal-container-edit-profile {
+  padding: 40px;
+  height: 83%;
+  min-width: 810px;
+  border-radius: 100px;
+  overflow-y: auto;
+  margin-top: 20px;
+  background: #212121;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.button-close-edit-profile {
+  top: 10%;
+  z-index: 2;
+  right: 25%;
+  border: none;
+  position: fixed;
+  cursor: pointer;
+  background: none;
+  width: fit-content;
+  height: fit-content;
+}
+
+.wrapper-chat-modal .first-line {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.wrapper-chat-modal .first-line p {
+  color: #FFFFFF;
+}
+
+.profile-input-resume {
+  top: 65px;
+  left: 10px;
+  display: flex;
+}
+
+.wrapper-chat-modal .first-line .nickname {
+  margin: -5px 75px 0 0;
+}
+
+.profile-input-resume textarea {
+  margin-left: 30px;
+  width: 100%;
+  height: 120px;
+  border: none;
+  cursor: text;
+  background: none;
+  color: #FFF;
+  font-family: K2D;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.profile-input-resume label {
+  margin-left: 30px;
+  border: none;
+  cursor: text;
+  background: none;
+  height: fit-content;
+  color: #FFF;
+  font-family: K2D;
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.profile-input-resume .resume-text {
+  margin: 0;
+  display: grid;
+  grid-auto-rows: max-content;
+}
+
+.resume-text .formation {
+  right: 0;
+  width: 590px;
+  position: relative;
+}
+
+.resume-text .formation {
+  right: 0;
+  width: 590px;
+  display: flex;
+  position: relative;
+  height: fit-content;
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+.resume-text .one-formation-edit {
+  margin-top: 12px;
+  display: flex;
+  width: fit-content;
+  background: rgba(217, 217, 217, 0.80);
+}
+
+.resume-text .one-formation-edit img{
+  width: 22px;
+  height: 22px;
+}
+
+.resume-text .one-formation-edit .delete-education {
+  top: -8px;
+  left: 8px;
+  position: relative;
+}
+
+.resume-text .one-formation-edit p{
+  margin: 10px;
+  color: #1E1E1E;
+  font-family: K2D;
+  font-size: 28px;
+  font-weight: 400;
+}
+
+.one-formation-edit input {
+  width: 395px;
+  height: 40px;
+  border: none;
+  color: #1E1E1E;
+  font-size: 28px;
+  outline: none;
+  font-weight: 400;
+  font-family: K2D;
+  background: rgba(217, 217, 217, 0.80);
+}
+
+.image-tools-location-wrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+}
+
+.image-tools-location {
+  width: 50%;
+  margin-top: 10px;
+}
+
+.image-tools-location p {
+  color: #FFF;
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 700;
+  font-family: Inter;
+}
+
+#fileInputContainer {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 50%;
+}
+
+#fileInputContainer img {
+  margin-right: 10px;
+  width: 50px;
+  height: 50px;
+}
+
+#fileInputContainer input[type='file'] {
+  width: 320px;
+  height: 25px;
+  color: #FFFFFF;
+  margin-left: 57px;
+  position: absolute;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+#fileInputContainer input[type='file']::-webkit-file-upload-button {
+  display: none;
+}
+
+.second-part {
+  display: flex;
+  margin-top: 22px;
+  flex-direction: column;
+}
+
+.second-part label {
+  color: #FFF;
+  font-family: Inter;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.second-part input {
+  color: #1E1E1E;
+  width: 200px;
+  height: 30px;
+  font-size: 20px;
+  font-weight: 500;
+  outline: none;
+  border: none;
+  font-family: Inter;
+  background: rgba(217, 217, 217, 0.80);
+}
+
+.image-tools-location-2 {
+  width: 50%;
+  margin: 30px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.image-tools-location-2 .tools-options {
+  display: flex;
+}
+
+.image-tools-location-2 .tools-options img{
+  width: 100px;
+  height: fit-content;
+}
+
+.image-tools-location-2 .delete-tool img{
+  width: 20px;
+  height: 20px;
+}
+
+.image-tools-location-2 a {
+  right: 28px;
+  bottom: 10px;
+  display: flex;
+  position: relative;
+  align-items: flex-end;
+}
+
+.tools-and-render-button {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+}
+
+
+.tools-and-render-button .adding-tools {
+  width: 50%;
+}
+.tools-and-render-button label{
+  color: #FFF;
+  font-family: K2D;
+  font-size: 22px;
+  padding: 2px;
+  font-weight: 400;
+  background: #894DBC;
+}
+
+.selectButton {
+  position: relative;
+}
+
+.mult-select-tag .wrapper {
+  top: 15px;
+  width: 100%;
+  right: 25px;
+  display: block;
+  position: relative;
+}
+
+.mult-select-tag .rounded {
+  top: -16px;
+  left: 230px;
+  background: rgba(217, 217, 217, 0.80) !important;
+}
+
+.mult-select-tag .item-container {
+  color: #752fb3 !important;
+  border-color: #752fb3 !important;
+  background: #983fe633 !important;
+}
+
+.mult-select-tag .item-label {
+  color:#752fb3 !important;
+  font-weight: 700 !important;
+  font-family: Inter !important;
+}
+
+.mult-select-tag ul li {
+  font-weight: 700 !important;
+  font-family: Inter !important;
+}
+
+.mult-select-tag .body {
+  left: 22px;
+  top: -10px;
+  position: relative;
+  background: rgba(217, 217, 217, 0.80) !important;
+}
+
+.render-button {
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.render-button button {
+  top: 25px;
+  width: 200px;
+  height: 45px;
+  padding: 2px;
+  color: #FFF;
+  font-size: 32px;
+  font-weight: 500;
+  position: relative;
+  font-family: Inter;
+  border-radius: 30px;
+  background: #894DBC;
+}

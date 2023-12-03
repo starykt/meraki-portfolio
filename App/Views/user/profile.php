@@ -76,7 +76,7 @@
                     alt=" profileAvatar" class="avatar-profile" />
                     <div class="resume-text">
                       <label for="resume">Insert your resume and job</label>
-                      <textarea type="text" id="resume" name="resume" maxlength="250">...<?= $viewVar['user']->getResume() ?></textarea>
+                      <textarea type="text" id="resume" name="resume" maxlength="250"><?= $viewVar['user']->getResume() ?></textarea>
                       <div class="formation">
                         <?php foreach ($viewVar['educations'] as $education) : ?>
                           <div class="one-formation-edit">

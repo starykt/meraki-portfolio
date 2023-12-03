@@ -842,7 +842,6 @@ class ProjectController extends Controller
         $commentCount = $commentDAO->getCommentCountByArticleId($idProject);
         $fullProject->setCommentCount($commentCount);
 
-
         $saveDAO = new SaveProjectDAO();
         $saveStatus = $saveDAO->getSaveStatus($idProject, $_SESSION['idUser']);
         $fullProject->setSaveStatus($saveStatus);

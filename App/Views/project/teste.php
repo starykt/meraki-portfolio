@@ -10,18 +10,15 @@
     <button type="submit"><img src="\public\images\playButton.png"></button>
   </form>
 </div>
-<hr style="color:white;">
 <?php if (!empty($viewVar['results'])) : ?>
   <?php foreach ($viewVar['results'] as $result) : ?>
     <?php if ($viewVar['type'] === 'user') : ?>
-      <div class="user-container">
-        <a href="http://<?= APP_HOST ?>/user/profileUsers/<?= $result->getIdUser() ?>" class="user-link">
-          <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $result->getAvatar(); ?>" class="user-avatar">
-          <div class="user-info">
-            <p>
-              <?= $result->getNickname(); ?> #<?= $result->getTag(); ?>
-            </p>
-          </div>
+      <div>
+        <a href="http://<?= APP_HOST ?>/user/profileUsers/<?= $result->getIdUser() ?>">
+          <p>
+            <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $result->getAvatar(); ?>" width="30px" height="30px" alt="Foto de Perfil">
+            <?= $result->getNickname(); ?> #<?= $result->getTag(); ?>
+          </p>
         </a>
       </div>
     <?php elseif ($viewVar['type'] === 'project') : ?>
@@ -83,9 +80,6 @@
                   <span class="count"><?= $result->getCommentCount(); ?></span>
                 </button>
 
-
-
-                <!-- //aqui que quebra -->
                 <div id="#modalComment<?= $result->getIdProject(); ?>" class="modal-background" style="display: none;">
                   <button class="button-close" onclick="closeModalComment(<?= $result->getIdProject() ?>)">
                     <div class="close-modal">
@@ -237,19 +231,19 @@
       </section>
       <script>
         function openModalComment(idproject) {
-          document.getElementById("modalComment" + idproject).style.display = "flex";
+          document.getElementById("#modalComment" + idproject).style.display = "flex";
         }
 
         function closeModalComment(idproject) {
-          document.getElementById("modalComment" + idproject).style.display = "none";
+          document.getElementById("#modalComment" + idproject).style.display = "none";
         }
 
-        function openModalComplain(idproject) {
-          document.getElementById("complaint" + idproject).style.display = "flex";
+        function openModalNewProject() {
+          document.getElementById("#newPostWrapper").style.display = "flex";
         }
 
-        function closeModalComplain(idproject) {
-          document.getElementById("complaint" + idproject).style.display = "none";
+        function closeModalNewProject() {
+          document.getElementById("#newPostWrapper").style.display = "none";
         }
 
         document.querySelector('.addingImages').addEventListener('click', function() {

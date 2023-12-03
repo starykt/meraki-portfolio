@@ -554,8 +554,8 @@ class ProjectController extends Controller
     $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
     header('Content-Type: application/json');
     echo json_encode([
-        'likeStatus' => $likeStatus,
-        'likeCount' => $likeCount,
+      'likeStatus' => $likeStatus,
+      'likeCount' => $likeCount,
     ]);
     exit;
   }
@@ -838,6 +838,17 @@ class ProjectController extends Controller
 
         $comments = $commentDAO->getCommentsByProjectId($idProject);
         $fullProject->setComments($comments);
+
+        $commentCount = $commentDAO->getCommentCountByArticleId($idProject);
+        $fullProject->setCommentCount($commentCount);
+
+
+        $saveDAO = new SaveProjectDAO();
+        $saveStatus = $saveDAO->getSaveStatus($idProject, $_SESSION['idUser']);
+        $fullProject->setSaveStatus($saveStatus);
+
+        $SaveCount = $saveDAO->getSavedCountByArticleId($idProject);
+        $fullProject->setSaveCount($SaveCount);
 
         $results[] = $fullProject;
       }

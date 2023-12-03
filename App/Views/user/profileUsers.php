@@ -106,12 +106,11 @@
             </div>
 
             <div class="buttons-for-project">
-              <a href="http://<?php echo APP_HOST; ?>/project/like/<?= $project->getIdProject() ?>">
-                <button class="button-project like">
-                  <img src="<?php echo $project->getLikeStatus() ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; ?>" style="height: 30px; width: 30px" />
-                  <span class="count-for-project"><?php echo $project->getLikesCount(); ?></span>
-                </button>
-              </a>
+              <button id="likeButton<?= $project->getIdProject(); ?>" class="button-project like" onclick="handleLike(<?= $project->getIdProject(); ?>)">
+                <img id="likeIcon<?= $project->getIdProject(); ?>" src="<?php echo $project->getLikeStatus() ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; ?>" style="height: 30px; width: 30px" />
+                <span id="likeCount<?= $project->getIdProject(); ?>" class="count-for-project"><?= $project->getLikeCount(); ?></span>
+              </button>
+
               <!-- COMMENTS HERE STARTS -->
               <button class="button-project blue message-button" onclick="openModalComment(<?= $project->getIdProject() ?>)">
                 <img src="/public/images/icons/whiteCommentIcon.png" style="height: 40px; width: 40px" />
@@ -154,12 +153,10 @@
                         </div>
 
                         <div class="buttons-for-project">
-                          <a href="http://<?php echo APP_HOST; ?>/project/like/<?= $project->getIdProject() ?>">
-                            <button class="button-project like">
-                              <img src="<?php echo $project->getLikeStatus() ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; ?>" style="height: 30px; width: 30px" />
-                              <span class="count-for-project"><?= $project->getLikeCount(); ?></span>
-                            </button>
-                          </a>
+                          <button id="likeButton2<?= $project->getIdProject(); ?>" class="button-project like" onclick="handleLike(<?= $project->getIdProject(); ?>)">
+                            <img id="likeIcon2<?= $project->getIdProject(); ?>" src="<?php echo $project->getLikeStatus() ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; ?>" style="height: 30px; width: 30px" />
+                            <span id="likeCount2<?= $project->getIdProject(); ?>" class="count-for-project"><?= $project->getLikeCount(); ?></span>
+                          </button>
                           <a href="http://<?php echo APP_HOST; ?>/project/saveProjectFavorite/<?= $project->getIdProject(); ?>">
                             <button class="button-project blue favorite">
                               <img src="<?php echo $project->getSaveStatus() ? '/public/images/icons/blueSaveIcon.png' : '/public/images/icons/whiteSaveIcon.png'; ?>" style="<?php echo $project->getSaveStatus() ? 'height: 30px; width: 30px;' : 'height: 35px; width: 35px;' ?>" />
@@ -305,5 +302,33 @@
 
   function closeModalComplain(idproject) {
     document.getElementById("#complaint" + idproject).style.display = "none";
+  }
+
+  function handleLike(projectId) {
+    $.ajax({
+      url: 'http://<?= APP_HOST ?>/project/like/' + projectId,
+      type: 'GET',
+      success: function(response) {
+        updateLikeButton(projectId, !response.likeStatus, response.likeCount);
+      },
+      error: function(error) {
+        console.error('Erro ao enviar solicitação de like:', error);
+      }
+    });
+    return false;
+  }
+
+  function updateLikeButton(projectId, likeStatus, likeCount) {
+    const likeIcon = document.getElementById('likeIcon' + projectId);
+    const likeCountElement = document.getElementById('likeCount' + projectId);
+
+    const likeIcon2 = document.getElementById('likeIcon2' + projectId);
+    const likeCountElement2 = document.getElementById('likeCount2' + projectId);
+
+    likeIcon.src = likeStatus ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png';
+    likeCountElement.textContent = likeCount;
+
+    likeIcon2.src = likeStatus ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; // Corrigido
+    likeCountElement2.textContent = likeCount;
   }
 </script>

@@ -378,89 +378,82 @@ class UserController extends Controller
     $educationDAO->drop($education);
     $this->redirect('/user/profile');
   }
-  public function reportNivel()
-  {
-    $userDao = new UserDAO();
-    $topUsers = $userDao->getUsersByLevel();
-
-    $loggedInUser = $_SESSION['idUser'];
-    $loggedInUserObject = $userDao->getById($loggedInUser);
-
-    $position = null;
-    foreach ($topUsers as $index => $user) {
-      if ($user->getIdUser() === $loggedInUser) {
-        $position = $index + 1;
-        break;
-      }
-    }
-    $loggedInUser = $_SESSION['idUser'];
-    $userDao = new UserDAO();
-    $userLoggedin = $userDao->getById($loggedInUser);
-    $this->setViewParam('userLoggedin', $userLoggedin);
-    $this->setViewParam('topUsers', $topUsers);
-    $this->setViewParam('userPosition', $position);
-    $this->setViewParam('loggedInUser', $loggedInUserObject);
-    $this->setViewParam('loggedInUserLevel', $loggedInUserObject->getLevel());
-    $this->render('/user/reportNivel');
-  }
-
-  public function reportLike()
-  {
+  public function fightUser() {
     $userDao = new UserDAO();
     $likeDao = new LikeDAO();
-
-    $topUsers = $userDao->getUsersByLikes();
-
-    $loggedInUser = $_SESSION['idUser'];
-
-    $position = null;
-    foreach ($topUsers as $index => $user) {
-      if ($user->getIdUser() === $loggedInUser) {
-        $position = $index + 1;
-        break;
-      }
-    }
-
-    $loggedInUserObject = $userDao->getById($loggedInUser);
-    $loggedInUserLikes = $likeDao->getLikeCountByUserId($loggedInUser);
-
-    $this->setViewParam('topUsers', $topUsers);
-    $this->setViewParam('userPosition', $position);
-    $this->setViewParam('loggedInUser', $loggedInUserObject);
-    $this->setViewParam('loggedInUserLikes', $loggedInUserLikes);
-    $loggedInUser = $_SESSION['idUser'];
-    $userDao = new UserDAO();
-    $userLoggedin = $userDao->getById($loggedInUser);
-    $this->setViewParam('userLoggedin', $userLoggedin);
-    $this->render('/user/reportLike');
-  }
-  public function reportAward()
-  {
-    $userDao = new UserDAO();
     $awardDao = new AwardDAO();
 
-    $topUsers = $userDao->getUsersByAwards();
-
     $loggedInUser = $_SESSION['idUser'];
+    $loggedInUserObject = $userDao->getById($loggedInUser);
 
-    $position = null;
-    foreach ($topUsers as $index => $user) {
-      if ($user->getIdUser() === $loggedInUser) {
-        $position = $index + 1;
-        break;
-      }
+    // Relatório por Nível
+    $topUsersByLevel = $userDao->getUsersByLevel();
+    $positionByLevel = $this->getPositionInTopUsers($topUsersByLevel, $loggedInUser);
+
+    // Relatório por Likes
+    $topUsersByLikes = $userDao->getUsersByLikes();
+    $positionByLikes = $this->getPositionInTopUsers($topUsersByLikes, $loggedInUser);
+    $loggedInUserLikes = $likeDao->getLikeCountByUserId($loggedInUser);
+
+    // Relatório por Prêmios
+    $topUsersByAwards = $userDao->getUsersByAwards();
+    $positionByAwards = $this->getPositionInTopUsers($topUsersByAwards, $loggedInUser);
+    $loggedInUserAwards = $awardDao->getAwardCountByUserId($loggedInUser);
+
+    $this->setViewParam('userLoggedin', $loggedInUserObject);
+
+    // Parâmetros para o relatório por Nível
+    $this->setViewParam('topUsersByLevel', $topUsersByLevel);
+    $this->setViewParam('userPositionByLevel', $positionByLevel);
+    $this->setViewParam('loggedInUserLevel', $loggedInUserObject->getLevel());
+
+    // Parâmetros para o relatório por Likes
+    $this->setViewParam('topUsersByLikes', $topUsersByLikes);
+    $this->setViewParam('userPositionByLikes', $positionByLikes);
+    $this->setViewParam('loggedInUserLikes', $loggedInUserLikes);
+
+    // Parâmetros para o relatório por Prêmios
+    $this->setViewParam('topUsersByAwards', $topUsersByAwards);
+    $this->setViewParam('userPositionByAwards', $positionByAwards);
+    $this->setViewParam('loggedInUserAwards', $loggedInUserAwards);
+
+    // Configurar variáveis de visualização para cada posição e posição do usuário logado
+    for ($i = 0; $i < min(count($topUsersByLevel), 3); $i++) {
+        $this->setViewParam("positionByLevel_$i", $i + 1);
+    }
+    
+    if (!$positionByLevel || $positionByLevel > 3) {
+        $this->setViewParam('userPositionByLevel', $positionByLevel);
     }
 
-    $loggedInUserObject = $userDao->getById($loggedInUser);
-    $loggedInUserAwards = $awardDao->getAwardCountByUserId($loggedInUser);
-    $loggedInUser = $_SESSION['idUser'];
-    $userDao = new UserDAO();
-    $userLoggedin = $userDao->getById($loggedInUser);
-    $this->setViewParam('userLoggedin', $userLoggedin);
-    $this->setViewParam('topUsers', $topUsers);
-    $this->setViewParam('userPosition', $position);
-    $this->setViewParam('loggedInUser', $loggedInUserObject);
-    $this->setViewParam('loggedInUserAwards', $loggedInUserAwards);
-    $this->render('/user/reportAward');
+    for ($i = 0; $i < min(count($topUsersByLikes), 3); $i++) {
+        $this->setViewParam("positionByLikes_$i", $i + 1);
+    }
+    
+    if (!$positionByLikes || $positionByLikes > 3) {
+        $this->setViewParam('userPositionByLikes', $positionByLikes);
+    }
+
+    for ($i = 0; $i < min(count($topUsersByAwards), 3); $i++) {
+        $this->setViewParam("positionByAwards_$i", $i + 1);
+    }
+    
+    if (!$positionByAwards || $positionByAwards > 3) {
+        $this->setViewParam('userPositionByAwards', $positionByAwards);
+    }
+
+    $this->render('/user/fightUser');
+}
+
+
+private function getPositionInTopUsers($topUsers, $loggedInUser)
+{
+  foreach ($topUsers as $index => $user) {
+      if ($user->getIdUser() === $loggedInUser) {
+          return $index + 1;
+      }
   }
+  return null;
+}
+  
 }

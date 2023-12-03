@@ -34,7 +34,7 @@ class NotificationDAO extends BaseDAO
 
   public function getNotificationsByUserId(int $idUser)
   {
-    $result = $this->select("SELECT * FROM Notifications WHERE idUser = $idUser");
+    $result = $this->select("SELECT * FROM Notifications WHERE idUser = $idUser ORDER BY idNotification DESC");
     $notificationsData = $result->fetchAll();
 
     $notifications = [];

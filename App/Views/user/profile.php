@@ -16,11 +16,13 @@
               <p class="level-number"><?= $viewVar['user']->getLevel() ?></p>
             </div>
             <div class="profile-message">
-              <button class="button like" style="background-color: #2a8194; cursor: default;" type="button">
-                <img src="/public/images/icons/chatIcon.png" style="height: 30px; width: 30px" alt="likes" />
-              </button>
-              <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>""
-                  alt=" profileAvatar" class="avatar-profile" />
+              <a href="http://<?php echo APP_HOST; ?>/conversation/index/<?= $viewVar['user']->getIdUser() ?>">
+                <button class="button like" style="background-color: #2a8194; cursor: default;" type="button">
+                  <img src="/public/images/icons/chatIcon.png" style="height: 30px; width: 30px" alt="likes" />
+                </button>
+              </a>
+              <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>"
+              alt=" profileAvatar" class="avatar-profile" />
               <footer>
                 <span><?= $viewVar['user']->getLocation() ?>.</span>
                 <span>since <?= $viewVar['user']->getCreatedAt()->format('Y') ?></span>

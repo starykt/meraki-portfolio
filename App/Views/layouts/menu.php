@@ -41,22 +41,23 @@
         <?php endif; ?>
       </li>
       <li><a href="http://<?php echo APP_HOST; ?>/conversation/conversations"><img src="/public/images/menu/chatIcon.png" /></a></li>
-      <li><a href="#"><img src="/public/images/menu/saveIcon.png" /></a></li>
+      <li><a href="http://<?php echo APP_HOST; ?>/project/mostRecentSavedProjects"><img src="/public/images/menu/saveIcon.png" /></a></li>
       <li><a href="http://<?= APP_HOST ?>/user/profile"><img src="/public/images/menu/accountIcon.png" /></a></li>
       <li><a href="http://<?= APP_HOST ?>/login/logout"><img src="/public/images/menu/logoutIcon.png" /></a></li>
-     <?php if ($viewVar['userLoggedin']->getAdmin() == true) { ?>
+     
       <button onclick="showMoreOptions()">
         <li class="expandable"><a href="#"><img src="/public/images/menu/expandIcon.png" /></a>
           <ul class="more-itens" id="more-options" style="display: none;">
             <li><a href="#">Challenges</a></li>
-            <li><a href="http://<?php echo APP_HOST; ?>/tool">New tools</a></li>
             <li><a href="#">User Fight</a></li>
+            <?php if ($viewVar['userLoggedin']->getAdmin() == true) { ?>
+            <li><a href="http://<?php echo APP_HOST; ?>/tool">New tools</a></li>
             <li><a href="#">Complaints</a></li>
             <li><a href="http://<?php echo APP_HOST; ?>/hashtag">New hashtags</a></li>
+            <?php } ?>
           </ul>
         </li>
       </button>
-<?php } ?>
     </ul>
   </nav>
 

@@ -14,11 +14,13 @@
               <img src="/public/images/icons/quotationMark.png" style="height: 32px; width: 32px" alt="quotation" />
             </div>
             <div class="profile-message">
-              <button class="button like" style="background-color: #2a8194; cursor: default;" type="button">
-                <img src="/public/images/icons/chatIcon.png" style="height: 30px; width: 30px" alt="likes" />
-              </button>
-              <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>""
-                  alt=" profileAvatar" class="avatar-profile" />
+              <a href="http://<?php echo APP_HOST; ?>/conversation/index/<?= $viewVar['user']->getIdUser() ?>">
+                <button class="button like" style="background-color: #2a8194; cursor: default;" type="button">
+                  <img src="/public/images/icons/chatIcon.png" style="height: 30px; width: 30px" alt="likes" />
+                </button>
+              </a>
+              <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>"
+              alt=" profileAvatar" class="avatar-profile" />
               <footer>
                 <span><?= $viewVar['user']->getLocation() ?>.</span>
                 <span>since <?= $viewVar['user']->getCreatedAt()->format('Y') ?></span>
@@ -184,9 +186,9 @@
                           <div class="user-avatar-comment">
                             <a href="http://<?= APP_HOST ?>/user/profileUsers/<?= $comment->getUser()->getIdUser() ?>">
                               <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $comment->getUser()->getAvatar() ?>"></img>
-                            </a> 
-                            </div>
-                            <div class=" comment-text">
+                            </a>
+                          </div>
+                          <div class=" comment-text">
                             <p><?= $user->getAvatar(); ?></p>
                           </div>
                           <?php

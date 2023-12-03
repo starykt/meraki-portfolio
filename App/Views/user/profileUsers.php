@@ -14,9 +14,11 @@
               <img src="/public/images/icons/quotationMark.png" style="height: 32px; width: 32px" alt="quotation" />
             </div>
             <div class="profile-message">
-              <button class="button like" style="background-color: #2a8194; cursor: default;" type="button">
-                <img src="/public/images/icons/chatIcon.png" style="height: 30px; width: 30px" alt="likes" />
-              </button>
+              <a href="http://<?php echo APP_HOST; ?>/conversation/index/<?= $viewVar['user']->getIdUser() ?>">
+                <button class="button like" style="background-color: #2a8194; cursor: default;" type="button">
+                  <img src="/public/images/icons/chatIcon.png" style="height: 30px; width: 30px" alt="likes" />
+                </button>
+              </a>
               <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>""
                   alt=" profileAvatar" class="avatar-profile" />
               <footer>
@@ -236,9 +238,9 @@
                 </a>
               <?php } ?>
 
-                <div class="warning-wrapper" onclick="openModalComplain(<?= $project->getIdProject() ?>)">
-                  <img src="/public/images/icons/warningIcon.png" style=" height: 50px; width: 50px;" class="warning-button" />
-                </div>
+              <div class="warning-wrapper" onclick="openModalComplain(<?= $project->getIdProject() ?>)">
+                <img src="/public/images/icons/warningIcon.png" style=" height: 50px; width: 50px;" class="warning-button" />
+              </div>
 
 
               <div id="#complaint<?= $project->getIdProject() ?>" class="modal-background-complain" style="display: none;">

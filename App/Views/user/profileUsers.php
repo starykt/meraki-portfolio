@@ -185,7 +185,7 @@
                             </a>
                           </div>
                           <div class=" comment-text">
-                            <p><?= $user->getAvatar(); ?></p>
+                            <p><?= $comment->getText(); ?></p>
                           </div>
                           <?php
                           if ($user->getIdUser() == $_SESSION["idUser"] || $viewVar['user']->getAdmin() == true  ||  $project->getUser()->getIdUser() == $_SESSION["idUser"]) {

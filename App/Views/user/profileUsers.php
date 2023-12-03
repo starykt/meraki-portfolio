@@ -12,6 +12,8 @@
             <div class="first-line">
               <p class="nickname"><?= $viewVar['user']->getNickname() ?>#<?= $viewVar['user']->getTag() ?></p>
               <img src="/public/images/icons/quotationMark.png" style="height: 32px; width: 32px" alt="quotation" />
+              <img class="level-icon" src="/public/images/icons/levelStarIcon.png" />
+              <p class="level-number"><?= $viewVar['user']->getLevel() ?></p>
             </div>
             <div class="profile-message">
               <a href="http://<?php echo APP_HOST; ?>/conversation/index/<?= $viewVar['user']->getIdUser() ?>">
@@ -117,12 +119,12 @@
               </button>
 
               <div id="#modalComment<?= $project->getIdProject() ?>" class="modal-background" style="display: none;">
-                <button class="button-close" onclick="closeModalComment(<?= $project->getIdProject() ?>)">
-                  <div class="close-modal">
-                    <img src="/public/images/icons/deleteIcon.png"></img>
-                  </div>
-                </button>
                 <div class="modal-container">
+                  <button class="button-close" onclick="closeModalComment(<?= $project->getIdProject() ?>)">
+                    <div class="close-modal">
+                      <img src="/public/images/icons/deleteIcon.png"></img>
+                    </div>
+                  </button>
                   <div class="wrapper-chat-modal">
                     <div class="message-modal">
                       <div class="text-bubble-project">

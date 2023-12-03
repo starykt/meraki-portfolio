@@ -52,6 +52,8 @@ class UserController extends Controller
         $tools[] = $tool;
       }
     }
+    $toolDAO = new ToolDAO();
+    $toolsAll = $toolDAO->list();
 
     $mostLikedProjects = $likeDAO->getUserMostLikedProjects($idUser);
     foreach ($mostLikedProjects as $project) {
@@ -100,6 +102,7 @@ class UserController extends Controller
     $this->setViewParam('userTools', $tools);
     $this->setViewParam('commentCount', $commentCount);
     $this->setViewParam('like', $like);
+    $this->setViewParam('tools', $toolsAll);
     $this->setViewParam('saveCount', $saveCount);
     $this->setViewParam('projects', $mostLikedProjects);
     $this->render('/user/profile');
@@ -261,7 +264,7 @@ class UserController extends Controller
       $this->setViewParam('user', $user);
       $this->setViewParam('tools', $tools);
       $this->setViewParam('userTools', $tools2);
-      $this->render('/user/profileEdit');
+      $this->render('/user/profile');
     } else {
       Sessao::gravaErro("Usuário não encontrado.");
       $this->render('/user/profile');
@@ -314,11 +317,9 @@ class UserController extends Controller
         Sessao::gravaMensagem("Avatar atualizado com sucesso.");
       } else {
         Sessao::gravaErro("Erro ao enviar o novo avatar.");
-        $this->redirect('/user/profileEdit');
+        $this->redirect('/user/profile');
       }
     }
-    $user->setNickname($_POST['nickname']);
-    $user->setEmail($_POST['email']);
     $user->setResume($_POST['resume']);
     $user->setLocation($_POST['location']);
 
@@ -332,7 +333,7 @@ class UserController extends Controller
       $this->redirect('/user/profile');
     } catch (\Exception $e) {
       Sessao::gravaErro("Erro ao atualizar as informações do usuário. " . $e->getMessage());
-      $this->redirect('/user/profileEdit');
+      $this->redirect('/user/profile');
     }
   }
 
@@ -346,7 +347,7 @@ class UserController extends Controller
     $userToolDAO->deleteByUserId($idUser, $idTool);
     Sessao::gravaMensagem("Ferramenta excluída com sucesso.");
 
-    $this->redirect('/user/profileEdit');
+    $this->redirect('/user/profile');
   }
 
   public function saveEducation()
@@ -365,7 +366,7 @@ class UserController extends Controller
 
     $educationDAO->save($education);
 
-    $this->redirect('/user/profileEdit');
+    $this->redirect('/user/profile');
   }
 
 
@@ -375,7 +376,7 @@ class UserController extends Controller
     $education = $params[0];
     $educationDAO = new EducationDAO();
     $educationDAO->drop($education);
-    $this->redirect('/user/profileEdit');
+    $this->redirect('/user/profile');
   }
   public function reportNivel()
   {

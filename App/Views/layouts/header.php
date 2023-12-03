@@ -14,6 +14,7 @@
   <title><?php echo TITLE; ?></title>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
   <a href="http://<?= APP_HOST ?>/project">

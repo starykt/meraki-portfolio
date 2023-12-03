@@ -359,21 +359,17 @@ class UserDAO extends BaseDAO
     {
         try {
             $idUser = $user->getIdUser();
-            $nickname = $user->getNickname();
-            $email = $user->getEmail();
             $resume = $user->getResume();
             $location = $user->getLocation();
             $avatar = $user->getAvatar();
 
             $params = [
                 ':idUser' => $idUser,
-                ':nickname' => $nickname,
-                ':email' => $email,
                 ':resume' => $resume,
                 ':location' => $location,
             ];
 
-            return $this->update('Users', "nickname = :nickname, email = :email, resume = :resume, location = :location", $params, "idUser = :idUser");
+            return $this->update('Users', "resume = :resume, location = :location", $params, "idUser = :idUser");
         } catch (\Exception $e) {
             throw new \Exception("Erro na atualização dos dados do usuário. " . $e->getMessage(), 500);
         }

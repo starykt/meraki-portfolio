@@ -12,6 +12,8 @@
             <div class="first-line">
               <p class="nickname"><?= $viewVar['user']->getNickname() ?>#<?= $viewVar['user']->getTag() ?></p>
               <img src="/public/images/icons/quotationMark.png" style="height: 32px; width: 32px" alt="quotation" />
+              <img class="level-icon" src="/public/images/icons/levelStarIcon.png" />
+              <p class="level-number"><?= $viewVar['user']->getLevel() ?></p>
             </div>
             <div class="profile-message">
               <a href="http://<?php echo APP_HOST; ?>/conversation/index/<?= $viewVar['user']->getIdUser() ?>">
@@ -37,7 +39,7 @@
           </div>
 
           <div class="wrapper-info">
-            <p>
+            <p style="width: 90%;">
               <?= $viewVar['user']->getResume() ?>
             </p>
 
@@ -53,6 +55,98 @@
             </div>
           </div>
 
+
+
+          <!-- Starts the edit profile modal -->
+          <div id="#editProfileModal" class="modal-background" style="display: none;">
+            <div class="modal-container-edit-profile">
+              <button class="button-close-edit-profile" onclick="closeEditProfile()">
+                <div class="close-modal">
+                  <img src="/public/images/icons/deleteIcon.png"></img>
+                </div>
+              </button>
+              <div class="wrapper-chat-modal">
+                <form class="new-form" method="post" action="http://<?php echo APP_HOST; ?>/user/update" enctype="multipart/form-data">
+                  <div class="first-line">
+                    <p class="nickname"><?= $viewVar['user']->getNickname() ?>#<?= $viewVar['user']->getTag() ?></p>
+                    <img src="/public/images/icons/quotationMark.png" style="height: 32px; width: 32px" alt="quotation" />
+                  </div>
+                  <div class="profile-input-resume">
+                    <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>""
+                    alt=" profileAvatar" class="avatar-profile" />
+                    <div class="resume-text">
+                      <label for="resume">Insert your resume and job</label>
+                      <textarea type="text" id="resume" name="resume" maxlength="250"><?= $viewVar['user']->getResume() ?></textarea>
+                      <div class="formation">
+                        <?php foreach ($viewVar['educations'] as $education) : ?>
+                          <div class="one-formation-edit">
+                            <p><?= $education->getFormation() ?></p>
+                            <a href="http://<?php echo APP_HOST; ?>/user/dropEducation/<?= $education->getIdEducation() ?>">
+                              <div class="delete-education">
+                                <img src="/public/images/icons/deleteIcon.png"></img>
+                              </div>
+                            </a>
+                          </div>
+                        <?php endforeach; ?>
+                        <div class="one-formation-edit">
+                          <input type="text" id="formation" placeholder="insert your formation..." name="formation" maxlength="50">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="image-tools-location-wrapper">
+                    <div class="image-tools-location">
+                      <div class="first-part">
+                        <p>For your new avatar here</p>
+                        <div id="fileInputContainer">
+                          <input type="file" id="icon" name="icon" accept="image/*" multiple>
+                          <img src="/public/images/icons/upImageIcon.png"></img>
+                          </input>
+                        </div>
+                      </div>
+                      <div class="second-part">
+                        <label for="location">Insert your location</label>
+                        <input type="text" id="location" value="<?= $viewVar['user']->getLocation() ?>" name="location">
+                      </div>
+                    </div>
+                    <div class="image-tools-location-2">
+                      <?php foreach ($viewVar['userTools'] as $tool) : ?>
+                        <div class="tools-options">
+                          <img src="http://<?php echo APP_HOST; ?>/public/images/tools/<?= $tool->getIcon() ?>"" />
+                          <a href=" http://<?php echo APP_HOST; ?>/user/deleteTool/?idTool=<?= $tool->getIdTool() ?>">
+                          <div class="delete-tool">
+                            <img src="/public/images/icons/deleteIcon.png"></img>
+                          </div>
+                          </a>
+                        </div>
+                      <?php endforeach; ?>
+                    </div>
+                  </div>
+                  <div class="tools-and-render-button">
+                    <div class="adding-tools">
+                      <label for="tools">Adding more tools</label>
+                      <select class="selectButton" name="tools[]" id="tools" multiple>
+                        <?php foreach ($viewVar['tools'] as $tool) { ?>
+                          <option value="<?= $tool->getIdTool() ?>"><?= $tool->getCaption() ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
+                    <div class="render-button">
+                      <button type="submit">
+                        RENDER
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+
           <div class="buttons">
             <button class="button-project like" style="background-color: #2a8194; cursor: default;" type="button">
               <img src="/public/images/icons/whiteLikeIcon.png" style="height: 30px; width: 30px" alt="likes" />
@@ -66,7 +160,7 @@
               <img src="/public/images/icons/whiteSaveIcon.png" style="height: 30px; width: 30px" alt="" />
               <span class="count-for-project"><?= $viewVar['saveCount'] ?></span>
             </button>
-            <button type="button" class="button blue favorite" style="background-color: #2a8194">
+            <button type="button" class="button blue favorite" style="background-color: #2a8194" onclick="openEditProfile()">
               <img src="/public/images/icons/penIcon.png" style="height: 30px; width: 30px" alt="" />
             </button>
           </div>
@@ -120,12 +214,12 @@
               </button>
 
               <div id="#modalComment<?= $project->getIdProject() ?>" class="modal-background" style="display: none;">
-                <button class="button-close" onclick="closeModalComment(<?= $project->getIdProject() ?>)">
-                  <div class="close-modal">
-                    <img src="/public/images/icons/deleteIcon.png"></img>
-                  </div>
-                </button>
                 <div class="modal-container">
+                  <button class="button-close" onclick="closeModalComment(<?= $project->getIdProject() ?>)">
+                    <div class="close-modal">
+                      <img src="/public/images/icons/deleteIcon.png"></img>
+                    </div>
+                  </button>
                   <div class="wrapper-chat-modal">
                     <div class="message-modal">
                       <div class="text-bubble-project">
@@ -265,4 +359,40 @@
   function closeModalComment(idproject) {
     document.getElementById("#modalComment" + idproject).style.display = "none";
   }
+
+  function openEditProfile() {
+    document.getElementById("#editProfileModal").style.display = "flex";
+  }
+
+  function closeEditProfile() {
+    document.getElementById("#editProfileModal").style.display = "none";
+  }
+
+  new MultiSelectTag('tools') // id
+
+  $(document).ready(function() {
+    $("#formation").keypress(function(event) {
+      if (event.which === 13) {
+        event.preventDefault();
+
+        var formationValue = $("#formation").val();
+
+        $.ajax({
+          type: "POST",
+          url: "http://<?php echo APP_HOST; ?>/user/saveEducation",
+          data: {
+            formation: formationValue
+          },
+          success: function(response) {
+            console.log(response);
+            $("#formation").val('');
+            location.reload();
+          },
+          error: function(error) {
+            console.error(error);
+          }
+        });
+      }
+    });
+  });
 </script>

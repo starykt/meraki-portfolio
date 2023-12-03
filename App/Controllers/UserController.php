@@ -378,10 +378,12 @@ class UserController extends Controller
     $educationDAO->drop($education);
     $this->redirect('/user/profile');
   }
-  public function reportNivel()
+  public function userFight()
   {
     $userDao = new UserDAO();
     $topUsers = $userDao->getUsersByLevel();
+    $user = $userDao->getById($_SESSION['idUser']);
+    $this->setViewParam('user', $user);
 
     $loggedInUser = $_SESSION['idUser'];
     $loggedInUserObject = $userDao->getById($loggedInUser);
@@ -401,7 +403,7 @@ class UserController extends Controller
     $this->setViewParam('userPosition', $position);
     $this->setViewParam('loggedInUser', $loggedInUserObject);
     $this->setViewParam('loggedInUserLevel', $loggedInUserObject->getLevel());
-    $this->render('/user/reportNivel');
+    $this->render('/user/userFight');
   }
 
   public function reportLike()
@@ -432,7 +434,7 @@ class UserController extends Controller
     $userDao = new UserDAO();
     $userLoggedin = $userDao->getById($loggedInUser);
     $this->setViewParam('userLoggedin', $userLoggedin);
-    $this->render('/user/reportLike');
+    $this->render('/user/userFight');
   }
   public function reportAward()
   {
@@ -461,6 +463,6 @@ class UserController extends Controller
     $this->setViewParam('userPosition', $position);
     $this->setViewParam('loggedInUser', $loggedInUserObject);
     $this->setViewParam('loggedInUserAwards', $loggedInUserAwards);
-    $this->render('/user/reportAward');
+    $this->render('/user/userFight');
   }
 }

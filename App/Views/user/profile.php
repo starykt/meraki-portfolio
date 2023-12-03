@@ -98,7 +98,7 @@
                       <div class="first-part">
                         <p>For your new avatar here</p>
                         <div id="fileInputContainer">
-                          <input type="file" id="icon" name="icon" accept="image/*" multiple>
+                          <input type="file" id="avatar" name="avatar" accept="image/*" multiple>
                           <img src="/public/images/icons/upImageIcon.png"></img>
                           </input>
                         </div>

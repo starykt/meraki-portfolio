@@ -378,7 +378,7 @@ class UserController extends Controller
     $educationDAO->drop($education);
     $this->redirect('/user/profile');
   }
-  public function fightUser() {
+  public function userFight() {
     $userDao = new UserDAO();
     $likeDao = new LikeDAO();
     $awardDao = new AwardDAO();
@@ -442,7 +442,7 @@ class UserController extends Controller
         $this->setViewParam('userPositionByAwards', $positionByAwards);
     }
 
-    $this->render('/user/fightUser');
+    $this->render('/user/userFight');
 }
 
 

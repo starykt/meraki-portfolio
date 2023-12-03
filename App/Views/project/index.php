@@ -6,7 +6,7 @@
       <div class="avatar">
         <a href="http://<?= APP_HOST ?>/user/profile">
           <img class="user-icon" src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>" />
-      </a>
+        </a>
       </div>
 
       <p class="text-card">Its me... Mario?</p>
@@ -15,65 +15,65 @@
       </button>
     </div>
 
-  <div id="#newPostWrapper" class="modal-background" style="display: none;">
-    <form class="new-form" action="http://<?php echo APP_HOST; ?>/project/save" method="POST" enctype="multipart/form-data">
-      <div class="wrapper-options">
-        <button class="button-close-2" onclick="closeModalNewProject()">
-          <div class="close-modal-new-post">
-            <div class="purple-button-close">
-              <p>X</p>
-            </div>
-          </div>
-        </button>
-        <div class="render-button-modal">
-          <button type="submit">
-            <div class="purple-button-render">
-                  <p>RENDER</p>
-                </div>
+    <div id="#newPostWrapper" class="modal-background" style="display: none;">
+      <form class="new-form" action="http://<?php echo APP_HOST; ?>/project/save" method="POST" enctype="multipart/form-data">
+        <div class="wrapper-options">
+          <button class="button-close-2" onclick="closeModalNewProject()">
+            <div class="close-modal-new-post">
+              <div class="purple-button-close">
+                <p>X</p>
+              </div>
             </div>
           </button>
-      </div>
-      <div class="all-options">
-        <div class="modal-container-new-post">
-          <div class="icon-user">
-            <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>"></img>
+          <div class="render-button-modal">
+            <button type="submit">
+              <div class="purple-button-render">
+                <p>RENDER</p>
+              </div>
           </div>
-          <div class="inputs-project">
-            <div class="label-title">
-              <input type="text" placeholder="Here for your title :)" id="title" name="title" maxlength="35" required>
-            </div><br>
-            <div class="label-description">
-              <input type="text" placeholder="Have fun and write your ideia here." id="description" name="description" maxlength="400" required>
+          </button>
+        </div>
+        <div class="all-options">
+          <div class="modal-container-new-post">
+            <div class="icon-user">
+              <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $viewVar['user']->getAvatar() ?>"></img>
+            </div>
+            <div class="inputs-project">
+              <div class="label-title">
+                <input type="text" placeholder="Here for your title :)" id="title" name="title" maxlength="35" required>
+              </div><br>
+              <div class="label-description">
+                <input type="text" placeholder="Have fun and write your ideia here." id="description" name="description" maxlength="400" required>
+              </div>
+            </div>
+            <div class="new-file-project">
+              <a class="addingImages">
+                <input type="file" id="images" name="images[]" accept="image/*" multiple>
+                <img src="/public/images/icons/upImageIcon.png"></img>
+                </input>
+              </a>
+            </div>
+            <div class="new-file-project-2">
+              <a class="addingFiles">
+                <input type="file" id="files" name="files[]" multiple>
+                <img src="/public/images/icons/upFileIcon.png"></img>
+                </input>
+              </a>
             </div>
           </div>
-          <div class="new-file-project">
-            <a class="addingImages">
-              <input type="file" id="images" name="images[]" accept="image/*" multiple>
-                  <img src="/public/images/icons/upImageIcon.png"></img>
-              </input>
-            </a>
-          </div>
-          <div class="new-file-project-2">
-            <a class="addingFiles">
-              <input type="file" id="files" name="files[]" multiple>
-                  <img src="/public/images/icons/upFileIcon.png"></img>
-              </input>
-            </a>
-          </div>
-      </div>
-        <div class="wrapper-hashtags">
-          <div class="title-hashtag">
-            <p>HASHTAGS</p>
-          </div>
-          <select class="selectButton" name="idHashtags[]" id="idHashtags" multiple>
+          <div class="wrapper-hashtags">
+            <div class="title-hashtag">
+              <p>HASHTAGS</p>
+            </div>
+            <select class="selectButton" name="idHashtags[]" id="idHashtags" multiple>
               <?php foreach ($viewVar['listHashtag'] as $hashtag) { ?>
                 <option value="<?= $hashtag->getIdHashtag() ?>"><?= $hashtag->getHashtag() ?></option>
               <?php } ?>
-          </select>
+            </select>
+          </div>
         </div>
-      </div>
-    </form>
-  </div>
+      </form>
+    </div>
 
 
 
@@ -132,13 +132,10 @@
               </div>
 
               <div class="buttons">
-                <a href="http://<?php echo APP_HOST; ?>/project/like/<?= $project->getIdProject(); ?>">
-                  <button class="button like">
-                    <img src="<?php echo $project->getLikeStatus() ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; ?>" style="height: 30px; width: 30px" />
-                    <span class="count"><?= $project->getLikeCount(); ?></span>
-                  </button>
-                </a>
-
+                <button id="likeButton<?= $project->getIdProject(); ?>" class="button like" onclick="handleLike(<?= $project->getIdProject(); ?>)">
+                  <img id="likeIcon<?= $project->getIdProject(); ?>" src="<?php echo $project->getLikeStatus() ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; ?>" style="height: 30px; width: 30px" />
+                  <span id="likeCount<?= $project->getIdProject(); ?>" class="count"><?= $project->getLikeCount(); ?></span>
+                </button>
 
 
                 <!-- COMMENTS HERE STARTS -->
@@ -192,12 +189,10 @@
                           </div>
 
                           <div class="buttons">
-                            <a href="http://<?php echo APP_HOST; ?>/project/like/<?= $project->getIdProject(); ?>">
-                              <button class="button like">
-                                <img src="<?php echo $project->getLikeStatus() ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; ?>" style="height: 30px; width: 30px" />
-                                <span class="count"><?= $project->getLikeCount(); ?></span>
-                              </button>
-                            </a>
+                            <button id="likeButton2<?= $project->getIdProject(); ?>" class="button like" onclick="handleLike(<?= $project->getIdProject(); ?>)">
+                              <img id="likeIcon2<?= $project->getIdProject(); ?>" src="<?php echo $project->getLikeStatus() ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; ?>" style="height: 30px; width: 30px" />
+                              <span id="likeCount2<?= $project->getIdProject(); ?>" class="count"><?= $project->getLikeCount(); ?></span>
+                            </button>
                             <a href="http://<?php echo APP_HOST; ?>/project/saveProjectFavorite/<?= $project->getIdProject(); ?>">
                               <button class="button blue favorite">
                                 <img src="<?php echo $project->getSaveStatus() ? '/public/images/icons/blueSaveIcon.png' : '/public/images/icons/whiteSaveIcon.png'; ?>" style="<?php echo $project->getSaveStatus() ? 'height: 30px; width: 30px;' : 'height: 35px; width: 35px;' ?>" />
@@ -288,7 +283,7 @@
                   <img src="/public/images/icons/warningIcon.png" style=" height: 50px; width: 50px;" class="warning-button" />
                 </div>
               </div>
-              
+
               <div id="#complaint<?= $project->getIdProject(); ?>" class="modal-background-complain" style="display: none;">
                 <form class="new-form" action="http://<?php echo APP_HOST; ?>/project/saveReport/<?= $project->getIdProject() ?>" method="POST">
                   <div class="modal-container-complain">
@@ -310,7 +305,7 @@
                   </div>
                 </form>
               </div>
-               
+
               <div class="hashtags">
                 <?php if ($project->hasHashtags()) { ?>
                   <?php foreach ($project->getHashtags() as $hashtagProject) { ?>
@@ -343,12 +338,12 @@
     document.getElementById("#newPostWrapper").style.display = "none";
   }
 
-  document.querySelector('.addingImages').addEventListener('click', function () {
+  document.querySelector('.addingImages').addEventListener('click', function() {
     document.querySelector('#images').click();
   });
 
-  document.querySelector('.addingFiles').addEventListener('click', function () {
-      document.querySelector('#files').click();
+  document.querySelector('.addingFiles').addEventListener('click', function() {
+    document.querySelector('#files').click();
   });
 
   function openModalComplain(idproject) {
@@ -359,6 +354,32 @@
     document.getElementById("#complaint" + idproject).style.display = "none";
   }
 
-  new MultiSelectTag('idHashtags')  // id
+  new MultiSelectTag('idHashtags') // id
+  function handleLike(projectId) {
+    $.ajax({
+      url: 'http://<?= APP_HOST ?>/project/like/' + projectId,
+      type: 'GET',
+      success: function(response) {
+        updateLikeButton(projectId, !response.likeStatus, response.likeCount);
+      },
+      error: function(error) {
+        console.error('Erro ao enviar solicitação de like:', error);
+      }
+    });
+    return false;
+  }
 
+  function updateLikeButton(projectId, likeStatus, likeCount) {
+    const likeIcon = document.getElementById('likeIcon' + projectId);
+    const likeCountElement = document.getElementById('likeCount' + projectId);
+
+    const likeIcon2 = document.getElementById('likeIcon2' + projectId);
+    const likeCountElement2 = document.getElementById('likeCount2' + projectId);
+
+    likeIcon.src = likeStatus ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png';
+    likeCountElement.textContent = likeCount;
+
+    likeIcon2.src = likeStatus ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; // Corrigido
+    likeCountElement2.textContent = likeCount;
+  }
 </script>

@@ -171,6 +171,7 @@
             </div>
           </div>
 
+
           <div class="card-user-awared" style="max-width: 40%;">
             <h1><?= $viewVar['userLoggedin']->getNickname() ?>#<?= $viewVar['userLoggedin']->getTag() ?></h1>
             <div class="trofeu-card ">
@@ -214,7 +215,7 @@
             <img src="http://<?= APP_HOST ?>/public/images/users/<?= $viewVar['topUsersByLevel'][0]->getAvatar() ?>" style="height: 70px; width: 70px;" class="user-icon" alt="" />
             <div class="container-me-3">
               <img class="level-try-harder" src="/public/images/icons/levelStarIcon.png" alt="" />
-              <span><?= $viewVar['userPositionByLevel'] ?></span>
+              <span><?= $viewVar['topUsersByLevel'][0]->getLevel() ?></span>
             </div>
           </div>
 
@@ -224,7 +225,7 @@
             <img src="http://<?= APP_HOST ?>/public/images/users/<?= $viewVar['topUsersByLevel'][1]->getAvatar() ?>" style="height: 70px; width: 70px;" class="user-icon" alt="" />
             <div class="container-me-3">
               <img class="level-try-harder" src="/public/images/icons/levelStarIcon.png" alt="" />
-              <span><?= $viewVar['userPositionByLevel'] ?></span>
+              <span><?= $viewVar['topUsersByLevel'][1]->getLevel() ?></span>
             </div>
           </div>
 
@@ -234,7 +235,7 @@
             <img src="http://<?= APP_HOST ?>/public/images/users/<?= $viewVar['topUsersByLevel'][2]->getAvatar() ?>" style="height: 70px; width: 70px;" class="user-icon" alt="" />
             <div class="container-me-3">
               <img class="level-try-harder" src="/public/images/icons/levelStarIcon.png" alt="" />
-              <span><?= $viewVar['userPositionByLevel'] ?></span>
+              <span><?= $viewVar['topUsersByLevel'][2]->getLevel() ?></span>
             </div>
 
           </div>
@@ -243,7 +244,7 @@
           <div style="display: flex; align-items: end; gap: 16px;">
             <h2>YOU HERE SIR <img src="/public/images/playButton.png" /></h2>
             <div>
-              <p>position #<?= $viewVar['loggedInUserLevel'] ?></p>
+              <p>position #<?= $viewVar['userPositionByLevel']?></p>
               <img class="user-icon" src="http://<?= APP_HOST ?>/public/images/users/<?= $viewVar['userLoggedin']->getAvatar() ?>" style="height: 70px; width: 70px;" alt="" />
             </div>
           </div>

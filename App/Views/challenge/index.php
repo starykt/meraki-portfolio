@@ -1,59 +1,63 @@
-<?php
+<link href="http://<?php echo APP_HOST; ?>/public/css/new-challenge.css" rel="stylesheet">
 
-function formatDate($deadline)
-{
-    $dateTime = new DateTime($deadline);
-    return $dateTime->format('d/m/Y H:i:s');
-}
-?>
+<html>
 
-<h1>Lista de Desafios</h1>
-
-<?php foreach ($viewVar['challenges'] as $challenge) : ?>
-    <div>
-        <h3>Publicado por:</h3>
-        <?php
-        $user = $viewVar['usersList'][$challenge->getIdChallenge()];
-        if ($user) { ?>
-            <img src="http://<?php echo APP_HOST; ?>/public/images/users/<?= $user->getAvatar() ?>" width="50px" height="50px">
-            <p>Usuário: <?= $user->getNickname() ?></p>
-        <?php } else { ?>
-            <p>Usuário não encontrado</p>
-        <?php }
-        ?>
-        <h2><?= $challenge->getName() ?></h2>
-        <p>Meta: <?= $challenge->getGoal() ?></p>
-        <p>Recompensa: <?= $challenge->getReward() ?></p>
-    
-        <p>Prazo final: <?= formatDate($challenge->getDeadline()) ?></p>
-        <img src="http://<?php echo APP_HOST; ?>/public/images/challenges/<?= $challenge->getBanner() ?>" width="200px" height="200px">
-        <h3>Hashtags Associadas:</h3>
-        <ul>
-            <?php $hashtag = $viewVar['hashtagsList'][$challenge->getIdChallenge()]; ?>
-            <?php if ($hashtag) : ?>
-                <li><?= $hashtag->getHashtag() ?></li>
-            <?php else : ?>
-                <li>Nenhuma hashtag associada</li>
-            <?php endif; ?>
-        </ul>
-
-        <h3>Prêmios:</h3>
-        <ul>
-            <?php $awards = $viewVar['awardsList'][$challenge->getIdChallenge()]; ?>
-            <?php if (!empty($awards)) : ?>
-                <?php foreach ($awards as $award) : ?>
-                    <li><?= $award->getDescription() ?></li>
-                    <img src="http://<?php echo APP_HOST; ?>/public/images/awards/<?= $award->getImagePath() ?>" width="200px" height="200px">
-                <?php endforeach; ?>
-            <?php else : ?>
-                <li>Nenhum prêmio associado</li>
-            <?php endif; ?>
-        </ul>
+<body>
+  <section>
+    <img class="light-bulb" src="/public/images/icons/lightIcon.png" />
+    <div class="background-challenge-wrapper">
+      <form method="POST" action="http://<?php echo APP_HOST; ?>/challenge/create" enctype="multipart/form-data">
+        <div class="image-and-description">
+          <div class="first-part">
+            <div id="fileInputContainer">
+              <input type="file" id="imagePath" name="imagePath" accept="image/*" required>
+              <img src="/public/images/icons/upImageIcon.png"></img>
+              </input>
+            </div>
+            <p>On the left, add the icon award.</p>
+          </div>
+          <div class="name-award-part">
+            <input type="text" id="description" name="description" placeholder="Here is the title of award."></input>
+          </div>
+          <div class="description-part">
+            <textarea type="text" id="goal" placeholder="Description of goal for the challenge." name="goal" maxlength="300" required></textarea>
+          </div>
+        </div>
+        <div class="name-and-xps">
+          <div class="name-part">
+            <textarea type="text" id="name" placeholder="Insert here title for the challenge." name="name" maxlength="80" required></textarea>
+          </div>
+          <div class="xp-part">
+            <label for="reward">How much xps is it worth?</label>
+            <div class="input-star">
+              <input type="number" id="reward" name="reward" required></input>
+              <img src="/public/images/userFight/yellowStar.png"></img>
+            </div>
+          </div>
+        </div>
+        <div class="hashtags-and-deadline">
+          <div class="hashtag-main">
+            <label for="hashtag">Create the main hashtag</label>
+            <input type="text" id="hashtag" name="hashtag" placeholder="HALLOWEEN2023" required></input>
+          </div>
+          <div class="date-main">
+            <label for="deadline">Choose a date to finalize the game</label>
+            <input type="date" id="deadline" name="deadline" required></input>
+          </div>
+        </div>
+        <div class="second-files-challenge">
+          <div id="fileChallengeBanner">
+            <input type="file" id="banner" name="banner" accept="image/*" required>
+            <img src="/public/images/icons/upImageIcon.png"></img>
+            </input>
+          </div>
+        </div>
+        <div class="button-start-war">
+          <button type="submit">START A WAR</button>
+        </div>
+      </form>
     </div>
-    <?php if ($viewVar['user']->getAdmin() == true) { ?>
+  </section>
+</body>
 
-        <a href="http://<?= APP_HOST ?>/challenge/alter/<?= $challenge->getIdChallenge() ?>"> editar </a><br>
-        <a href="http://<?= APP_HOST ?>/project/<?= $challenge->getIdChallenge() ?>"> excluir </a></br>
-        <hr>
-<?php }
-endforeach; ?>
+</html>

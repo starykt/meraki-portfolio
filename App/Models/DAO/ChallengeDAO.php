@@ -4,6 +4,7 @@ namespace App\Models\DAO;
 
 use App\Models\Entidades\Award;
 use App\Models\Entidades\Challenge;
+use App\Models\Entidades\Hashtag;
 use App\Models\Entidades\Project;
 use App\Models\Entidades\User;
 
@@ -123,6 +124,24 @@ class ChallengeDAO extends BaseDAO
         } catch (\Exception $e) {
             throw new \Exception("Erro na atualização dos dados. " . $e->getMessage(), 500);
         }
+    }
+    public function getHashtagByChallengeId($idChallenge)
+    {
+        $sql = $this->select("SELECT Hashtags.* FROM Hashtags
+                              JOIN Hashtags_Challenges ON Hashtags.idHashtag = Hashtags_Challenges.idHashtag
+                              WHERE Hashtags_Challenges.idChallenge = '$idChallenge' LIMIT 1;");
+
+        $hashtagData = $sql->fetch();
+
+        if ($hashtagData) {
+            $hashtag = new Hashtag();
+            $hashtag->setIdHashtag($hashtagData['idHashtag']);
+            $hashtag->setHashtag($hashtagData['hashtag']);
+
+            return $hashtag;
+        }
+
+        return null;
     }
     public function getByProject($idChallenge)
     {

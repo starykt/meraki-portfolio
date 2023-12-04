@@ -20,11 +20,13 @@
       ?>
       <div class="wrapper-challenge">
         <div class="first-line-challenge">
-          <div class="icon-award">
-            <?php $awards = $viewVar['awardsList'][$challenge->getIdChallenge()]; ?>
-              <?php  foreach ($awards as $award) :?>
-                <img src="http://<?php echo APP_HOST; ?>/public/images/awards/<?= $award->getImagePath() ?>" width="200px" height="200px">
-            <?php endforeach; ?>
+          <div class="align-icon">
+            <div class="icon-award">
+              <?php $awards = $viewVar['awardsList'][$challenge->getIdChallenge()]; ?>
+                <?php  foreach ($awards as $award) :?>
+                  <img src="http://<?php echo APP_HOST; ?>/public/images/awards/<?= $award->getImagePath() ?>" width="200px" height="200px">
+              <?php endforeach; ?>
+            </div>
           </div>
           <div class="title-challenge-list">
             <p><?= $challenge->getName() ?></p>

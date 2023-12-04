@@ -86,7 +86,7 @@
 
 
                 <!-- //aqui que quebra -->
-                <div id="#modalComment<?= $result->getIdProject(); ?>" class="modal-background" style="display: none;">
+                <div id="modalComment<?= $result->getIdProject(); ?>" class="modal-background" style="display: none;">
                   <button class="button-close" onclick="closeModalComment(<?= $result->getIdProject() ?>)">
                     <div class="close-modal">
                       <img src="/public/images/icons/deleteIcon.png"></img>
@@ -131,7 +131,7 @@
                           </div>
 
                           <div class="buttons">
-                            <button id="likeButton2<?= $result->getIdProject(); ?>" class="button like" onclick="handleLike(<?= $project->getIdProject(); ?>)">
+                            <button id="likeButton2<?= $result->getIdProject(); ?>" class="button like" onclick="handleLike(<?= $result->getIdProject(); ?>)">
                               <img id="likeIcon2<?= $result->getIdProject(); ?>" src="<?php echo $result->getLikeStatus() ? '/public/images/icons/blueLikeIcon.png' : '/public/images/icons/whiteLikeIcon.png'; ?>" style="height: 30px; width: 30px" />
                               <span id="likeCount2<?= $result->getIdProject(); ?>" class="count"><?= $result->getLikeCount(); ?></span>
                             </button>
@@ -235,7 +235,14 @@
         </div>
       </article>
       </section>
-      <script>
+      </body>
+
+   
+    <?php endif; ?>
+    <!-- Add this line to include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
         function openModalComment(idproject) {
           document.getElementById("modalComment" + idproject).style.display = "flex";
         }
@@ -247,6 +254,7 @@
         function openModalComplain(idproject) {
           document.getElementById("complaint" + idproject).style.display = "flex";
         }
+
 
         function closeModalComplain(idproject) {
           document.getElementById("complaint" + idproject).style.display = "none";
@@ -298,9 +306,6 @@
           likeCountElement2.textContent = likeCount;
         }
       </script>
-      </body>
-
-    <?php endif; ?>
   <?php endforeach; ?>
 <?php else : ?>
   <p>No results found.</p>

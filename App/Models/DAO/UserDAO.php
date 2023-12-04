@@ -109,6 +109,31 @@ class UserDAO extends BaseDAO
         }
     }
 
+
+private function createUserFromData($userData)
+{
+    if (is_array($userData)) {
+        $user = new User();
+        $user->setIdUser($userData['idUser']);
+        $user->setNickname($userData['nickname']);
+        $user->setTag($userData['tag']);
+        $user->setEmail($userData['email']);
+        $user->setPassword($userData['password']);
+        $user->setLevel($userData['level']);
+        $user->setXp($userData['xp']);
+        $user->setAdmin($userData['admin']);
+        $user->setResume($userData['resume']);
+        $user->setLocation($userData['location']);
+        $user->setAvatar($userData['avatar']);
+        $user->setCreatedAt(new \DateTime($userData['createdAt']));
+        $user->setStatus($userData['status']);
+        return $user;
+    }
+
+    return null;
+}
+
+
     public function verify(string $identifier, string $password)
     {
         try {
@@ -155,7 +180,22 @@ class UserDAO extends BaseDAO
             return $this->getUserByNicknameAndTag($emailOrUsername);
         }
     }
-
+    public function getUserByEmail2(string $email)
+    {
+        try {
+            $sql = "SELECT * FROM Users WHERE email = '$email'";
+            $result = $this->select($sql);
+    
+            if ($userData = $result->fetch()) {
+                return $this->createUserFromData($userData);
+            }
+    
+            return null;
+        } catch (\Exception $e) {
+            throw new \Exception("Erro no acesso aos dados. " . $e->getMessage(), 500);
+        }
+    }
+    
     private function getUserByEmail($email) {
         try {
             $sql = "SELECT * FROM Users WHERE email = '$email'";
@@ -268,20 +308,6 @@ class UserDAO extends BaseDAO
             return $this->createUserFromData($userData);
         }
 
-        return null;
-    }
-
-    private function createUserFromData($userData) {
-        if (is_array($userData)) {
-            $user = new User();
-            $user->setIdUser($userData['idUser']);
-            $user->setNickname($userData['nickname']);
-            $user->setTag($userData['tag']);
-            $user->setEmail($userData['email']);
-            $user->setPassword($userData['password']);
-            return $user;
-        }
-    
         return null;
     }
     

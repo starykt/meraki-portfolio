@@ -793,8 +793,12 @@ class ProjectController extends Controller
       return '\public\images\icons\blueSaveIcon.png';
     } elseif (strpos($notification->getNotification(), 'Someone liked your new project!') !== false) {
       return '/public/images/icons/blueLikeIcon.png';
-    } else {
+    } elseif (strpos($notification->getNotification(), 'Your project has been deleted as it does not comply with community guidelines') !== false) {
+      return '\public\images\icons\postRemove.png';
+    } elseif (strpos($notification->getNotification(), 'You just won a challenge! Check your profile for the new prize!') !== false) {
       return '/public/images/icons/winChallengeIcon.png';
+    } else {
+      return '\public\images\icons\levelUpIcon.png';
     }
   }
 
@@ -856,6 +860,7 @@ class ProjectController extends Controller
     $userDao = new UserDAO();
     $userLoggedin = $userDao->getById($loggedInUser);
     $this->setViewParam('userLoggedin', $userLoggedin);
+    $this->setViewParam('user', $userLoggedin);
     self::setViewParam('results', $results);
     self::setViewParam('type', $type);
     self::setViewParam('term', $term);

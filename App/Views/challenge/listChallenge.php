@@ -16,6 +16,13 @@
     <?= $viewVar["challenge"]->getReward() ?><br>
     <?= $viewVar["challenge"]->getBanner() ?><br>
 
+    <p><?= $viewVar["challenge"]->getHashtag()->getHashtag(); ?></p>
+
+    <h2>Awards</h2>
+    <?php foreach ($viewVar["award"] as $award) { ?>
+      <p><?= $award->getDescription(); ?></p>
+    <?php } ?>
+
 
     <?php foreach ($viewVar["listProject"] as $project) { ?>
       <div class="project">
@@ -23,12 +30,15 @@
         <P><?= $project->getDescription(); ?></P>
 
         <h3>Project User</h3>
- 
-          <p>User ID: <?= $project->getUser()->getIdUser(); ?></p>
-          <p>Nickname: <?= $project->getUser()->getNickname(); ?></p>
-          <p>Tag: <?= $project->getUser()->getTag(); ?></p>
-          <p>AVATAR URL: <?= $project->getUser()->getAvatar(); ?></p>
-  
+
+        <p>User ID: <?= $project->getUser()->getIdUser(); ?></p>
+        <p>Nickname: <?= $project->getUser()->getNickname(); ?></p>
+        <p>Tag: <?= $project->getUser()->getTag(); ?></p>
+        <p>AVATAR URL: <?= $project->getUser()->getAvatar(); ?></p>
+
+
+
+
         <h3>Comments</h3>
         <?php foreach ($project->getComments() as $comment) { ?>
           <div class="comment">

@@ -16,7 +16,17 @@ class Challenge
 	private $userName;
 	private $userId;
 
+  private $hashtag;
 
+    public function setHashtag($hashtag)
+    {
+        $this->hashtag = $hashtag;
+    }
+
+    public function getHashtag()
+    {
+        return $this->hashtag;
+    }
 	public function getUserId()
 	{
 		return $this->userId;

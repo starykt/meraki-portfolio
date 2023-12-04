@@ -16,7 +16,7 @@ section {
   min-height: 88vh;
   position: absolute;
   padding: 10px;
-  z-index: 9998;
+  z-index: 9990;
   border-radius: 10px;
   background: rgba(217, 217, 217, 0.80);
 }

@@ -189,31 +189,41 @@ class LoginController extends Controller
 
   public function validation()
   {
-    $identifier = $_POST['email'];
-    $password = $_POST['password'];
-    Sessao::gravaFormulario($_POST);
-
-    if (empty(trim($identifier)) && empty(trim($password))) {
-      Sessao::gravaErro("Faltou digitar usuário e/ou senha!");
-      $this->redirect('/login');
-      return;
-    }
-
-    $userDAO = new UserDAO();
-
-    $idUser = $userDAO->verify($identifier, $password);
-
-    if ($idUser == 0) {
-      Sessao::gravaErro("Usuário ou senha incorretos. Tente novamente!");
-      $this->redirect('/login');
-      return;
-    }
-
-    Sessao::gravaLogin($idUser);
-
-    Sessao::limpaFormulario();
-    Sessao::limpaErro();
-    Sessao::limpaMensagem();
-    $this->redirect('/project/index');
+      $identifier = $_POST['email'];
+      $password = $_POST['password'];
+      Sessao::gravaFormulario($_POST);
+  
+      if (empty(trim($identifier)) && empty(trim($password))) {
+          Sessao::gravaErro("Faltou digitar usuário e/ou senha!");
+          $this->redirect('/login');
+          return;
+      }
+  
+      $userDAO = new UserDAO();
+      $user = $userDAO->getUserByEmail2($identifier);
+  
+      if ($user && $user->getStatus() == 'banned') {
+          Sessao::gravaErro("Você está banido. Não é possível fazer login.");
+          $this->redirect('/login');
+          return;
+      }
+  
+      // Procede com a verificação normal de login
+      $idUser = $userDAO->verify($identifier, $password);
+  
+      if ($idUser == 0) {
+          Sessao::gravaErro("Usuário ou senha incorretos. Tente novamente!");
+          $this->redirect('/login');
+          return;
+      }
+  
+      // Se o usuário não está banido, realiza o login
+      Sessao::gravaLogin($idUser);
+  
+      Sessao::limpaFormulario();
+      Sessao::limpaErro();
+      Sessao::limpaMensagem();
+      $this->redirect('/project/index');
   }
+  
 }

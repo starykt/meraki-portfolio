@@ -860,6 +860,7 @@ class ProjectController extends Controller
     $userDao = new UserDAO();
     $userLoggedin = $userDao->getById($loggedInUser);
     $this->setViewParam('userLoggedin', $userLoggedin);
+    $this->setViewParam('user', $userLoggedin);
     self::setViewParam('results', $results);
     self::setViewParam('type', $type);
     self::setViewParam('term', $term);

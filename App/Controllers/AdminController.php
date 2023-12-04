@@ -85,12 +85,16 @@ class AdminController extends Controller
       $comments = $commentDAO->getCommentsByProjectId($project->getIdProject());
       $project->setComments($comments);
 
+      $userDAO = new UserDAO();
+      $projectUser = $userDAO->getById($project->getUser()->getIdUser()); 
+
       $reportsToDisplay[] = [
         'report' => $report,
         'project' => $project,
         'images' => $images,
         'files' => $files,
         'hashtags' => $hashtags,
+        'projectUser' => $projectUser,
       ];
     }
 

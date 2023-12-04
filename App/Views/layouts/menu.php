@@ -59,4 +59,3 @@
       displayState = !displayState;
     }
   </script>
-</body>

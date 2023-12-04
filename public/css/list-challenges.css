@@ -123,6 +123,14 @@ section {
   box-shadow: 8px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
+.button-join-to-win a {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  text-decoration: none;
+  justify-content: flex-end;
+}
+
 .button-join-to-win {
   width: 100%;
   display: flex;

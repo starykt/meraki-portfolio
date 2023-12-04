@@ -34,8 +34,10 @@
             <p><?= $challenge->getName() ?></p>
           </div>
           <div class="button-join-to-win">
-            <button type="button" onclick="">JOIN TO WIN</button>
-            <img src="/public/images/icons/admin.png"></img>
+            <a href="http://<?= APP_HOST ?>/challenge/listChallenge/<?= $challenge->getIdChallenge() ?>">
+              <button type="button" >JOIN TO WIN</button>
+              <img src="/public/images/icons/admin.png"></img>
+            </a>
           </div>
         </div>
         <div class="second-line-challenge-list">

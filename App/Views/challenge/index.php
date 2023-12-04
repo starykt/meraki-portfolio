@@ -8,9 +8,11 @@
         <p>CHALLENGES THAT YOU</p>
         <p>CAN DO IT RIGHT NOW</p>
       </div>
-      <a href="http://<?php echo APP_HOST; ?>/challenge/register">
-        <img class="light-bulb" src="/public/images/icons/lightBulbPlus.png"></img>
-      </a>
+      <?php if ($viewVar['userLoggedin']->getAdmin() == true) { ?>
+        <a href="http://<?php echo APP_HOST; ?>/challenge/register">
+          <img class="light-bulb" src="/public/images/icons/lightBulbPlus.png"></img>
+        </a>
+      <?php } ?>
     </div>
   </section>
   <div class="wrapper-all-challenges">

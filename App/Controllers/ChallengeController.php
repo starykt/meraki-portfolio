@@ -71,6 +71,10 @@ class ChallengeController extends Controller
             $challengeDAO = new ChallengeDAO();
             $challenge = $challengeDAO->getById($params[0]);
             $projects = $challengeDAO->getByProject($params[0]);
+            $awardDAO = new AwardDAO();
+            $award = $awardDAO->getAwardsByChallengeId($params[0]);
+            $challengeHashtag = $challengeDAO->getHashtagByChallengeId($params[0]);
+            $challenge->setHashtag($challengeHashtag);
 
             $projectsToDisplay = [];
 
@@ -117,6 +121,7 @@ class ChallengeController extends Controller
             $userDAO = new UserDAO();
             $userLoggedin = $userDAO->getById($loggedInUser);
 
+            $this->setViewParam('award', $award);
             $this->setViewParam('userLoggedin', $userLoggedin);
             $this->setViewParam('listProject', $projectsToDisplay); 
             $this->setViewParam('challenge', $challenge);

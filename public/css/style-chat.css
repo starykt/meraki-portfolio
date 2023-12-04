@@ -192,6 +192,9 @@ textarea#mensagem::placeholder {
 .button-container button {
   padding: 10px;
   border-radius: 40px;
+  right: 65px;
+  bottom: 40px;
+  position: fixed;
   background: #894DBC;
   box-shadow: 10px 10px 4px 0px rgba(0, 0, 0, 0.25);
   width: 129px;

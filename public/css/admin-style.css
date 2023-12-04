@@ -21,11 +21,12 @@
   }
 
   .user-link {
+    width: 130px;
     display: flex;
+    color: inherit;
+    margin-left: 12px;
     align-items: center;
     text-decoration: none;
-    color: inherit;
-    width: 130px;
   }
 
   .user-avatar {

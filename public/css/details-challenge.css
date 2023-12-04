@@ -17,8 +17,8 @@
   font-family: Inter;
   border-radius: 40px;
   margin-bottom: 60px;
-  padding-bottom: 18px;
   flex-direction: column;
+  padding-bottom: 18px;
   background: rgba(217, 217, 217, 0.80);
 }
 
@@ -108,4 +108,74 @@
 
 .second-line-challenge-list .goal-challenge-list, .englobe-hashtag-label p {
   width: 100%;
+}
+
+.second-line-challenge-list .englobe-hashtag-label {
+  left: 28px;
+  display: flex;
+  position: relative;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.second-line-challenge-list .englobe-hashtag-label label {
+  width: 60%;
+  color: #1E1E1E;
+  font-size: 24px;
+  font-weight: 700;
+  font-family: Inter;
+}
+
+.second-line-challenge-list .englobe-hashtag-label p {
+  color: #FFF;
+  width: fit-content;
+  padding: 14px;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 60px 0 0 0;
+  text-align: center;
+  font-family: Inter;
+  border-radius: 30px;
+  background: #894DBC;
+}
+
+.line-and-icon {
+  display: flex;
+  margin-top: 70px;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+}
+
+.line-and-icon .line {
+  left: 80px;
+  width: 80%;
+  border-top: none;
+  position: relative;
+  height: fit-content;
+  border-bottom: 1px solid #fff;
+}
+
+.line-and-icon .icon-swords {
+  position: fixed;
+}
+
+.line-and-icon img {
+  width: 60px;
+  display: block;
+  height: 60px;
+}
+
+article {
+  border-top: none;
+  right: 0;
+  margin: 0;
+}
+
+.wrapper-chat {
+  padding: 85px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

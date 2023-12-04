@@ -6,9 +6,16 @@ use App\Lib\Sessao;
 use App\Lib\Upload;
 use App\Models\DAO\AwardDAO;
 use App\Models\DAO\ChallengeDAO;
+use App\Models\DAO\CommentDAO;
+use App\Models\DAO\FileDAO;
 use App\Models\DAO\HashtagChallengeDAO;
 use App\Models\DAO\HashtagDAO;
+use App\Models\DAO\HashtagProjectDAO;
+use App\Models\DAO\ImageDAO;
+use App\Models\DAO\LikeDAO;
 use App\Models\DAO\NotificationDAO;
+use App\Models\DAO\ProjectDAO;
+use App\Models\DAO\SaveProjectDAO;
 use App\Models\DAO\UserDAO;
 use App\Models\DAO\WinnerDAO;
 use App\Models\Entidades\Award;
@@ -25,7 +32,7 @@ class ChallengeController extends Controller
         try {
             $challengesDAO = new ChallengeDAO();
             $challenges = $challengesDAO->getAll();
-            $challengesFinally =$challengesDAO->getChallengesAll();
+            $challengesFinally = $challengesDAO->getChallengesAll();
             $hashtagChallengeDAO = new HashtagChallengeDAO();
             $awardsDAO = new AwardDAO();
             $usersDAO = new UserDAO();
@@ -56,6 +63,73 @@ class ChallengeController extends Controller
         }
     }
 
+    public function listChallenge($params)
+    {
+        try {
+            $this->auth();
+
+            $challengeDAO = new ChallengeDAO();
+            $challenge = $challengeDAO->getById($params[0]);
+            $projects = $challengeDAO->getByProject($params[0]);
+
+            $projectsToDisplay = [];
+
+            foreach ($projects as $project) {
+                $idProject = $project->getIdProject();
+
+                $imageDAO = new ImageDAO();
+                $images = $imageDAO->getImagesByProjectId($idProject);
+                $project->setImages($images);
+
+                $fileDAO = new FileDAO();
+                $files = $fileDAO->getFilesByProjectId($idProject);
+                $project->setFiles($files);
+
+                $hashtagDAO = new HashtagProjectDAO();
+                $hashtags = $hashtagDAO->getByProjectId($idProject);
+                $project->setHashtags($hashtags);
+
+                $likeDAO = new LikeDAO();
+                $likeCount = $likeDAO->getLikeCountByArticleId($idProject);
+                $project->setLikeCount($likeCount);
+
+                $likeStatus = $likeDAO->getLikeStatus($idProject, $_SESSION['idUser']);
+                $project->setLikeStatus($likeStatus);
+
+                $saveDAO = new SaveProjectDAO();
+                $saveStatus = $saveDAO->getSaveStatus($idProject, $_SESSION['idUser']);
+                $project->setSaveStatus($saveStatus);
+
+                $savedCount = $saveDAO->getSavedCountByArticleId($idProject);
+                $project->setSaveCount($savedCount);
+
+                $commentDAO = new CommentDAO();
+                $comments = $commentDAO->getCommentsByProjectId($idProject);
+                $project->setComments($comments);
+
+                $commentCount = $commentDAO->getCommentCountByArticleId($idProject);
+                $project->setCommentCount($commentCount);
+
+                $projectsToDisplay[] = $project;
+            }
+
+            $loggedInUser = $_SESSION['idUser'];
+            $userDAO = new UserDAO();
+            $userLoggedin = $userDAO->getById($loggedInUser);
+
+            $this->setViewParam('userLoggedin', $userLoggedin);
+            $this->setViewParam('listProject', $projectsToDisplay); 
+            $this->setViewParam('challenge', $challenge);
+            $this->setViewParam('user', $userDAO->getById($_SESSION['idUser']));
+            $this->render('/challenge/listChallenge');
+        } catch (\Exception $e) {
+            echo "Erro: " . $e->getMessage();
+        }
+    }
+
+
+
+
     public function endChallenge($challenges)
     {
         $challengeDAO = new ChallengeDAO();
@@ -74,7 +148,7 @@ class ChallengeController extends Controller
                         $award = new Award();
                         $award->setIdUser($winner->getUserId());
                         $award->setIdChallenge($idChallenge);
-                        
+
                         $awardsDAO->updateUser($award);
                         $xpToAdd = $challenge->getReward();
                         $userDAO->updateXPAndLevel($winner->getUserId(), $xpToAdd);
@@ -83,7 +157,7 @@ class ChallengeController extends Controller
                         $winners->setIdUser($winner->getUserId());
                         $winners->setIdChallenge($idChallenge);
                         $winnersDAO = new WinnerDAO();
-                        $winnersDAO->save($winners);  
+                        $winnersDAO->save($winners);
 
                         $notification = new Notification();
                         $notification->setNotification('You just won a challenge! Check your profile for the new prize!');
@@ -92,7 +166,6 @@ class ChallengeController extends Controller
                         $notification->setUser($user);
                         $notificationDAO = new NotificationDAO();
                         $notificationDAO->save($notification);
-                  
                     }
                 }
             }

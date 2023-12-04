@@ -206,6 +206,7 @@ article {
   height: 359px;
   border-radius: 100px;
   grid-column: 1 / -1;
+  object-fit: cover;
  }
  
  .images .one-image {
@@ -213,6 +214,7 @@ article {
   height: 259px;
   margin-top: 15px;
   border-radius: 30px;
+  object-fit: cover;
  }
 
 .title {

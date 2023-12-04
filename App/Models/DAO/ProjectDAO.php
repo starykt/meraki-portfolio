@@ -76,7 +76,28 @@ class ProjectDAO extends BaseDAO
             throw new \Exception("Error saving project data. " . $e->getMessage(), 500);
         }
     }
-
+    public function getProjectsByHashtagAndChallenge($hashtagId, $challengeId)
+    {
+        $sql = $this->select("SELECT p.* FROM projects p
+                    JOIN projects_hashtags ph ON p.idProject = ph.idProject
+                    JOIN hashtags_challenges hc ON ph.idHashtag = hc.idHashtag
+                    WHERE hc.idHashtag = '$hashtagId' AND hc.idChallenge = '$challengeId'");
+    
+        $projects = [];
+    
+        while ($projectData = $sql->fetch()) {
+            $project = new Project();
+            $project->setIdProject($projectData['idProject']);
+            $project->setTitle($projectData['title']);
+            $project->setDescription($projectData['description']);
+            $project->setCreated_At(new \DateTime($projectData['created_At']));
+    
+            $projects[] = $project;
+        }
+    
+        return $projects;
+    }
+    
     public function list()
     {
         try {

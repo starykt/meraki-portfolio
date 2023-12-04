@@ -4,6 +4,7 @@ namespace App\Models\DAO;
 
 use App\Models\Entidades\Award;
 use App\Models\Entidades\Challenge;
+use App\Models\Entidades\Project;
 use App\Models\Entidades\User;
 
 
@@ -84,29 +85,29 @@ class ChallengeDAO extends BaseDAO
     public function awardWinnerIfDeadlinePassed($challengeId)
     {
         $challenge = $this->getById($challengeId);
-    
+
         if (strtotime($challenge->getDeadline()) < time()) {
             $winner = $this->getChallengeWinner($challengeId);
-    
+
             if ($winner) {
                 $awardsDAO = new AwardDAO();
                 $existingAwards = $awardsDAO->getAwardsByChallengeId($challengeId);
-    
+
                 if (!empty($existingAwards)) {
                     $existingAward = $existingAwards[0];
                     $existingAward->setIdUser($winner->getUserId());
-    
+
                     $xpToAdd = $challenge->getReward();
-    
+
                     $userDAO = new UserDAO();
                     $userDAO->updateXPAndLevel($winner->getUserId(), $xpToAdd);
-    
+
                     $awardsDAO->updateUser($existingAward);
                 }
             }
         }
     }
-    
+
 
     public function updateBanner($idChallenge, $bannerName)
     {
@@ -122,6 +123,31 @@ class ChallengeDAO extends BaseDAO
         } catch (\Exception $e) {
             throw new \Exception("Erro na atualização dos dados. " . $e->getMessage(), 500);
         }
+    }
+    public function getByProject($idChallenge)
+    {
+        $sql = $this->select("SELECT Projects.* FROM Projects 
+                              JOIN Hashtags_Projects ON Projects.idProject = Hashtags_Projects.idProject 
+                              JOIN Hashtags_Challenges ON Hashtags_Projects.idHashtag = Hashtags_Challenges.idHashtag 
+                              WHERE Hashtags_Challenges.idChallenge = '$idChallenge' LIMIT 0, 25;");
+
+        $projects = [];
+
+        while ($projectData = $sql->fetch()) {
+            $project = new Project();
+            $project->setIdProject($projectData['idProject']);
+            $project->setTitle($projectData['title']);
+            $project->setDescription($projectData['description']);
+            $project->setCreated_At(new \DateTime($projectData['created_At']));
+
+            $userDAO = new UserDAO();
+            $user = $userDAO->getById($projectData['idUser']);
+            $project->setUser($user);
+
+            $projects[] = $project;
+        }
+
+        return $projects;
     }
 
     public function getById($id)

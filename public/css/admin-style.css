@@ -15,6 +15,10 @@
     margin-left: 200px;
     margin-top: 50px;
   }
+  .link{
+    color:#2A8194;
+    font-weight: bold;
+  }
 
   .user-link {
     width: 130px;
@@ -120,6 +124,8 @@
     margin-left: 200px;
     margin-bottom: 20px;
     padding: 10px;
+    position: relative;
+    z-index: 9900;
   }
 
   .users-text {
@@ -154,7 +160,10 @@
   .overlay-container {
     position: relative;
     width: 100%;
+    z-index: 9900;
   }
+
+
 
   .button-container {
     display: flex;

@@ -104,6 +104,10 @@ aside {
   margin-left: 15px;
 }
 
+.wrapper-info p {
+  width: 80%;
+}
+
 .award {
   padding: 16px;
   height: 40px;

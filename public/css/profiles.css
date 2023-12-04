@@ -703,7 +703,7 @@ aside {
   height: 83%;
   min-width: 810px;
   border-radius: 100px;
-  overflow-y: auto;
+  overflow-y: hidden;
   margin-top: 20px;
   background: #212121;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);

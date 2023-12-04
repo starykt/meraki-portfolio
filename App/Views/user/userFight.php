@@ -48,7 +48,7 @@
 
                 <img src="http://<?= APP_HOST ?>/public/images/users/<?= $viewVar['topUsersByLikes'][0]->getAvatar() ?>" class="user-icon" style="height: 90px; width: 90px;" alt="" />
 
-                <img src="/public/images/userFight/position1.png" alt="" style="position: absolute; left: 45px; top: 35px; width: 80px; height: 80px;" />
+                <img src="/public/images/userFight/position1.png" alt="" style="position: absolute; left: -5px; top: 35px; width: 80px; height: 80px;" />
               </div>
               <div class="bar" style="height: 300px;"></div>
               <div class="user-name one">
@@ -92,7 +92,7 @@
           <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
 
-              <img src="http://<?= APP_HOST ?>/public/images/users/<?= $viewVar['userLoggedin']->getAvatar() ?>" style="height: 70px; width: 70px; border-radius: 100%" alt="" />
+              <img src="http://<?= APP_HOST ?>/public/images/users/<?= $viewVar['userLoggedin']->getAvatar() ?>" style="height: 70px; width: 70px; border-radius: 100% " alt="" />
               <div class="container-me">
                 <img src="/public/images/userFight/yellowStar.png" style="width: 80px; height: 80px;" />
                 <span><?= $viewVar['userPositionByLikes'] ?></span>

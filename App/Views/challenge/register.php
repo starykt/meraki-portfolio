@@ -1,7 +1,5 @@
 <link href="http://<?php echo APP_HOST; ?>/public/css/new-challenge.css" rel="stylesheet">
 
-<html>
-
 <body>
   <section>
     <img class="light-bulb" src="/public/images/icons/lightIcon.png" />

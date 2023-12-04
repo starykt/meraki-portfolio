@@ -1,7 +1,5 @@
 <link href="http://<?php echo APP_HOST; ?>/public/css/list-challenges.css" rel="stylesheet">
 
-<html>
-
 <body>
   <section>
     <div class="top-list-title">

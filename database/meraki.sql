@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Tempo de geração: 02-Dez-2023 às 18:46
+-- Tempo de geração: 04-Dez-2023 às 12:48
 -- Versão do servidor: 8.0.21
--- versão do PHP: 8.2.12
+-- versão do PHP: 8.2.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -36,6 +36,13 @@ CREATE TABLE `Awards` (
   `imagePath` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Extraindo dados da tabela `Awards`
+--
+
+INSERT INTO `Awards` (`idAward`, `idUser`, `idChallenge`, `description`, `date`, `imagePath`) VALUES
+(6, NULL, 6, 'aaaaaa', '2023-12-04', 'imagePath-6.jpg');
+
 -- --------------------------------------------------------
 
 --
@@ -51,6 +58,13 @@ CREATE TABLE `Challenges` (
   `banner` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `deadline` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Extraindo dados da tabela `Challenges`
+--
+
+INSERT INTO `Challenges` (`idChallenge`, `idUser`, `goal`, `name`, `reward`, `banner`, `deadline`) VALUES
+(6, 2, 'conseguir fazer modelagens do mario', 'Nicole', '200XP', 'banner-6.jpg', '2023-12-28 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -78,7 +92,9 @@ INSERT INTO `Comments` (`idComment`, `idUser`, `idProject`, `text`, `dateCreate`
 (5, 5, 7, 'ficaram assustadoramente adoráveis', '2023-12-02 18:39:47'),
 (6, 5, 1, 'pra frente sempre', '2023-12-02 18:40:05'),
 (7, 6, 4, 'seu projeto é inspirador', '2023-12-02 18:42:00'),
-(8, 1, 10, 'meu deus isso está lindo', '2023-12-02 18:45:46');
+(8, 1, 10, 'meu deus isso está lindo', '2023-12-02 18:45:46'),
+(9, 2, 4, 'uauu', '2023-12-03 11:30:30'),
+(10, 2, 10, 'eu amei!!', '2023-12-03 20:34:35');
 
 -- --------------------------------------------------------
 
@@ -103,6 +119,13 @@ CREATE TABLE `Educations` (
   `formation` varchar(200) NOT NULL,
   `idUser` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Extraindo dados da tabela `Educations`
+--
+
+INSERT INTO `Educations` (`idEducation`, `formation`, `idUser`) VALUES
+(3, 'ADS - FATEC', 2);
 
 -- --------------------------------------------------------
 
@@ -201,7 +224,9 @@ INSERT INTO `Hashtags_Projects` (`idHashtag`, `idProject`) VALUES
 (2, 9),
 (9, 9),
 (10, 10),
-(11, 10);
+(11, 10),
+(10, 15),
+(9, 16);
 
 -- --------------------------------------------------------
 
@@ -229,7 +254,13 @@ INSERT INTO `Images` (`idImage`, `idProject`, `image`) VALUES
 (16, 7, 'img-id7-1701541963-1.jpeg'),
 (17, 7, 'img-id7-1701541963-2.jpeg'),
 (19, 9, 'img-id9-1701542291-0.jpg'),
-(20, 10, 'img-id10-1701542462-0.png');
+(20, 10, 'img-id10-1701542462-0.png'),
+(21, 15, 'img-id15-1701692116-0.png'),
+(22, 16, 'img-id16-1701692237-0.jpg'),
+(23, 17, 'img-id17-1701692447-0.gif'),
+(24, 18, 'img-id18-1701692735-0.jpg'),
+(25, 18, 'img-id18-1701692735-1.jpg'),
+(26, 18, 'img-id18-1701692735-2.jpg');
 
 -- --------------------------------------------------------
 
@@ -261,7 +292,12 @@ INSERT INTO `Likes` (`idLike`, `idUser`, `idProject`) VALUES
 (11, 6, 9),
 (12, 6, 5),
 (13, 1, 10),
-(14, 1, 9);
+(14, 1, 9),
+(15, 1, 1),
+(78, 2, 7),
+(79, 2, 1),
+(81, 2, 10),
+(82, 2, 9);
 
 -- --------------------------------------------------------
 
@@ -323,7 +359,86 @@ INSERT INTO `Notifications` (`idNotification`, `idUser`, `notification`) VALUES
 (27, 6, 'Someone liked your new project!'),
 (28, 6, 'It looks like people are saving your project!'),
 (29, 6, 'People are commenting on your new project!'),
-(30, 5, 'Someone liked your new project!');
+(30, 5, 'Someone liked your new project!'),
+(31, 1, 'It looks like people are saving your project!'),
+(32, 1, 'It looks like people are saving your project!'),
+(33, 3, 'People are commenting on your new project!'),
+(34, 1, 'Someone liked your new project!'),
+(35, 3, 'Someone liked your new project!'),
+(36, 6, 'Someone liked your new project!'),
+(37, 6, 'Someone liked your new project!'),
+(38, 5, 'Someone liked your new project!'),
+(39, 5, 'Someone liked your new project!'),
+(40, 6, 'Someone liked your new project!'),
+(41, 5, 'Someone liked your new project!'),
+(42, 5, 'Someone liked your new project!'),
+(43, 6, 'Someone liked your new project!'),
+(44, 6, 'Someone liked your new project!'),
+(45, 6, 'Someone liked your new project!'),
+(46, 5, 'Someone liked your new project!'),
+(47, 5, 'Someone liked your new project!'),
+(48, 5, 'Someone liked your new project!'),
+(49, 6, 'Someone liked your new project!'),
+(50, 5, 'Someone liked your new project!'),
+(51, 1, 'Someone liked your new project!'),
+(52, 1, 'Someone liked your new project!'),
+(53, 1, 'Someone liked your new project!'),
+(54, 1, 'Someone liked your new project!'),
+(55, 1, 'Someone liked your new project!'),
+(56, 1, 'Someone liked your new project!'),
+(57, 1, 'Someone liked your new project!'),
+(58, 1, 'Someone liked your new project!'),
+(59, 1, 'Someone liked your new project!'),
+(60, 6, 'Someone liked your new project!'),
+(61, 2, 'Someone liked your new project!'),
+(62, 2, 'Someone liked your new project!'),
+(63, 2, 'Someone liked your new project!'),
+(64, 2, 'Someone liked your new project!'),
+(65, 2, 'Someone liked your new project!'),
+(66, 2, 'Someone liked your new project!'),
+(67, 2, 'Someone liked your new project!'),
+(68, 2, 'Someone liked your new project!'),
+(69, 2, 'Someone liked your new project!'),
+(70, 2, 'Someone liked your new project!'),
+(71, 2, 'Someone liked your new project!'),
+(72, 2, 'Someone liked your new project!'),
+(73, 2, 'Someone liked your new project!'),
+(74, 2, 'Someone liked your new project!'),
+(75, 2, 'Someone liked your new project!'),
+(76, 2, 'Someone liked your new project!'),
+(77, 2, 'Someone liked your new project!'),
+(78, 2, 'Someone liked your new project!'),
+(79, 2, 'Someone liked your new project!'),
+(80, 2, 'Someone liked your new project!'),
+(81, 2, 'Someone liked your new project!'),
+(82, 2, 'Someone liked your new project!'),
+(83, 2, 'It looks like people are saving your project!'),
+(84, 2, 'Someone liked your new project!'),
+(85, 2, 'Someone liked your new project!'),
+(86, 2, 'Someone liked your new project!'),
+(87, 2, 'Someone liked your new project!'),
+(88, 1, 'Someone liked your new project!'),
+(89, 1, 'Someone liked your new project!'),
+(90, 5, 'Someone liked your new project!'),
+(91, 1, 'Someone liked your new project!'),
+(92, 1, 'Someone liked your new project!'),
+(93, 1, 'Someone liked your new project!'),
+(94, 6, 'Someone liked your new project!'),
+(95, 3, 'Someone liked your new project!'),
+(96, 6, 'Someone liked your new project!'),
+(97, 1, 'Someone liked your new project!'),
+(98, 1, 'Someone liked your new project!'),
+(99, 1, 'Someone liked your new project!'),
+(100, 6, 'Someone liked your new project!'),
+(101, 6, 'Someone liked your new project!'),
+(102, 6, 'People are commenting on your new project!'),
+(103, 5, 'Someone liked your new project!'),
+(104, 2, 'Your project has been deleted as it does not comply with community guidelines.'),
+(105, 3, 'Someone liked your new project!'),
+(106, 3, 'Someone liked your new project!'),
+(107, 2, 'People are commenting on your new project!'),
+(108, 2, 'Someone liked your new project!'),
+(109, 2, 'Someone liked your new project!');
 
 -- --------------------------------------------------------
 
@@ -349,7 +464,11 @@ INSERT INTO `Projects` (`idProject`, `idUser`, `title`, `description`, `created_
 (5, 4, 'NOVO TUTORIAL - UNREAL', 'Desperte sua criatividade e construa mundos incríveis com o Unreal Engine, a plataforma definitiva para criar jogos extraordinários. Desenvolva experiências imersivas, dê vida às suas ideias e mergulhe na magia da criação de jogos com Unreal! ', '2023-12-02 18:25:04'),
 (7, 1, 'Halloween - 2023', 'Mergulhei de cabeça na modelagem de Halloween e, sério, é a coisa mais divertida! Criando monstros e fantasmas com mais estilo do que medo. Vai ser um Halloween épico com essas criações assustadoramente incríveis! ', '2023-12-02 18:32:43'),
 (9, 5, 'Blender + Unreal', 'Publiquei um vídeo sobre o meu estudo na integração da Unreal com Blender, segue lá @kaka_models', '2023-12-02 18:38:11'),
-(10, 6, 'GameMarker is My Passion', 'Pessoal, eu tô super animado para contar que acabei de experimentar um jogo incrível feito no GameMaker! Gráficos top, jogabilidade viciante... é tipo uma montanha-russa de diversão em 2D! Pega esse controle aí e vem comigo nessa jornada épica. Sério, é sensacional! 🚀🕹️', '2023-12-02 18:41:02');
+(10, 6, 'GameMarker is My Passion', 'Pessoal, eu tô super animado para contar que acabei de experimentar um jogo incrível feito no GameMaker! Gráficos top, jogabilidade viciante... é tipo uma montanha-russa de diversão em 2D! Pega esse controle aí e vem comigo nessa jornada épica. Sério, é sensacional! 🚀🕹️', '2023-12-02 18:41:02'),
+(15, 2, 'Eu amo jogos indies <3', '🌾🚜 Super empolgado com Stardew Valley! Cultivando minha fazenda, interagindo com personagens adoráveis e explorando o encantador mundo pixelado. 🎮❤️ Uma jornada viciante que me faz perder a noção do tempo! ', '2023-12-04 12:15:16'),
+(16, 2, 'Novidades da unreal', 'A Unreal Engine é uma verdadeira revolução no mundo dos desenvolvedores de jogos e experiências interativas. Com gráficos impressionantes e uma flexibilidade incrível, ela permite criar ambientes virtuais realistas e cativantes. Seja para jogos, simulações ou realidade virtual, a Unreal Engine eleva a qualidade e a imersão, abrindo portas para a criação de experiências visualmente deslumbrantes. U', '2023-12-04 12:17:17'),
+(17, 2, 'Estou aprendendo a fazer animações.', 'Aprendi recentemente a criar animações, estou muito feliz caminhando por essa grande área! ', '2023-12-04 12:20:47'),
+(18, 2, 'Project and Satisfying Colorful Results! 💪✨ ', 'I started this personal project 20 years ago. Feeling like I now have a satisfying washed colors rendering that should allow me to produce more! Never give up and keep working on your personal stuff folks, even if that\'s just 5mn per day! 💪', '2023-12-04 12:25:35');
 
 -- --------------------------------------------------------
 
@@ -364,6 +483,13 @@ CREATE TABLE `Report` (
   `report` text NOT NULL,
   `action` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Extraindo dados da tabela `Report`
+--
+
+INSERT INTO `Report` (`idReport`, `idUser`, `idProject`, `report`, `action`) VALUES
+(1, 2, 1, 'muito ruim qualidade totalmente horrorosa traste', 0);
 
 -- --------------------------------------------------------
 
@@ -387,7 +513,9 @@ INSERT INTO `Save_Projects` (`idSave`, `idProject`, `idUser`) VALUES
 (4, 7, 1),
 (5, 4, 1),
 (6, 7, 6),
-(7, 4, 6);
+(7, 4, 6),
+(9, 7, 2),
+(10, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -460,12 +588,22 @@ CREATE TABLE `Users` (
 --
 
 INSERT INTO `Users` (`idUser`, `tag`, `nickname`, `email`, `password`, `avatar`, `level`, `xp`, `resume`, `admin`, `createdAt`, `location`, `status`) VALUES
-(1, 3891, 'gabrela', 'gabrielamoreno@gmail.com', '$2y$10$t3NC9tkKfu1clk5NXVd2/.AZMbPKWAFV1KA3xCtLwrNC1mmXkgoY.', 'sonic2.jpg', 1, 195, NULL, 1, '2023-12-01 21:25:37', NULL, NULL),
-(2, 3296, 'nick', 'nicoleraimundo@gmail.com', '$2y$10$S/OSTzre6N8YbLgA5o090eaSkg4utYz4eI8pHrKLmlh5x0lEymcBO', 'undertale.jpg', 1, 0, NULL, 1, '2023-12-01 21:26:04', NULL, NULL),
-(3, 2714, 'rodolfo', 'rodolfo@gmail.com', '$2y$10$2./5EZIVrI6wGhdzCCw.9.YGvYlPve7eUqchxFTLci.rB/6zCgT/y', 'undertale.jpg', 1, 140, NULL, 0, '2023-12-02 18:16:01', NULL, NULL),
-(4, 2063, 'crazyModel', 'crazymodel@gmail.com', '$2y$10$Au1wprPzbvnJo/c3w6XNYOLaQ/69EDGm..BuNCNg4U6L3t35fOtXK', 'pacman.jpg', 1, 135, NULL, 0, '2023-12-02 18:24:00', NULL, NULL),
-(5, 4782, 'kaka', 'kaka@gmail.com', '$2y$10$aER0Sdj7.ee1EKEHgtEg3OxocCQN1TFooceDiTwOEfoRi/O3F.aUa', 'cuphead.jpg', 1, 90, NULL, 0, '2023-12-02 18:34:54', NULL, NULL),
-(6, 1392, 'yhui', 'yhui@gmail.com', '$2y$10$phzEdUIY5HN3TcAn/9NdtOK8SWAi62SjmzE2WP47pW9kyFwnmFm8i', 'pikachu.jpg', 1, 70, NULL, 0, '2023-12-02 18:40:28', NULL, NULL);
+(1, 3891, 'gabrela', 'gabrielamoreno@gmail.com', '$2y$10$t3NC9tkKfu1clk5NXVd2/.AZMbPKWAFV1KA3xCtLwrNC1mmXkgoY.', 'sonic2.jpg', 2, 70, NULL, 1, '2023-12-01 21:25:37', NULL, NULL),
+(2, 3296, 'nick', 'nicolealvesraimundo@gmail.com', '$2y$10$S/OSTzre6N8YbLgA5o090eaSkg4utYz4eI8pHrKLmlh5x0lEymcBO', 'avatar-id2.jpg', 2, -15, 'I love games', 1, '2023-12-01 21:26:04', 'Itapevi, Sp', NULL),
+(3, 2714, 'rodolfo', 'rodolfo@gmail.com', '$2y$10$2./5EZIVrI6wGhdzCCw.9.YGvYlPve7eUqchxFTLci.rB/6zCgT/y', 'undertale.jpg', 13, 155, NULL, 0, '2023-12-02 18:16:01', NULL, NULL),
+(4, 2063, 'crazyModel', 'crazymodel@gmail.com', '$2y$10$Au1wprPzbvnJo/c3w6XNYOLaQ/69EDGm..BuNCNg4U6L3t35fOtXK', 'pacman.jpg', 15, 135, NULL, 0, '2023-12-02 18:24:00', NULL, NULL),
+(5, 4782, 'kaka', 'kaka@gmail.com', '$2y$10$aER0Sdj7.ee1EKEHgtEg3OxocCQN1TFooceDiTwOEfoRi/O3F.aUa', 'cuphead.jpg', 10, 100, NULL, 0, '2023-12-02 18:34:54', NULL, NULL),
+(6, 1392, 'yhui', 'yhui@gmail.com', '$2y$10$phzEdUIY5HN3TcAn/9NdtOK8SWAi62SjmzE2WP47pW9kyFwnmFm8i', 'pikachu.jpg', 1, 95, NULL, 0, '2023-12-02 18:40:28', NULL, NULL),
+(7, 5377, 'Luis', 'luis@gmail.com', '$2y$10$qHHCVMUZfAkD4MKlgSfNdO8.OMsXySDw2DhSR05LsIsIrYr1OzhZe', 'pikachu.jpg', 1, 0, NULL, 0, '2023-12-04 03:35:47', NULL, NULL),
+(8, 6506, 'rosa_lya', 'rosangela@gmail.com', '$2y$10$e2iOIvtnGPUkDb0870sFZex3DpPopDC8NaIJaT0p/N7cYo8.Wx90a', 'cat.jpg', 1, 0, NULL, 0, '2023-12-04 03:36:16', NULL, NULL),
+(9, 4060, 'Evandro', 'evandro@gmail.com', '$2y$10$Vp.PgFR6HuWC8.SPBfQELOrcOx6UNS2Dfnf9WSPLwqFEHwg1Ja6tO', 'amongus.jpg', 1, 0, NULL, 0, '2023-12-04 03:36:45', NULL, NULL),
+(10, 8021, 'leidy', 'leidy@gmail.com', '$2y$10$bjUEuRUNsfzGn596bI2lzO1ZZnMSNsYbByRA2Z27ex4bdGxOSyDvq', 'psyduck.jpg', 1, 0, NULL, 0, '2023-12-04 03:37:08', NULL, NULL),
+(11, 9701, 'Liandry', 'liandry@gmail.com', '$2y$10$9lWTE63d5WJIh/4zePtO0uY4yIzziW0mASDHbwrLP21oRtTzix/jS', 'thewitcher.jpg', 1, 0, NULL, 0, '2023-12-04 03:37:32', NULL, NULL),
+(12, 2924, 'July', 'juliana@gmail.com', '$2y$10$9h3/MkSsc70rt.qCfqMFseJJKAr.4qK.7lqG2qIJWRXR/SWRL2jOO', 'pacman.jpg', 1, 0, NULL, 0, '2023-12-04 03:38:24', NULL, NULL),
+(13, 6741, 'Elly', 'eliana@gmail.com', '$2y$10$dwHyMzWrCofDxSwZ0weBeOr3Mitm.RVyHkV72Rgv9wXViQIS33WVW', 'zelda.jpg', 1, 0, NULL, 0, '2023-12-04 03:39:14', NULL, NULL),
+(14, 2180, 'Paulo', 'paulo1@gmail.com', '$2y$10$5egmzJFqiyiwHsK2WJ6sHOBTrXlQjmXa1nodkkR5kft.c4uihhh1G', 'avatar-id14.jpg', 1, 0, 'Professor na Fatec Presidente Prudente', 0, '2023-12-04 03:39:57', 'Presidente Prudente, SP', NULL),
+(15, 9053, 'Elaine', 'elaine@gmail.com', '$2y$10$jr6ItnFOlCpIXWKxZz8qLOSeRjM5yNMMOZD/DT9EjemazR4ZqEqxy', 'avatar-id15.png', 1, 0, 'Professora na Fatec Presidente Prudente', 0, '2023-12-04 03:40:14', 'Presidente Prudente, SP', NULL),
+(16, 9820, 'Carol', 'carol@gmail.com', '$2y$10$9kfzAmttr6XhFxdRGEMkdu27IvbmuZLID.3VCXn4nuyd1KA1V2ucW', 'avatar-id16.jpg', 1, 0, 'Professora na Fatec Presidente Prudente e Teach Leader Multimidia Educacional. ', 0, '2023-12-04 03:40:32', 'Presidente Prudente, SP', NULL);
 
 -- --------------------------------------------------------
 
@@ -477,6 +615,23 @@ CREATE TABLE `Users_Tools` (
   `idUser` int NOT NULL,
   `idTool` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Extraindo dados da tabela `Users_Tools`
+--
+
+INSERT INTO `Users_Tools` (`idUser`, `idTool`) VALUES
+(14, 1),
+(16, 1),
+(14, 3),
+(16, 4),
+(16, 5),
+(2, 6),
+(14, 6),
+(15, 6),
+(2, 7),
+(15, 7),
+(15, 8);
 
 -- --------------------------------------------------------
 
@@ -662,25 +817,25 @@ ALTER TABLE `Winners`
 -- AUTO_INCREMENT de tabela `Awards`
 --
 ALTER TABLE `Awards`
-  MODIFY `idAward` int NOT NULL AUTO_INCREMENT;
+  MODIFY `idAward` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `Challenges`
 --
 ALTER TABLE `Challenges`
-  MODIFY `idChallenge` int NOT NULL AUTO_INCREMENT;
+  MODIFY `idChallenge` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `Comments`
 --
 ALTER TABLE `Comments`
-  MODIFY `idComment` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `idComment` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de tabela `Educations`
 --
 ALTER TABLE `Educations`
-  MODIFY `idEducation` int NOT NULL AUTO_INCREMENT;
+  MODIFY `idEducation` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `Favorites`
@@ -698,19 +853,19 @@ ALTER TABLE `Files`
 -- AUTO_INCREMENT de tabela `Hashtags`
 --
 ALTER TABLE `Hashtags`
-  MODIFY `idHashtag` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `idHashtag` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de tabela `Images`
 --
 ALTER TABLE `Images`
-  MODIFY `idImage` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `idImage` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de tabela `Likes`
 --
 ALTER TABLE `Likes`
-  MODIFY `idLike` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `idLike` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 
 --
 -- AUTO_INCREMENT de tabela `Messages`
@@ -722,25 +877,25 @@ ALTER TABLE `Messages`
 -- AUTO_INCREMENT de tabela `Notifications`
 --
 ALTER TABLE `Notifications`
-  MODIFY `idNotification` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `idNotification` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
 
 --
 -- AUTO_INCREMENT de tabela `Projects`
 --
 ALTER TABLE `Projects`
-  MODIFY `idProject` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idProject` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de tabela `Report`
 --
 ALTER TABLE `Report`
-  MODIFY `idReport` int NOT NULL AUTO_INCREMENT;
+  MODIFY `idReport` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `Save_Projects`
 --
 ALTER TABLE `Save_Projects`
-  MODIFY `idSave` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `idSave` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de tabela `Tokens`
@@ -758,7 +913,7 @@ ALTER TABLE `Tools`
 -- AUTO_INCREMENT de tabela `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `idUser` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idUser` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Restrições para despejos de tabelas

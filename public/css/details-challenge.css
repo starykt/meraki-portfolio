@@ -99,7 +99,7 @@
   font-weight: 700;
   font-family: Inter;
   position: relative;
-  text-align: justify;
+  text-align: left;
 }
 
 .second-line-challenge-list .goal-challenge-list, .englobe-hashtag-label {
@@ -117,6 +117,7 @@
   align-items: center;
   flex-direction: column;
   justify-content: flex-end;
+  bottom: 40px;
 }
 
 .second-line-challenge-list .englobe-hashtag-label label {
@@ -178,4 +179,5 @@ article {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }

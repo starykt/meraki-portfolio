@@ -184,7 +184,7 @@ class ChallengeDAO extends BaseDAO
         $challenge->setGoal($data['goal']);
         $challenge->setReward($data['reward']);
         $challenge->setBanner($data['banner']);
-
+        $challenge->setDeadline($data['deadline']);
         return $challenge;
     }
 

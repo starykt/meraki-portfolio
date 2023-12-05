@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Listar Relatórios</title>
-  <link href="http://<?php echo APP_HOST; ?>/public/css/admin-style.css" rel="stylesheet">
-</head>
+<title>Listar Relatórios</title>
+<link href="http://<?php echo APP_HOST; ?>/public/css/admin-style.css" rel="stylesheet">
 
 <body>
   <div class="container-list">
@@ -57,18 +50,13 @@
                 <br>
               <?php endif; ?>
 
-              <?php if ($reportData['project']->hasImages()) : ?>
-                <div class="image-container">
-                  <?php foreach ($reportData['images'] as $index => $image) : ?>
-                    <?php if ($index === 0) : ?>
-                      <img src="http://<?php echo APP_HOST; ?>/public/images/projects/<?= $image->getImage() ?>" alt="Imagem do projeto">
-                    <?php else : ?>
-                      <img src="http://<?php echo APP_HOST; ?>/public/images/projects/<?= $image->getImage() ?>" alt="Imagem do projeto">
-                    <?php endif; ?>
-                  <?php endforeach; ?>
-                </div>
-                <br>
-              <?php endif; ?>
+              <div class="images">
+                <?php if ($reportData['project']->hasImages()) { ?>
+                  <?php foreach ($reportData['images'] as $index => $image) { ?>
+                    <img class="one-image" src="http://<?php echo APP_HOST; ?>/public/images/projects/<?= $image->getImage() ?>" width="200px" height="200px" alt="Imagem do projeto">
+                  <?php } ?>
+                <?php } ?>
+              </div>
 
               <?php if ($reportData['project']->hasHashtags()) : ?>
                 <div class="report-hashtags">

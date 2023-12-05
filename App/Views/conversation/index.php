@@ -77,17 +77,17 @@
             fetch('http://localhost:8000/conversation/sendMessage/', requestOptions)
                 .then(response => {
                     if (response.ok) {
-                        return response.text(); 
+                        return response.text();
                     }
-                    throw new Error('Erro ao enviar a mensagem'); 
+                    throw new Error('Erro ao enviar a mensagem');
                 })
                 .then(data => {
-                    console.log('Mensagem enviada com sucesso:', data); 
+                    console.log('Mensagem enviada com sucesso:', data);
                     getMessagesToChat()
                     socket.emit("sentMessage", idUser_Recipent);
                 })
                 .catch(error => {
-                    console.error('Erro:', error); 
+                    console.error('Erro:', error);
                 });
 
         }
@@ -121,7 +121,8 @@
             const userLogged = <?= $viewVar['userLogged']->getIdUser() ?>;
             var chatContainer = document.querySelector(".chat-container");
             chatContainer.innerHTML = "";
-            messages.forEach(function(message) {
+
+            messages.forEach(function(message, index) {
                 var messageElement = document.createElement("div");
                 messageElement.className = "message " + (message.sender.idUser === userLogged ? "sent" : "received");
                 let content = "";
@@ -137,12 +138,16 @@
                 }
 
                 messageElement.innerHTML = content;
-                chatContainer.appendChild(messageElement);
-                scrollToBottom(); 
-            });
-           
-        }
 
+                if (index === 0) {
+                    // Adiciona um margin-top à primeira mensagem
+                    messageElement.style.marginTop = "20px"; // Ajuste o valor conforme necessário
+                }
+
+                chatContainer.appendChild(messageElement);
+                scrollToBottom();
+            });
+        }
 
         function scrollToBottom() {
             var chatContainer = document.querySelector(".chat-container");
@@ -150,5 +155,5 @@
         }
 
         getMessagesToChat();
-        scrollToBottom(); 
+        scrollToBottom();
     </script>

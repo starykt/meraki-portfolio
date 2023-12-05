@@ -26,7 +26,7 @@
         </div>
         <div class="englobe-hashtag-label">
           <label>Don't forget to use this hashtag on your post:</label>
-          <p><?= $viewVar["challenge"]->getHashtag()->getHashtag(); ?></p>
+          <p>#<?= $viewVar["challenge"]->getHashtag()->getHashtag(); ?></p>
         </div>
       </div>
     </div>

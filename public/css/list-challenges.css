@@ -167,7 +167,7 @@ section {
   font-weight: 700;
   font-family: Inter;
   position: relative;
-  text-align: justify;
+  text-align: left;
 }
 
 .second-line-challenge-list .goal-challenge-list p {
@@ -212,7 +212,9 @@ section {
 
 .third-line-challenge-list .wrapper-banner-challenge .banner {
   width: 550px;
+  height: 300px;
   border-radius: 30px;
+  object-fit: cover;
 }
 
 .third-line-challenge-list .hashtag-for-challenge-list {

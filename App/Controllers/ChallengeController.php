@@ -47,7 +47,10 @@ class ChallengeController extends Controller
                 $hashtagsList[$challenge->getIdChallenge()] = $hashtagChallengeDAO->getHashtagByChallengeId($challenge->getIdChallenge());
             }
 
-            $this->endChallenge($challengesFinally);
+            foreach ($challengesFinally as $challengeFinally) {
+                $this->endChallenge($challengeFinally->getIdChallenge());
+            }
+
             $loggedInUser = $_SESSION['idUser'];
             $userDao = new UserDAO();
             $userLoggedin = $userDao->getById($loggedInUser);
@@ -123,7 +126,7 @@ class ChallengeController extends Controller
 
             $this->setViewParam('award', $award);
             $this->setViewParam('userLoggedin', $userLoggedin);
-            $this->setViewParam('listProject', $projectsToDisplay); 
+            $this->setViewParam('listProject', $projectsToDisplay);
             $this->setViewParam('challenge', $challenge);
             $this->setViewParam('user', $userDAO->getById($_SESSION['idUser']));
             $this->render('/challenge/listChallenge');
@@ -134,48 +137,52 @@ class ChallengeController extends Controller
 
 
 
-
-    public function endChallenge($challenges)
+    public function endChallenge($challengeId)
     {
+        date_default_timezone_set('America/Sao_Paulo'); 
         $challengeDAO = new ChallengeDAO();
         $awardsDAO = new AwardDAO();
         $userDAO = new UserDAO();
-
-        foreach ($challenges as $challenge) {
-            if (strtotime($challenge->getDeadline()) < time()) {
-                $winner = $challengeDAO->getChallengeWinner($challenge->getIdChallenge());
-
-                if ($winner) {
-                    $idChallenge = $challenge->getIdChallenge();
-                    $existingUserId = $awardsDAO->checkAwardUserId($idChallenge);
-
-                    if ($existingUserId === null) {
-                        $award = new Award();
-                        $award->setIdUser($winner->getUserId());
-                        $award->setIdChallenge($idChallenge);
-
-                        $awardsDAO->updateUser($award);
-                        $xpToAdd = $challenge->getReward();
-                        $userDAO->updateXPAndLevel($winner->getUserId(), $xpToAdd);
-
-                        $winners = new Winner();
-                        $winners->setIdUser($winner->getUserId());
-                        $winners->setIdChallenge($idChallenge);
-                        $winnersDAO = new WinnerDAO();
-                        $winnersDAO->save($winners);
-
-                        $notification = new Notification();
-                        $notification->setNotification('You just won a challenge! Check your profile for the new prize!');
-                        $user = new User();
-                        $user->setIdUser($winner->getUserId());
-                        $notification->setUser($user);
-                        $notificationDAO = new NotificationDAO();
-                        $notificationDAO->save($notification);
-                    }
+    
+        $challenge = $challengeDAO->getById($challengeId);
+    
+        if ($challenge && strtotime($challenge->getDeadline()) < time()) {
+            $winner = $challengeDAO->getChallengeWinner($challengeId);
+    
+            if ($winner) {
+                $idChallenge = $challenge->getIdChallenge();
+                $existingUserId = $awardsDAO->checkAwardUserId($idChallenge);
+    
+                if ($existingUserId === null) {
+                    $award = new Award();
+                    $award->setIdUser($winner->getUserId());
+                    $award->setIdChallenge($idChallenge);
+    
+                    $awardsDAO->updateUser($award);
+                    $xpToAdd = $challenge->getReward();
+                    $userDAO->updateXPAndLevel($winner->getUserId(), $xpToAdd);
+    
+                    $winners = new Winner();
+                    $winners->setIdUser($winner->getUserId());
+                    $winners->setIdChallenge($idChallenge);
+                    $winnersDAO = new WinnerDAO();
+                    $winnersDAO->save($winners);
+    
+                    $notification = new Notification();
+                    $notification->setNotification('You just won a challenge! Check your profile for the new prize!');
+                    $user = new User();
+                    $user->setIdUser($winner->getUserId());
+                    $notification->setUser($user);
+                    $notificationDAO = new NotificationDAO();
+                    $notificationDAO->save($notification);
                 }
             }
         }
     }
+    
+  
+
+    
 
 
     public function register()
